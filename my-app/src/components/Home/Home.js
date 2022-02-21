@@ -3,7 +3,6 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
 import CssBaseline from '@mui/material/CssBaseline';
-import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -49,12 +48,10 @@ export default function Home() {
               spacing={2}
               justifyContent="center"
             >
-              <Button variant="contained">Main call to action</Button>
-              <Button variant="outlined">Secondary action</Button>
             </Stack>
           </Container>
         </Box>
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 8 }} maxWidth="xl">
            <VideoCollection></VideoCollection>
         </Container>
       </main>

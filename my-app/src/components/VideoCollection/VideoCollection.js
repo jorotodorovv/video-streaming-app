@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, useCallback } from "react"
 import { getVideos } from "../../api/youtube/videos"
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from "@mui/system";
+import { CircularProgress } from "@mui/material";
 
 const VideoCollection = () => {
     const collectionRef = useRef();
@@ -13,17 +14,21 @@ const VideoCollection = () => {
     const [videoData, setVideoData] = useState({ videos: [] });
     const [isLoading, setLoading] = useState(false);
 
-    const fetchVideos = async () => {
+    const fetchVideos = useCallback(async () => {
         let response = await getVideos(videoData.token, 18);
 
         let newVideos = response.items.map(i => {
+            let title =
+                i.snippet.title.substring(0, 30) +
+                (i.snippet.description.length > 30 ? "..." : "");
+
             let description =
                 i.snippet.description.substring(0, 100) +
                 (i.snippet.description.length > 100 ? "..." : "");
 
             return {
                 id: i.id,
-                title: i.snippet.title,
+                title,
                 description,
                 image: i.snippet.thumbnails.high.url
             };
@@ -36,7 +41,7 @@ const VideoCollection = () => {
         }
 
         setVideoData({ videos, token: response.nextPageToken });
-    };
+    }, [videoData]);
 
     useEffect(() => {
         if (isLoading) return;
@@ -55,22 +60,15 @@ const VideoCollection = () => {
         return () => {
             observer.unobserve(collectionRef.current);
         }
-    }, [videoData, isLoading, fetchVideos])
+    }, [videoData])
 
     let data = videoData.videos.map(v => (
         <Grid item key={v.id} xs={12} sm={4} md={2}>
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardMedia
-                    component="img"
-                    sx={{
-                        pt: '56.25%',
-                    }}
-                    image={v.image}
-                    alt="random"
-                />
+                <CardMedia component="img" image={v.image} alt="random" />
                 <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" component="h3">
                         {v.title}
                     </Typography>
                     <Typography>
@@ -84,7 +82,9 @@ const VideoCollection = () => {
     return (
         <Grid container spacing={4}>
             {data}
-            <Box ref={collectionRef}></Box>
+            <Box ref={collectionRef}>
+            </Box>
+            <CircularProgress sx={{ mx: "auto", my: 10  }} color="secondary" />
         </Grid>
     );
 }
