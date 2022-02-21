@@ -5,32 +5,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import { Box } from "@mui/system";
 
 const VideoCollection = () => {
     const collectionRef = useRef();
 
-    const [videos, setVideos] = useState([]);
-    const [pageToken, setPageToken] = useState();
-    const [loadVideos, setLoadVideos] = useState(true);
+    const [videoData, setVideoData] = useState({ videos: [] });
+    const [isLoading, setLoading] = useState(false);
 
-    useEffect(()=> {
-        const handleScroll = () => {
-            let lastScrollY = window.scrollY;
-    
-            if (lastScrollY >= collectionRef.current.clientHeight) {
-                setLoadVideos(true);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll, true);
-    });
-
-    useEffect(async () => {
-        if (!loadVideos) return;
-
-        let response = await getVideos(pageToken);
-
-        setPageToken(response.nextPageToken);
+    const fetchVideos = async () => {
+        let response = await getVideos(videoData.token, 18);
 
         let newVideos = response.items.map(i => {
             let description =
@@ -45,18 +29,36 @@ const VideoCollection = () => {
             };
         });
 
-        let videoData = [...videos];
+        let videos = [...videoData.videos];
 
         for (let vid of newVideos) {
-            videoData.push(vid);
+            videos.push(vid);
         }
 
-        setVideos(videoData)
-        setLoadVideos(false);
-    }, [loadVideos]);
+        setVideoData({ videos, token: response.nextPageToken });
+    };
 
-    let data = videos.map(v => (
-        <Grid item key={v.id} xs={12} sm={6} md={4}>
+    useEffect(() => {
+        if (isLoading) return;
+
+        var observer = new IntersectionObserver(
+            function (entries) {
+                if (entries[0].isIntersecting) {
+                    //setLoading(true);
+                    fetchVideos();
+                    //setLoading(false);
+                }
+            }, { threshold: [0] });
+
+        observer.observe(collectionRef.current);
+
+        return () => {
+            observer.unobserve(collectionRef.current);
+        }
+    }, [videoData, isLoading, fetchVideos])
+
+    let data = videoData.videos.map(v => (
+        <Grid item key={v.id} xs={12} sm={4} md={2}>
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
                 <CardMedia
@@ -80,8 +82,9 @@ const VideoCollection = () => {
     ));
 
     return (
-        <Grid inputRef={collectionRef} container spacing={4}>
+        <Grid container spacing={4}>
             {data}
+            <Box ref={collectionRef}></Box>
         </Grid>
     );
 }
