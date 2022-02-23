@@ -7,29 +7,29 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
+import Text from "../../helpers/basic/Text";
+import Observer from "../../helpers/dom/Observer";
+
+const VIDEOS_PER_REQUEST = 18;
+const MAX_TITLE_LENGTH = 30;
+const MAX_DESCRIPTION_LENGTH = 100;
 
 const VideoCollection = () => {
     const collectionRef = useRef();
 
     const [videoData, setVideoData] = useState({ videos: [] });
-    const [isLoading, setLoading] = useState(false);
 
     const fetchVideos = useCallback(async () => {
-        let response = await getVideos(videoData.token, 18);
+        let response = await getVideos(videoData.token, VIDEOS_PER_REQUEST);
 
         let newVideos = response.items.map(i => {
-            let title =
-                i.snippet.title.substring(0, 30) +
-                (i.snippet.description.length > 30 ? "..." : "");
-
-            let description =
-                i.snippet.description.substring(0, 100) +
-                (i.snippet.description.length > 100 ? "..." : "");
+            let title = new Text(i.snippet.title);
+            let description = new Text(i.snippet.description);
 
             return {
                 id: i.id,
-                title,
-                description,
+                title: title.substring(MAX_TITLE_LENGTH),
+                description: description.substring(MAX_DESCRIPTION_LENGTH),
                 image: i.snippet.thumbnails.high.url
             };
         });
@@ -44,22 +44,10 @@ const VideoCollection = () => {
     }, [videoData]);
 
     useEffect(() => {
-        if (isLoading) return;
+        const observer = new Observer(collectionRef, fetchVideos);
+        observer.observe();
 
-        var observer = new IntersectionObserver(
-            function (entries) {
-                if (entries[0].isIntersecting) {
-                    //setLoading(true);
-                    fetchVideos();
-                    //setLoading(false);
-                }
-            }, { threshold: [0] });
-
-        observer.observe(collectionRef.current);
-
-        return () => {
-            observer.unobserve(collectionRef.current);
-        }
+        return () => observer.unobserve();
     }, [videoData])
 
     let data = videoData.videos.map(v => (
@@ -84,7 +72,7 @@ const VideoCollection = () => {
             {data}
             <Box ref={collectionRef}>
             </Box>
-            <CircularProgress sx={{ mx: "auto", my: 10  }} color="secondary" />
+            <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" />
         </Grid>
     );
 }
