@@ -8,8 +8,8 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
-import Text from "../../helpers/basic/Text";
-import Observer from "../../helpers/dom/Observer";
+import Text from "../../helpers/basic/Text.ts";
+import DOMObserver from "../../helpers/dom/Observer.ts";
 import styles from './VideoCollection.module.css'
 
 const VIDEOS_PER_REQUEST = 18;
@@ -18,7 +18,6 @@ const MAX_DESCRIPTION_LENGTH = 100;
 
 const VideoCollection = () => {
     const collectionRef = useRef();
-
     const [videoData, setVideoData] = useState({ videos: [], tokens: [] });
 
     const fetchVideos = useCallback(async () => {
@@ -46,8 +45,9 @@ const VideoCollection = () => {
         setVideoData({ videos, tokens: [...videoData.tokens, response.nextPageToken] });
     }, [videoData]);
 
+    const observer = new DOMObserver(collectionRef, fetchVideos);
+
     useEffect(() => {
-        const observer = new Observer(collectionRef, fetchVideos);
         observer.observe();
 
         return () => observer.unobserve();
