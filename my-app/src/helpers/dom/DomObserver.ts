@@ -7,9 +7,9 @@ class DOMObserver{
     private threshold : number;
     private observer: IntersectionObserver;
 
-    constructor(ref : any, action: Function, threshold: number = DEFAULT_THRESHOLD) {
+    constructor(ref : any, callback: Function, threshold: number = DEFAULT_THRESHOLD) {
         this.ref = ref;
-        this.callback = this.getCallback(action);
+        this.callback = this.getCallback(callback);
         this.threshold = threshold;
     }
 

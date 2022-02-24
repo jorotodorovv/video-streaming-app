@@ -1,23 +1,20 @@
-import { useEffect, useRef, useState, useCallback } from "react"
-import { Link } from 'react-router-dom'
+import { useRef, useState, useCallback } from "react"
 import { getVideos } from "../../api/youtube/videos"
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import { Box } from "@mui/system";
+
 import { CircularProgress } from "@mui/material";
+import Grid from '@mui/material/Grid';
+import { Box } from "@mui/system";
+
 import Text from "../../helpers/basic/Text.ts";
-import DOMObserver from "../../helpers/dom/Observer.ts";
-import styles from './VideoCollection.module.css'
+
+import Observer from "../../hoc/Observer";
+import VideoCard from "../VideoCard/VideoCard";
 
 const VIDEOS_PER_REQUEST = 18;
 const MAX_TITLE_LENGTH = 30;
 const MAX_DESCRIPTION_LENGTH = 100;
 
 const VideoCollection = () => {
-    const collectionRef = useRef();
     const [videoData, setVideoData] = useState({ videos: [], tokens: [] });
 
     const fetchVideos = useCallback(async () => {
@@ -45,40 +42,15 @@ const VideoCollection = () => {
         setVideoData({ videos, tokens: [...videoData.tokens, response.nextPageToken] });
     }, [videoData]);
 
-    const observer = new DOMObserver(collectionRef, fetchVideos);
-
-    useEffect(() => {
-        observer.observe();
-
-        return () => observer.unobserve();
-    }, [videoData])
-
-    let data = videoData.videos.map(v => (
-        <Grid className={styles.v_card_scale_up} item key={v.id} xs={12} sm={4} md={2}>
-            <Card
-                sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <Link to={`/videos/${v.id}`}>
-                    <CardMedia component="img" image={v.image} alt="random" />
-                </Link>
-                <CardContent sx={{ flexGrow: 1 }}>
-                    <Link to={`/videos/${v.id}`}>
-                        <Typography gutterBottom variant="h5" component="h3">
-                            {v.title}
-                        </Typography>
-                    </Link>
-                    <Typography>
-                        {v.description}
-                    </Typography>
-                </CardContent>
-            </Card>
-        </Grid>
-    ));
+    let data = videoData.videos.map(v =>
+        <VideoCard id={v.id} title={v.title} description={v.description} image={v.image}>
+        </VideoCard>
+    );
 
     return (
         <Grid container spacing={4}>
             {data}
-            <Box ref={collectionRef}>
-            </Box>
+            <Observer callback={fetchVideos} state={[videoData]} />
             <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" />
         </Grid>
     );
