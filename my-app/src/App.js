@@ -1,11 +1,9 @@
-import Home from './components/Home/Home'
+import Router from './hoc/Router'
 
 function App() {
   return (
     <div className="App">
-      <Home>
-
-      </Home>
+      <Router />
     </div>
   );
 }

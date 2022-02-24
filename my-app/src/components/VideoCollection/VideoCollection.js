@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react"
+import { Link } from 'react-router-dom'
 import { getVideos } from "../../api/youtube/videos"
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -9,6 +10,7 @@ import { Box } from "@mui/system";
 import { CircularProgress } from "@mui/material";
 import Text from "../../helpers/basic/Text";
 import Observer from "../../helpers/dom/Observer";
+import styles from './VideoCollection.module.css'
 
 const VIDEOS_PER_REQUEST = 18;
 const MAX_TITLE_LENGTH = 30;
@@ -17,10 +19,11 @@ const MAX_DESCRIPTION_LENGTH = 100;
 const VideoCollection = () => {
     const collectionRef = useRef();
 
-    const [videoData, setVideoData] = useState({ videos: [] });
+    const [videoData, setVideoData] = useState({ videos: [], tokens: [] });
 
     const fetchVideos = useCallback(async () => {
-        let response = await getVideos(videoData.token, VIDEOS_PER_REQUEST);
+        let token = videoData.tokens[videoData.tokens.length - 1];
+        let response = await getVideos(token, VIDEOS_PER_REQUEST);
 
         let newVideos = response.items.map(i => {
             let title = new Text(i.snippet.title);
@@ -40,7 +43,7 @@ const VideoCollection = () => {
             videos.push(vid);
         }
 
-        setVideoData({ videos, token: response.nextPageToken });
+        setVideoData({ videos, tokens: [...videoData.tokens, response.nextPageToken] });
     }, [videoData]);
 
     useEffect(() => {
@@ -51,14 +54,18 @@ const VideoCollection = () => {
     }, [videoData])
 
     let data = videoData.videos.map(v => (
-        <Grid item key={v.id} xs={12} sm={4} md={2}>
+        <Grid className={styles.v_card_scale_up} item key={v.id} xs={12} sm={4} md={2}>
             <Card
                 sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                <CardMedia component="img" image={v.image} alt="random" />
+                <Link to={`/videos/${v.id}`}>
+                    <CardMedia component="img" image={v.image} alt="random" />
+                </Link>
                 <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h3">
-                        {v.title}
-                    </Typography>
+                    <Link to={`/videos/${v.id}`}>
+                        <Typography gutterBottom variant="h5" component="h3">
+                            {v.title}
+                        </Typography>
+                    </Link>
                     <Typography>
                         {v.description}
                     </Typography>
