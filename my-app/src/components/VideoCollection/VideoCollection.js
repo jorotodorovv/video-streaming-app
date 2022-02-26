@@ -3,15 +3,14 @@ import { useState, useCallback, useMemo } from "react"
 import { CircularProgress } from "@mui/material";
 import Grid from '@mui/material/Grid';
 
-import Text from "../../helpers/basic/Text.ts";
-
 import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
-import YoutubeVideosApi from "../../api/youtube/videos.ts";
+import YoutubeVideosApi from "../../api/youtube.ts";
+import { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
 
 const VideoCollection = () => {
-    const [videoData, setVideoData] = useState({ videos: [] });
+    const [videoData, setVideoData] = useState({ videos: [], token: INITIAL_TOKEN_VALUE });
 
     const api = useMemo(() => {
         return new YoutubeVideosApi({
@@ -24,25 +23,13 @@ const VideoCollection = () => {
     const fetchVideos = useCallback(async () => {
         let response = await api.getVideos(videoData.token);
 
-        let newVideos = response.items.map(i => {
-            let title = new Text(i.snippet.title);
-            let description = new Text(i.snippet.description);
-
-            return {
-                id: i.id,
-                title: title.substring(30),
-                description: description.substring(100),
-                image: i.snippet.thumbnails.high.url
-            };
-        });
-
         let videos = [...videoData.videos];
 
-        for (let vid of newVideos) {
+        for (let vid of response.videos) {
             videos.push(vid);
         }
 
-        setVideoData({ videos, token: response.nextPageToken });
+        setVideoData({ videos, token: response.token });
     }, [videoData]);
 
     let data = videoData.videos.map(v =>
