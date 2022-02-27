@@ -1,11 +1,11 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-const Footer = () => {
+const Footer = (props) => {
     return (
         <Box sx={{ bgcolor: 'background.paper', p: 6 }} component="footer">
             <Typography variant="h6" align="center" gutterBottom>
-                Footer
+                {props.title}
             </Typography>
             <Typography
                 variant="subtitle1"
@@ -13,7 +13,7 @@ const Footer = () => {
                 color="text.secondary"
                 component="p"
             >
-                Something here to give the footer a purpose!
+                {props.description}
             </Typography>
         </Box>
     );

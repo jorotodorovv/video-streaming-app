@@ -96,7 +96,9 @@ class YoutubeVideosApi {
                 id: v.id,
                 title: title.substring(this.config.maxTitleLength),
                 description: description.substring(this.config.maxDescriptionLength),
-                image: v.snippet.thumbnails.medium.url
+                image: v.snippet.thumbnails.medium.url,
+                views: (+v.statistics.viewCount).toLocaleString("en-US", {minimumIntegerDigits: 3}),
+                likes: (+v.statistics.likesCount).toLocaleString("en-US", {minimumIntegerDigits: 3}),
             };
         });
     }
@@ -106,7 +108,7 @@ class YoutubeVideosApi {
         url.pathname = VERSION_PATH + "/" + VIDEOS_PATH_NAME;
 
         url.searchParams.append("key", API_KEY);
-        url.searchParams.append("part", "snippet");
+        url.searchParams.append("part", "snippet, statistics");
         url.searchParams.append("maxResults", videosPerRequest.toString());
 
         return url;

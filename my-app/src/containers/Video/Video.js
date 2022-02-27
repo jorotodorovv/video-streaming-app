@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Wrapper from '../../hoc/Wrapper';
-import Header from '../Layout/Header';
-import Footer from '../Layout/Footer';
-import Content from '../Layout/Content';
 import Frame from '../../components/base/Frame';
 import YoutubeVideosApi, { YoutubeEmbeded } from '../../api/youtube.ts';
 import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
+import Layout from '../Layout/Layout';
 
 export default function Video() {
     const { id } = useParams();
+    const ref = useRef();
+
     const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation();  
+
+    const [videoData, setVideoData] = useState({ video: {}, seconds: 0 })
 
     const embed = new YoutubeEmbeded(id);
     const api = new YoutubeVideosApi({ videosPerRequest: 1 });
-
-    const [videoData, setVideoData] = useState({ video: {}, seconds: 0 })
 
     const changeTimeHandler = (time) => {
         let minutes = +time[0];
@@ -29,7 +28,15 @@ export default function Video() {
 
         setVideoData({ ...videoData, seconds: duration });
 
-        navigate(`?t=${duration}`);
+        const query = new URLSearchParams(location.search);    
+        query.append("t", duration);
+
+        navigate("?" + query.toString());
+
+        window.scrollTo({
+            top: ref.current.offsetTop,
+            behavior: "smooth"
+        });
     };
 
     useEffect(() => {
@@ -49,25 +56,21 @@ export default function Video() {
     const url = embed.exportUrl(videoData.seconds);
 
     return (
-        <Wrapper>
-            <Header />
-            <Content>
-                <Frame width="100%" height="720px" src={url} />
-                <Accordion sx={{ p: 2 }}>
-                    <AccordionSummary
-                        expandIcon={<ExpandMoreIcon fontSize="large" />}>
-                        <Typography variant="h4">{videoData.video.title}</Typography>                     
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ pr: 50 }}>
-                        <VideoDescription
-                            key={id}
-                            description={videoData.video.description}
-                            onChangeTime={changeTimeHandler}
-                        />
-                    </AccordionDetails>
-                </Accordion>
-            </Content>
-            <Footer />
-        </Wrapper>
+        <Layout>
+            <Frame ref={ref} width="100%" height="720px" src={url} />
+            <Accordion sx={{ p: 2 }}>
+                <AccordionSummary
+                    expandIcon={<ExpandMoreIcon fontSize="large" />}>
+                    <Typography variant="h4">{videoData.video.title}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ pr: 50 }}>
+                    <VideoDescription
+                        key={id}
+                        description={videoData.video.description}
+                        onChangeTime={changeTimeHandler}
+                    />
+                </AccordionDetails>
+            </Accordion>
+        </Layout>
     );
 }

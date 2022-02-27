@@ -6,8 +6,7 @@ import Grid from '@mui/material/Grid';
 import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
-import YoutubeVideosApi from "../../api/youtube.ts";
-import { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
+import YoutubeVideosApi, { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
 
 const VideoCollection = () => {
     const [videoData, setVideoData] = useState({ videos: [], token: INITIAL_TOKEN_VALUE });
@@ -33,15 +32,23 @@ const VideoCollection = () => {
     }, [videoData]);
 
     let data = videoData.videos.map(v =>
-        <VideoCard id={v.id} title={v.title} description={v.description} image={v.image}>
+        <VideoCard
+            id={v.id}
+            title={v.title}
+            description={v.description}
+            image={v.image}
+            views={v.views}>
         </VideoCard>
     );
+
+    let loadingBar = videoData.token ?
+        <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
     return (
         <Grid container spacing={4}>
             {data}
             <Observer callback={fetchVideos} state={[videoData]} />
-            <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" />
+            {loadingBar}
         </Grid>
     );
 }
