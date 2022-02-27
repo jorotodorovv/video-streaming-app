@@ -36,25 +36,25 @@ class YoutubeEmbeded {
         this.hasAutoplay = hasAutoplay;
     }
 
-    public exportUrl() {
+    public exportUrl(seconds : number = 0) {
         let autoplay: number = this.hasAutoplay ? 1 : 0;
 
-        return `${BASE_URL}/embed/${this.id}?autoplay=${autoplay}`;
+        return `${BASE_URL}/embed/${this.id}?autoplay=${autoplay}&fs=0&start=${seconds}&modestbranding=1&rel=0`;
     }
 }
 
 class YoutubeVideosApi {
-    private url: URL;
     private config: VideoConfigurations;
     constructor(config: VideoConfigurations) {
-        this.url = this.getUrl(config.videosPerRequest)
         this.config = config;
     }
 
     public async getVideo(id: string) {
-        this.url.searchParams.append("id", id);
+        let url = this.getUrl(this.config.videosPerRequest);
 
-        let response: Response = await fetch(this.url.toString());
+        url.searchParams.append("id", id);
+
+        let response: Response = await fetch(url.toString());
 
         if (response.ok) {
             let result = await response.json();
@@ -68,13 +68,15 @@ class YoutubeVideosApi {
     public async getVideos(pageToken: string): Promise<VideoResponse> {
         if (!pageToken) return;
 
-        if (pageToken !== INITIAL_TOKEN_VALUE) {
-            this.url.searchParams.append("pageToken", pageToken);
+        let url = this.getUrl(this.config.videosPerRequest);
+
+        if (pageToken && pageToken !== INITIAL_TOKEN_VALUE) {
+            url.searchParams.append("pageToken", pageToken);
         }
 
-        this.url.searchParams.append("chart", "mostPopular");
+        url.searchParams.append("chart", "mostPopular");
 
-        let response: Response = await fetch(this.url.toString());
+        let response: Response = await fetch(url.toString());
 
         if (response.ok) {
             let result = await response.json();
@@ -105,7 +107,7 @@ class YoutubeVideosApi {
 
         url.searchParams.append("key", API_KEY);
         url.searchParams.append("part", "snippet");
-        url.searchParams.append("maxResults", videosPerRequest.toString());   
+        url.searchParams.append("maxResults", videosPerRequest.toString());
 
         return url;
     }
