@@ -1,6 +1,10 @@
-.v_card_scale_up:hover {
-	-webkit-animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 0.4s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+.v_card a {
+  text-decoration: none; 
+}
+
+.v_card_scale {
+	-webkit-animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
  @-webkit-keyframes scale-up-center {
@@ -23,8 +27,4 @@
       -webkit-transform: scale(1.5);
               transform: scale(1.5);
     }
-  }
-  
-  .v_card_scale_up  a{
-    text-decoration: none; 
   }

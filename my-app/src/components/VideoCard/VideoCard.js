@@ -14,6 +14,8 @@ const VideoCard = (props) => {
     const [loadVideo, setLoadVideo] = useState(false);
     const [videoTimeout, setVideoTimeout] = useState();
 
+    let classes = [styles.v_card];
+
     let media;
 
     if (loadVideo) {
@@ -21,6 +23,8 @@ const VideoCard = (props) => {
         const url = embed.exportUrl();
 
         media = <Frame width="100%" height="100%" src={url} />;
+
+        classes.push(styles.v_card_scale);
     }
     else {
         media = <CardMedia component="img" image={props.image.url} alt={props.id} />;
@@ -35,10 +39,10 @@ const VideoCard = (props) => {
             setVideoTimeout(timeout);
         }
         else {
-            if(videoTimeout){
+            if (videoTimeout) {
                 clearTimeout(videoTimeout);
             }
-            
+
             setLoadVideo(false);
         }
     }
@@ -47,7 +51,7 @@ const VideoCard = (props) => {
         <Grid
             onMouseEnter={() => hoverHandler(true)}
             onMouseLeave={() => hoverHandler(false)}
-            className={styles.v_card_scale_up}
+            className={classes.join(" ")}
             item key={props.id} xs={12} sm={4} md={3}>
             <Link to={`/videos/${props.id}`}>
                 <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
