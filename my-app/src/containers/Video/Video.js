@@ -3,8 +3,6 @@ import { useEffect, useState, useRef } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Frame from '../../components/base/Frame';
 import YoutubeVideosApi, { YoutubeEmbeded } from '../../api/youtube.ts';
-import { Accordion, AccordionSummary, AccordionDetails, Typography } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
 import Layout from '../Layout/Layout';
 
@@ -13,7 +11,7 @@ export default function Video() {
     const ref = useRef();
 
     const navigate = useNavigate();
-    const location = useLocation();  
+    const location = useLocation();
 
     const [videoData, setVideoData] = useState({ video: {}, seconds: 0 })
 
@@ -28,7 +26,7 @@ export default function Video() {
 
         setVideoData({ ...videoData, seconds: duration });
 
-        const query = new URLSearchParams(location.search);    
+        const query = new URLSearchParams(location.search);
         query.append("t", duration);
 
         navigate("?" + query.toString());
@@ -44,7 +42,6 @@ export default function Video() {
             let video = await api.getVideo(id);
 
             const query = new URLSearchParams(location.search);
-
             const seconds = +query.get("t");
 
             setVideoData({ video, seconds });
@@ -58,19 +55,12 @@ export default function Video() {
     return (
         <Layout>
             <Frame ref={ref} width="100%" height="720px" src={url} />
-            <Accordion sx={{ p: 2 }}>
-                <AccordionSummary
-                    expandIcon={<ExpandMoreIcon fontSize="large" />}>
-                    <Typography variant="h4">{videoData.video.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails sx={{ pr: 50 }}>
-                    <VideoDescription
-                        key={id}
-                        description={videoData.video.description}
-                        onChangeTime={changeTimeHandler}
-                    />
-                </AccordionDetails>
-            </Accordion>
-        </Layout>
+            <VideoDescription
+                key={id}
+                title={videoData.video.title}
+                description={videoData.video.description}
+                likes={videoData.video.likes}
+                onChangeTime={changeTimeHandler} />
+        </Layout >
     );
 }

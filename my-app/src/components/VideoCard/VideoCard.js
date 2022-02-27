@@ -6,13 +6,52 @@ import Grid from '@mui/material/Grid';
 
 import { Link } from 'react-router-dom';
 import styles from './VideoCard.module.css'
+import Frame from '../base/Frame';
+import { YoutubeEmbeded } from '../../api/youtube.ts';
+import { useState } from 'react';
 
 const VideoCard = (props) => {
+    const [loadVideo, setLoadVideo] = useState(false);
+    const [videoTimeout, setVideoTimeout] = useState();
+
+    let media;
+
+    if (loadVideo) {
+        const embed = new YoutubeEmbeded(props.id);
+        const url = embed.exportUrl();
+
+        media = <Frame width="100%" height="100%" src={url} />;
+    }
+    else {
+        media = <CardMedia component="img" image={props.image.url} alt={props.id} />;
+    }
+
+    const hoverHandler = (hasHover) => {
+        if (hasHover) {
+            let timeout = setTimeout(() => {
+                setLoadVideo(true)
+            }, 1000);
+
+            setVideoTimeout(timeout);
+        }
+        else {
+            if(videoTimeout){
+                clearTimeout(videoTimeout);
+            }
+            
+            setLoadVideo(false);
+        }
+    }
+
     return (
-        <Grid className={styles.v_card_scale_up} item key={props.id} xs={12} sm={4} md={2}>
+        <Grid
+            onMouseEnter={() => hoverHandler(true)}
+            onMouseLeave={() => hoverHandler(false)}
+            className={styles.v_card_scale_up}
+            item key={props.id} xs={12} sm={4} md={3}>
             <Link to={`/videos/${props.id}`}>
                 <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    <CardMedia component="img" image={props.image} alt="random" />
+                    {media}
                     <CardContent sx={{ flexGrow: 1 }}>
                         {props.title}
                         <Typography variant="body2" color="secondary">

@@ -96,9 +96,9 @@ class YoutubeVideosApi {
                 id: v.id,
                 title: title.substring(this.config.maxTitleLength),
                 description: description.substring(this.config.maxDescriptionLength),
-                image: v.snippet.thumbnails.medium.url,
+                image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                 views: (+v.statistics.viewCount).toLocaleString("en-US", {minimumIntegerDigits: 3}),
-                likes: (+v.statistics.likesCount).toLocaleString("en-US", {minimumIntegerDigits: 3}),
+                likes: (+v.statistics.likeCount).toLocaleString("en-US", {minimumIntegerDigits: 3}),
             };
         });
     }
