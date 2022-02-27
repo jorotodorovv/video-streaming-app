@@ -38,7 +38,7 @@ export default function Video() {
 
             const query = new URLSearchParams(location.search);
 
-            const seconds = +query.get("t");     
+            const seconds = +query.get("t");
 
             setVideoData({ video, seconds });
         }
@@ -55,8 +55,8 @@ export default function Video() {
                 <Frame width="100%" height="720px" src={url} />
                 <Accordion sx={{ p: 2 }}>
                     <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="h4">{videoData.video.title}</Typography>
+                        expandIcon={<ExpandMoreIcon fontSize="large" />}>
+                        <Typography variant="h4">{videoData.video.title}</Typography>                     
                     </AccordionSummary>
                     <AccordionDetails sx={{ pr: 50 }}>
                         <VideoDescription

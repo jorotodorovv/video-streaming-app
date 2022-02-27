@@ -16,10 +16,13 @@ const VideoCard = (props) => {
                     <CardMedia component="img" image={props.image} alt="random" />
                 </Link>
                 <CardContent sx={{ flexGrow: 1 }}>
-                    <Link href={`/videos/${props.id}`} variant="h5">
+                    <Link href={`/videos/${props.id}`}
+                        variant="h5"
+                        color="secondary"
+                        underline="none">
                         {props.title}
                     </Link>
-                    <Typography>
+                    <Typography variant="body2">
                         {props.description}
                     </Typography>
                 </CardContent>

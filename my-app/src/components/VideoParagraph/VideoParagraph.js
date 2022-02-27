@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import Text from "../../helpers/basic/Text.ts";
@@ -21,7 +21,10 @@ const VideoParagraph = (props) => {
     }
 
     const replaceHyperlinks = (link, i) => {
-        return <a href={link} target="_blank">{link}</a>;
+        return <Link href={link}
+            color="secondary"
+            underline="none"
+            target="_blank">{link}</Link>;
     }
 
     useEffect(() => {
