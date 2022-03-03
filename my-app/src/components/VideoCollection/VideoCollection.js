@@ -13,7 +13,7 @@ const VideoCollection = () => {
 
     const api = useMemo(() => {
         return new YoutubeVideosApi({
-            videosPerRequest: 18,
+            videosPerRequest: 4,
             maxTitleLength: 30,
             maxDescriptionLength: 100
         });

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useContext } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import Frame from '../../components/base/Frame';
 import YoutubeVideosApi, { YoutubeEmbeded } from '../../api/youtube.ts';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
 import Layout from '../Layout/Layout';
+import VideoContext from '../../context/VideoContext';
 
 export default function Video() {
     const { id } = useParams();
@@ -13,7 +14,7 @@ export default function Video() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const [videoData, setVideoData] = useState({ video: {}, seconds: 0 })
+    const [videoData, setVideoData] = useContext(VideoContext)
 
     const embed = new YoutubeEmbeded(id);
     const api = new YoutubeVideosApi({ videosPerRequest: 1 });
@@ -54,7 +55,7 @@ export default function Video() {
 
     return (
         <Layout>
-            <Frame ref={ref} width="100%" height="720px" src={url} />
+            <Frame id={id} ref={ref} width="100%" height="720px" src={url} />
             <VideoDescription
                 key={id}
                 title={videoData.video.title}

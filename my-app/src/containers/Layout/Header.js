@@ -7,7 +7,7 @@ import { Button } from '@mui/material';
 
 const Header = (props) => {
     return (
-        <Button component={Link} to="/">
+        <Button component={Link} to="/youtube">
             <AppBar position="relative">
                 <Toolbar>
                     <VideoLibraryIcon sx={{ mr: 2 }} />

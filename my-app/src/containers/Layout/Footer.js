@@ -11,8 +11,7 @@ const Footer = (props) => {
                 variant="subtitle1"
                 align="center"
                 color="text.secondary"
-                component="p"
-            >
+                component="p">
                 {props.description}
             </Typography>
         </Box>

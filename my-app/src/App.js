@@ -1,14 +1,14 @@
-import Router from './hoc/Router'
 import Theme from './hoc/Theme'
 
 import CssBaseline from '@mui/material/CssBaseline';
+import YoutubeProvider from './containers/Providers/YoutubeProvider';
 
 function App() {
   return (
     <div className="App">
       <Theme>
         <CssBaseline />
-        <Router />
+        <YoutubeProvider />
       </Theme>
     </div>
   );
