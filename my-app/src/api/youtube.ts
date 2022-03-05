@@ -28,43 +28,6 @@ interface VideoResponse {
     token: string
 }
 
-class YoutubeEmbeded {
-    private id: string;
-    private hasAutoplay: boolean;
-    private player;
-    constructor(id: string, hasAutoplay: boolean = true) {
-        this.id = id;
-        this.hasAutoplay = hasAutoplay;
-
-        this.load();
-    }
-
-    public exportUrl(seconds: number = 0) {
-        let autoplay: number = this.hasAutoplay ? 1 : 0;
-
-        return `${BASE_URL}/embed/${this.id}?autoplay=${autoplay}&fs=0&start=${seconds}&modestbranding=1&rel=0`;
-    }
-
-    private load = () => {
-        if (!window["YT"]) {
-            const tag = document.createElement('script');
-            tag.src = 'https://www.youtube.com/iframe_api';
-
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        } else {
-            this.loadVideo();
-        }
-    }
-
-    private loadVideo = () => {
-        this.player = new window["YT"].Player(this.id, {
-            videoId: this.id
-        });
-    };
-}
-
 class YoutubeVideosApi {
     private config: VideoConfigurations;
     constructor(config: VideoConfigurations) {
@@ -137,5 +100,5 @@ class YoutubeVideosApi {
     }
 }
 
-export { INITIAL_TOKEN_VALUE, YoutubeEmbeded };
+export { INITIAL_TOKEN_VALUE };
 export default YoutubeVideosApi;

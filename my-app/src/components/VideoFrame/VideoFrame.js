@@ -1,18 +1,21 @@
 import * as React from 'react';
-import Frame from '../base/Frame';
-import { YoutubeEmbeded } from '../../api/youtube.ts';
+import YouTube from 'react-youtube';
 
 const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
 export default function VideoFrame(props) {
+    const opts = {
+        height: props.height ?? MAX_HEIGHT,
+        width: props.width ?? MAX_WIDTH,
+        playerVars: {
+            start: props.seconds,
+            autoplay: 1,
+            modestbranding: 1,
+            rel: 0,
+            fs: 0,
+        },
+    };
 
-    const embed = new YoutubeEmbeded(props.id);
-
-    const url = embed.exportUrl(props.seconds);
-
-    const width = props.width ?? MAX_WIDTH;
-    const height = props.height ?? MAX_HEIGHT;
-
-    return <Frame id={props.id} ref={props.ref} width={width} height={height} src={url} />;
+    return <YouTube videoId={props.id} ref={props.ref} opts={opts} />;
 }
