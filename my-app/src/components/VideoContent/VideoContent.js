@@ -5,10 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-import Frame from '../base/Frame';
-import { YoutubeEmbeded } from '../../api/youtube.ts';
-
 import styles from './VideoContent.module.css'
+import VideoFrame from '../VideoFrame/VideoFrame';
 
 const VideoContent = (props) => {
     let classes = [];
@@ -16,10 +14,7 @@ const VideoContent = (props) => {
     let media;
 
     if (props.load) {
-        const embed = new YoutubeEmbeded(props.id);
-        const url = embed.exportUrl(props.seconds);
-
-        media = <Frame id={props.id} width="100%" height="100%" src={url} />;
+        media = <VideoFrame id={props.id} seconds={props.seconds} />;
 
         classes.push(styles.v_card_content_scale);
     }

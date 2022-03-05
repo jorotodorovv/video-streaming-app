@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useEffect, useState, useRef, useContext } from 'react'
+import { useEffect, useRef, useContext } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
-import Frame from '../../components/base/Frame';
-import YoutubeVideosApi, { YoutubeEmbeded } from '../../api/youtube.ts';
+import YoutubeVideosApi from '../../api/youtube.ts';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
 import Layout from '../Layout/Layout';
 import VideoContext from '../../context/VideoContext';
+import VideoFrame from '../../components/VideoFrame/VideoFrame';
 
 export default function Video() {
     const { id } = useParams();
@@ -15,8 +15,6 @@ export default function Video() {
     const location = useLocation();
 
     const [videoData, setVideoData] = useContext(VideoContext)
-
-    const embed = new YoutubeEmbeded(id);
     const api = new YoutubeVideosApi({ videosPerRequest: 1 });
 
     const changeTimeHandler = (time) => {
@@ -51,11 +49,9 @@ export default function Video() {
         fetchVideo();
     }, [id]);
 
-    const url = embed.exportUrl(videoData.seconds);
-
     return (
         <Layout>
-            <Frame id={id} ref={ref} width="100%" height="720px" src={url} />
+            <VideoFrame id={id} ref={ref} seconds={videoData.seconds} height="720px" />
             <VideoDescription
                 key={id}
                 title={videoData.video.title}
