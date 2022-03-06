@@ -1,16 +1,14 @@
-import { useRef, useEffect, useState, forwardRef, useMemo } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { forwardRef, useContext, useMemo, useState } from 'react';
 import YouTube from 'react-youtube';
-import YoutubeVideosApi from '../../api/youtube.ts';
 import VideoContext from '../../context/VideoContext';
-import Wrapper from '../../hoc/Wrapper';
 
+import Wrapper from '../../hoc/Wrapper';
 
 const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
 const VideoFrame = forwardRef((props, ref) => {
-    const navigate = useNavigate();
+    const [videoData, setVideoData] = useContext(VideoContext)
 
     const opts = useMemo(() => {
         return {
@@ -26,9 +24,18 @@ const VideoFrame = forwardRef((props, ref) => {
         };
     }, []);
 
+    const stateChangeHandler = (e) => {
+        let seconds = ~~e.target.getCurrentTime();
+
+        setVideoData({
+            video: videoData.video,
+            seconds
+        });
+    };
+
     const onStateChange = (e) => {
-        if (props.onStateChange && e.data === window.YT.PlayerState.PLAYING) {
-            props.onStateChange(e);
+        if (e.data === window.YT.PlayerState.PLAYING) {
+            stateChangeHandler(e);
         }
     };
 

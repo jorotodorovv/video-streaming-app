@@ -28,21 +28,15 @@ export default function Video() {
         let minutes = +time[0];
         let seconds = +time[1] + minutes * 60;
 
-        navigateTime(seconds);
-    };
-
-    const stateChangeHandler = (e) => {
-        let seconds = ~~e.target.getCurrentTime();
-
-        navigateTime(seconds);
-    };
-
-    const navigateTime = (seconds) => {
         setVideoData({
             video: videoData.video,
             seconds
         });
 
+        navigateTime(seconds);
+    };
+
+    const navigateTime = (seconds) => {
         const query = new URLSearchParams();
         query.append(TIME_QUERY_PARAMETER_NAME, seconds);
 
@@ -66,11 +60,12 @@ export default function Video() {
 
     return (
         <Layout>
-            <VideoFrame id={id}
+            <VideoFrame
+                id={id}
+                key={id}
                 ref={ref}
                 video={videoData.video}
                 seconds={videoData.seconds}
-                onStateChange={stateChangeHandler}
                 height={VIDEO_WIDTH} />
             <VideoDescription
                 key={id}

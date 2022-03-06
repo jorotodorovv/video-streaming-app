@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo, useContext } from "react"
 
 import { CircularProgress } from "@mui/material";
 import Grid from '@mui/material/Grid';
@@ -7,10 +7,13 @@ import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
 import YoutubeVideosApi, { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
+import VideoContext from "../../context/VideoContext";
 
 const VideoCollection = () => {
     const [collectionData, setCollectionData] =
         useState({ videos: [], token: INITIAL_TOKEN_VALUE });
+
+    const [videoData] = useContext(VideoContext);
 
     const api = useMemo(() => {
         return new YoutubeVideosApi({
@@ -32,11 +35,14 @@ const VideoCollection = () => {
         setCollectionData({ videos, token: response.token });
     }, [collectionData]);
 
+    let hasPlayback = Object.keys(videoData.video).length;
+
     let data = collectionData.videos.map(v =>
         <VideoCard
             id={v.id}
             title={v.title}
             description={v.description}
+            hasPlayback={hasPlayback}
             image={v.image}
             views={v.views}>
         </VideoCard>

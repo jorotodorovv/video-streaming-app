@@ -10,7 +10,9 @@ const VideoCard = (props) => {
     const hoverHandler = (hasHover) => {
         if (hasHover) {
             let timeout = setTimeout(() => {
-                setLoadVideo(true)
+                if (!loadVideo) {
+                    setLoadVideo(!loadVideo)
+                }
             }, 1000);
 
             setVideoTimeout(timeout);
@@ -19,14 +21,15 @@ const VideoCard = (props) => {
             if (videoTimeout) {
                 clearTimeout(videoTimeout);
             }
-
-            setLoadVideo(false);
+            if (loadVideo) {
+                setLoadVideo(!loadVideo);
+            }
         }
     }
 
     return (
         <Grid
-            onMouseEnter={() => hoverHandler(true)}
+            onMouseEnter={() => hoverHandler(!props.hasPlayback)}
             onMouseLeave={() => hoverHandler(false)}
             item key={props.id} xs={12} sm={4} md={3}>
             <VideoContent
