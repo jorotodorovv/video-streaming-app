@@ -9,7 +9,8 @@ import VideoCard from "../VideoCard/VideoCard";
 import YoutubeVideosApi, { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
 
 const VideoCollection = () => {
-    const [videoData, setVideoData] = useState({ videos: [], token: INITIAL_TOKEN_VALUE });
+    const [collectionData, setCollectionData] =
+        useState({ videos: [], token: INITIAL_TOKEN_VALUE });
 
     const api = useMemo(() => {
         return new YoutubeVideosApi({
@@ -20,18 +21,18 @@ const VideoCollection = () => {
     }, []);
 
     const fetchVideos = useCallback(async () => {
-        let response = await api.getVideos(videoData.token);
+        let response = await api.getVideos(collectionData.token);
 
-        let videos = [...videoData.videos];
+        let videos = [...collectionData.videos];
 
         for (let vid of response.videos) {
             videos.push(vid);
         }
 
-        setVideoData({ videos, token: response.token });
-    }, [videoData]);
+        setCollectionData({ videos, token: response.token });
+    }, [collectionData]);
 
-    let data = videoData.videos.map(v =>
+    let data = collectionData.videos.map(v =>
         <VideoCard
             id={v.id}
             title={v.title}
@@ -41,13 +42,13 @@ const VideoCollection = () => {
         </VideoCard>
     );
 
-    let loadingBar = videoData.token ?
+    let loadingBar = collectionData.token ?
         <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
     return (
         <Grid container spacing={4}>
             {data}
-            <Observer callback={fetchVideos} state={[videoData]} />
+            <Observer callback={fetchVideos} state={[collectionData]} />
             {loadingBar}
         </Grid>
     );
