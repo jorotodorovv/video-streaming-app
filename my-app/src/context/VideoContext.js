@@ -1,5 +1,5 @@
-import { createContext, useState } from 'react'
+import { createContext } from 'react'
 
 const VideoContext = createContext({});
- 
- export default VideoContext;
+
+export default VideoContext;

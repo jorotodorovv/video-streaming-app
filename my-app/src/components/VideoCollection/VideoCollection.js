@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo, useContext } from "react"
+import { useCallback, useMemo, useContext } from "react"
 
 import { CircularProgress } from "@mui/material";
 import Grid from '@mui/material/Grid';
@@ -6,14 +6,11 @@ import Grid from '@mui/material/Grid';
 import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
-import YoutubeVideosApi, { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
+import YoutubeVideosApi from "../../api/youtube.ts";
 import VideoContext from "../../context/VideoContext";
 
 const VideoCollection = () => {
-    const [collectionData, setCollectionData] =
-        useState({ videos: [], token: INITIAL_TOKEN_VALUE });
-
-    const [videoData] = useContext(VideoContext);
+    const [videoProvider, setVideoProvider] = useContext(VideoContext);
 
     const api = useMemo(() => {
         return new YoutubeVideosApi({
@@ -24,37 +21,37 @@ const VideoCollection = () => {
     }, []);
 
     const fetchVideos = useCallback(async () => {
-        let response = await api.getVideos(collectionData.token);
+        let response = await api.getVideos(videoProvider.token);
 
-        let videos = [...collectionData.videos];
+        let provider = { ...videoProvider, token: response.token };
 
-        for (let vid of response.videos) {
-            videos.push(vid);
+        for (let video of response.videos) {
+            provider.videos[video.id] = { video };
         }
 
-        setCollectionData({ videos, token: response.token });
-    }, [collectionData]);
+        setVideoProvider(provider);
+    }, [videoProvider]);
 
-    let hasPlayback = Object.keys(videoData.video).length;
-
-    let data = collectionData.videos.map(v =>
+    let data = Object.values(videoProvider.videos).map(v =>
         <VideoCard
-            id={v.id}
-            title={v.title}
-            description={v.description}
-            hasPlayback={hasPlayback}
-            image={v.image}
-            views={v.views}>
+            id={v.video.id}
+            key={"video_card_" + v.video.id}
+            title={v.video.title}
+            description={v.video.description}
+            seconds={v.seconds}
+            hasPlayback={false}
+            image={v.video.image}
+            views={v.video.views}>
         </VideoCard>
     );
 
-    let loadingBar = collectionData.token ?
+    let loadingBar = videoProvider.token ?
         <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
     return (
         <Grid container spacing={4}>
             {data}
-            <Observer callback={fetchVideos} state={[collectionData]} />
+            <Observer callback={fetchVideos} state={[videoProvider]} />
             {loadingBar}
         </Grid>
     );

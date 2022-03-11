@@ -3,14 +3,16 @@ import { Route, Routes } from 'react-router-dom'
 
 import VideoContext from '../../context/VideoContext'
 
+import { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
+
 import Home from '../Home/Home'
 import Video from '../Video/Video'
 
 const YoutubeProvider = () => {
-    const [videoData, setVideoData] = useState({ video: {}, seconds: 0 })
+    const [videoProvider, setVideoProvider] = useState({ videos: {}, token: INITIAL_TOKEN_VALUE })
 
     return (
-        <VideoContext.Provider value={[videoData, setVideoData]}>
+        <VideoContext.Provider value={[videoProvider, setVideoProvider]}>
             <Routes>
                 <Route path='/youtube'>
                     <Route path='/youtube' element={<Home />} />

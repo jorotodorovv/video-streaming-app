@@ -34,8 +34,9 @@ const VideoCard = (props) => {
             item key={props.id} xs={12} sm={4} md={3}>
             <VideoContent
                 id={props.id}
-                load={loadVideo}
                 title={props.title}
+                seconds={props.seconds}
+                load={loadVideo}
                 views={props.views}
                 image={props.image.url}
             />
