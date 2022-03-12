@@ -49,8 +49,8 @@ export default function Video() {
 
             const query = new URLSearchParams(location.search);
             let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
-            
-            dispatchVideoPlayer({ type: "VIDEO", id, video, seconds, showPlayback: true });
+
+            dispatchVideoPlayer({ type: "VIDEO", id, video, seconds });
             setVideo({ data: video, seconds: videoPlayer.videos[id].seconds });
         }
 
@@ -63,13 +63,14 @@ export default function Video() {
             <Layout>
                 <VideoFrame
                     id={id}
-                    key={id}
+                    key={"video_player_" + id}
                     ref={ref}
                     seconds={video.seconds}
                     height={VIDEO_WIDTH}
                 />
                 <VideoDescription
-                    key={id}
+                    id={id}
+                    key={"video_description_" + id}
                     title={video.data.title}
                     description={video.data.description}
                     likes={video.data.likes}

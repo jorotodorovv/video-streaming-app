@@ -1,18 +1,16 @@
 import { useReducer } from "react";
 
 const useVideo = (state) => {
-    const videoHandler = (state, id, seconds, video, showPlayback) => {
+    const videoHandler = (state, id, seconds, video) => {
         if (!id) return;
 
         let player = { ...state };
 
-        if (showPlayback) {
-            player.playbackVideoId = id;
-        }
-
-        if (!player.videos[id] && video) {
+        if (video) {
+            player.playbackVideoID = id;
             player.videos[id] = { video };
         }
+
 
         if (seconds > 1) {
             player.videos[id].seconds = seconds;

@@ -9,9 +9,11 @@ const DESCRIPTION_PARAGRAPH_SEPARATOR = "\n";
 const VideoDescription = (props) => {
     let description = null;
 
+    let index = 0;
+
     if (props.description) {
         description = props.description.split(DESCRIPTION_PARAGRAPH_SEPARATOR)
-            .map(p => <VideoParagraph text={p} onChangeTime={props.onChangeTime} />);
+            .map(p => <VideoParagraph key={"video_paragraph_" + props.id + `_${index++}`} text={p} onChangeTime={props.onChangeTime} />);
     }
 
     return (

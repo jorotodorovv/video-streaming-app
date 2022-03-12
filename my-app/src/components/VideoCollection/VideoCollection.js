@@ -26,7 +26,7 @@ const VideoCollection = () => {
         dispatchVideoPlayer({ type: "HOME", videos: response.videos, token: response.token });
     }, [videoPlayer]);
 
-    let hasPlayback = videoPlayer.playbackVideoId;
+    let hasPlayback = videoPlayer.playbackVideoID;
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard

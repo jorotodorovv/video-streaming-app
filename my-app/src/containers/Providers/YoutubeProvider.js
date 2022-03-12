@@ -9,10 +9,10 @@ import Video from '../Video/Video'
 import useVideo from '../../hooks/useVideo';
 
 const YoutubeProvider = () => {
-    const [videoPlayer, dispatchVideoPLayer] = useVideo({ videos: {}, token: INITIAL_TOKEN_VALUE })
+    const [videoPlayer, dispatchVideoPlayer] = useVideo({ videos: {}, token: INITIAL_TOKEN_VALUE })
 
     return (
-        <VideoContext.Provider value={[videoPlayer, dispatchVideoPLayer]}>
+        <VideoContext.Provider value={[videoPlayer, dispatchVideoPlayer]}>
             <Routes>
                 <Route path='/youtube'>
                     <Route path='/youtube' element={<Home />} />

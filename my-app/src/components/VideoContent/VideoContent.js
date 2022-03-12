@@ -9,23 +9,20 @@ import styles from './VideoContent.module.css'
 import VideoFrame from '../VideoFrame/VideoFrame';
 
 const VideoContent = (props) => {
-    let classes = [];
-
-    let media;
+    let media = {};
 
     if (props.load) {
-        media = <VideoFrame id={props.id} seconds={props.seconds} />;
-
-        classes.push(styles.v_card_content_scale);
+        media.content = <VideoFrame id={props.id} seconds={props.seconds} />;
+        media.className = styles.v_card_content_scale;
     }
     else {
-        media = <CardMedia component="img" image={props.image} alt={props.id} />;
+        media.content = <CardMedia component="img" image={props.image} alt={props.id} />;
     }
 
     return (
         <Link className={styles.v_card_link} to={`/youtube/videos/${props.id}`}>
-            <Card className={[classes]} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                {media}
+            <Card className={media.className} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                {media.content}
                 <CardContent sx={{ flexGrow: 1 }}>
                     {props.title}
                     <Typography variant="body2" color="secondary">
