@@ -7,27 +7,29 @@ import VideoContext from '../../context/VideoContext';
 import { Grid } from '@mui/material';
 
 const VideoPlayback = () => {
-    const [videoData] = useContext(VideoContext);
+    const [videoProvider] = useContext(VideoContext);
 
-    let modal = null;
+    let playback = null;
 
-    if (videoData.video && videoData.video.image) {
-        modal = (
+    if (videoProvider.playbackVideoId) {
+        let player = videoProvider.videos[videoProvider.playbackVideoId];
+
+        playback = (
             <Grid item md={3} className={styles.v_playback}>
                 <VideoContent
-                    id={videoData.video.id}
-                    title={videoData.video.title}
-                    description={videoData.video.description}
-                    image={videoData.video.image}
+                    id={player.video.id}
+                    title={player.video.title}
+                    description={player.video.description}
+                    image={player.video.image}
                     load={true}
-                    seconds={videoData.seconds}
-                    views={videoData.video.views}
+                    seconds={player.seconds}
+                    views={player.video.views}
                 />
             </Grid>
         );
     }
 
-    return modal;
+    return playback;
 }
 
 export default VideoPlayback;

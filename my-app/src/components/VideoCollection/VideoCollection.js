@@ -32,6 +32,8 @@ const VideoCollection = () => {
         setVideoProvider(provider);
     }, [videoProvider]);
 
+    let hasPlayback = videoProvider.playbackVideoId;
+
     let data = Object.values(videoProvider.videos).map(v =>
         <VideoCard
             id={v.video.id}
@@ -39,7 +41,7 @@ const VideoCollection = () => {
             title={v.video.title}
             description={v.video.description}
             seconds={v.seconds}
-            hasPlayback={false}
+            hasPlayback={hasPlayback}
             image={v.video.image}
             views={v.video.views}>
         </VideoCard>

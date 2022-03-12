@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useContext, useRef } from 'react'
+import { useEffect, useContext, useRef, useState } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
 import YoutubeVideosApi from '../../api/youtube.ts';
@@ -21,6 +21,7 @@ export default function Video() {
     const ref = useRef();
 
     const [videoProvider, setVideoProvider] = useContext(VideoContext)
+    const [video, setVideo] = useState()
 
     const api = new YoutubeVideosApi({ videosPerRequest: 1 });
 
@@ -47,12 +48,22 @@ export default function Video() {
 
     useEffect(() => {
         const fetchVideo = async () => {
+            let video = await api.getVideo(id);
+
+            let provider = { ...videoProvider, playbackVideoId: id };
+
+            if (!provider.videos[id]) {
+                provider.videos[id] = { video };
+            }
+
             const query = new URLSearchParams(location.search);
             const seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
 
-            let provider = { ...videoProvider };
-            provider.videos[id] = { ...provider.videos[id], seconds };
-    
+            if (seconds > 1) {
+                provider.videos[id].seconds = seconds;
+            }
+
+            setVideo(video);
             setVideoProvider(provider);
         }
 
@@ -60,23 +71,22 @@ export default function Video() {
     }, [id]);
 
 
-    if (videoProvider.videos[id]) {
-        let video = videoProvider.videos[id];
-
+    if (video) {
+        let seconds = videoProvider.videos[id].seconds;
         return (
             <Layout>
                 <VideoFrame
                     id={id}
                     key={id}
                     ref={ref}
+                    seconds={seconds}
                     height={VIDEO_WIDTH}
-                    seconds={video.seconds}
                 />
                 <VideoDescription
                     key={id}
-                    title={video.video.title}
-                    description={video.video.description}
-                    likes={video.video.likes}
+                    title={video.title}
+                    description={video.description}
+                    likes={video.likes}
                     onChangeTime={changeTimeHandler} />
             </Layout >
         );
