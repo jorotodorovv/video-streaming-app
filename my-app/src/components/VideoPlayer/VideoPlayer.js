@@ -7,7 +7,7 @@ import Wrapper from '../../hoc/Wrapper';
 const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
-const VideoFrame = forwardRef((props, ref) => {
+const VideoPlayer = forwardRef((props, ref) => {
     const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext)
 
     const opts = useMemo(() => {
@@ -46,4 +46,4 @@ const VideoFrame = forwardRef((props, ref) => {
     );
 });
 
-export default VideoFrame;
+export default VideoPlayer;

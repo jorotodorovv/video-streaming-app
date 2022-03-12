@@ -6,13 +6,13 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
 import styles from './VideoContent.module.css'
-import VideoFrame from '../VideoFrame/VideoFrame';
+import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
 const VideoContent = (props) => {
     let media = {};
 
     if (props.load) {
-        media.content = <VideoFrame id={props.id} seconds={props.seconds} />;
+        media.content = <VideoPlayer id={props.id} seconds={props.seconds} />;
         media.className = styles.v_card_content_scale;
     }
     else {

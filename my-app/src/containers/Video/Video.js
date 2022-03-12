@@ -7,7 +7,7 @@ import YoutubeVideosApi from '../../api/youtube.ts';
 import Layout from '../Layout/Layout';
 import VideoContext from '../../context/VideoContext';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
-import VideoFrame from '../../components/VideoFrame/VideoFrame';
+import VideoPlayer from '../../components/VideoPlayer/VideoPlayer';
 
 import Window from '../../helpers/dom/Window.ts';
 
@@ -61,7 +61,7 @@ export default function Video() {
     if (video.data) {
         return (
             <Layout>
-                <VideoFrame
+                <VideoPlayer
                     id={id}
                     key={"video_player_" + id}
                     ref={ref}
