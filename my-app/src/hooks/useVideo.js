@@ -1,26 +1,27 @@
 import { useReducer } from "react";
 
 const useVideo = (state) => {
-    const videoHandler = (state, id, seconds, video) => {
-        if (!id) return;
-
+    const videoReducer = (state, id, seconds, video) => {
         let player = { ...state };
+        let playerVideos = { ...player.videos };
 
         if (video) {
             player.playbackVideoID = id;
-            player.videos[id] = { video };
+            playerVideos[id] = { video };
         }
-
 
         if (seconds > 1) {
-            player.videos[id].seconds = seconds;
+            playerVideos[id].seconds = seconds;
         }
+
+        player.videos = playerVideos;
 
         return player;
     };
 
-    const homeHandler = (state, videos, token) => {
+    const collectionReducer = (state, videos, token) => {
         let player = { ...state };
+        let playerVideos = { ...player.videos };
 
         if (token) {
             player.token = token;
@@ -28,9 +29,11 @@ const useVideo = (state) => {
 
         if (videos) {
             for (let video of videos) {
-                player.videos[video.id] = { video };
+                playerVideos[video.id] = { video };
             }
         }
+
+        player.videos = playerVideos;
 
         return player;
     }
@@ -38,9 +41,9 @@ const useVideo = (state) => {
     const playerReducer = (state, action) => {
         switch (action.type) {
             case "HOME":
-                return homeHandler(state, action.videos, action.token);
+                return collectionReducer(state, action.videos, action.token);
             case "VIDEO":
-                return videoHandler(state, action.id, action.seconds, action.video, action.showPlayback);
+                return videoReducer(state, action.id, action.seconds, action.video, action.showPlayback);
         }
     }
 
