@@ -45,6 +45,7 @@ const VideoParagraph = (props) => {
             for (let element of text) {
                 let elementSegments = new Text(element)
                     .replace(URL_FORMAT_RGX, replaceHyperlinks);
+                    
                 for (let elementText of elementSegments) {
                     elements.push(elementText);
                 }

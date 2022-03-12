@@ -8,7 +8,7 @@ const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
 const VideoFrame = forwardRef((props, ref) => {
-    const [videoProvider, setVideoProvider] = useContext(VideoContext)
+    const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext)
 
     const opts = useMemo(() => {
         return {
@@ -27,12 +27,7 @@ const VideoFrame = forwardRef((props, ref) => {
     const stateChangeHandler = (e) => {
         let seconds = ~~e.target.getCurrentTime();
 
-        if (seconds > 1) {
-            let provider = { ...videoProvider };
-            provider.videos[props.id] = { ...provider.videos[props.id], seconds };
-
-            setVideoProvider(provider);
-        }
+        dispatchVideoPlayer({ type: "VIDEO", id: props.id, seconds });
     };
 
     const onStateChange = (e) => {

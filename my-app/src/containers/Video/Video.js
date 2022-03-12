@@ -20,8 +20,8 @@ export default function Video() {
     const navigate = useNavigate();
     const ref = useRef();
 
-    const [videoProvider, setVideoProvider] = useContext(VideoContext)
-    const [video, setVideo] = useState()
+    const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext)
+    const [video, setVideo] = useState({})
 
     const api = new YoutubeVideosApi({ videosPerRequest: 1 });
 
@@ -29,10 +29,7 @@ export default function Video() {
         let minutes = +time[0];
         let seconds = +time[1] + minutes * 60;
 
-        let provider = { ...videoProvider };
-        provider.videos[id] = { ...provider.videos[id], seconds };
-
-        setVideoProvider(provider);
+        dispatchVideoPlayer({ type: "VIDEO", id, seconds });
 
         navigateTime(seconds);
     };
@@ -50,43 +47,32 @@ export default function Video() {
         const fetchVideo = async () => {
             let video = await api.getVideo(id);
 
-            let provider = { ...videoProvider, playbackVideoId: id };
-
-            if (!provider.videos[id]) {
-                provider.videos[id] = { video };
-            }
-
             const query = new URLSearchParams(location.search);
-            const seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
-
-            if (seconds > 1) {
-                provider.videos[id].seconds = seconds;
-            }
-
-            setVideo(video);
-            setVideoProvider(provider);
+            let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
+            
+            dispatchVideoPlayer({ type: "VIDEO", id, video, seconds, showPlayback: true });
+            setVideo({ data: video, seconds: videoPlayer.videos[id].seconds });
         }
 
         fetchVideo();
     }, [id]);
 
 
-    if (video) {
-        let seconds = videoProvider.videos[id].seconds;
+    if (video.data) {
         return (
             <Layout>
                 <VideoFrame
                     id={id}
                     key={id}
                     ref={ref}
-                    seconds={seconds}
+                    seconds={video.seconds}
                     height={VIDEO_WIDTH}
                 />
                 <VideoDescription
                     key={id}
-                    title={video.title}
-                    description={video.description}
-                    likes={video.likes}
+                    title={video.data.title}
+                    description={video.data.description}
+                    likes={video.data.likes}
                     onChangeTime={changeTimeHandler} />
             </Layout >
         );
