@@ -1,15 +1,28 @@
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom'
-
-import VideoContext from '../../context/VideoContext'
-
-import { INITIAL_TOKEN_VALUE } from "../../api/youtube.ts";
 
 import Home from '../Home/Home'
 import Video from '../Video/Video'
+
 import useVideo from '../../hooks/useVideo';
+import VideoContext from '../../context/VideoContext'
+
+import ProviderConfigurations from '../../api/youtube/config.ts';
 
 const YoutubeProvider = () => {
-    const [videoPlayer, dispatchVideoPlayer] = useVideo({ videos: {}, token: INITIAL_TOKEN_VALUE })
+    const [videoPlayer, dispatchVideoPlayer] = useVideo({ videos: {} })
+
+    useEffect(() => {
+        const initProvider = async () => {
+            let config = new ProviderConfigurations("/configs/youtube.json");
+
+            await config.init();
+
+            dispatchVideoPlayer({ type: "INIT", config });
+        };
+
+        initProvider();
+    }, []);
 
     return (
         <VideoContext.Provider value={[videoPlayer, dispatchVideoPlayer]}>

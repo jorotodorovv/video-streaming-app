@@ -1,6 +1,10 @@
 import { useReducer } from "react";
 
 const useVideo = (state) => {
+    const initReducer = (state, config) => {
+        return { ...state, config, token: config.initialToken };
+    };
+
     const videoReducer = (state, id, seconds, video) => {
         let player = { ...state };
         let playerVideos = { ...player.videos };
@@ -40,6 +44,8 @@ const useVideo = (state) => {
 
     const playerReducer = (state, action) => {
         switch (action.type) {
+            case "INIT":
+                return initReducer(state, action.config);
             case "HOME":
                 return collectionReducer(state, action.videos, action.token);
             case "VIDEO":

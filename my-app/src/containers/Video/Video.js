@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { useEffect, useContext, useRef, useState } from 'react'
+import { useEffect, useContext, useRef, useState, useMemo } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
-import YoutubeVideosApi from '../../api/youtube.ts';
+import YoutubeVideosApi from '../../api/youtube/youtube.ts';
 
 import Layout from '../Layout/Layout';
 import VideoContext from '../../context/VideoContext';
@@ -23,7 +23,29 @@ export default function Video() {
     const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext)
     const [video, setVideo] = useState({})
 
-    const api = new YoutubeVideosApi({ videosPerRequest: 1 });
+    const api = useMemo(() => {
+        return new YoutubeVideosApi(
+            videoPlayer.config,
+            {
+                videosPerRequest: 1
+            });
+    }, [videoPlayer.config]);
+
+    useEffect(() => {
+        const fetchVideo = async () => {
+            if (videoPlayer.config) {
+                let video = await api.getVideo(id);
+
+                const query = new URLSearchParams(location.search);
+                let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
+
+                dispatchVideoPlayer({ type: "VIDEO", id, video, seconds });
+                setVideo({ data: video, }); //seconds: videoPlayer.videos[id].seconds });
+            }
+        }
+
+        fetchVideo();
+    }, [videoPlayer.config, id]);
 
     const changeTimeHandler = (time) => {
         let minutes = +time[0];
@@ -42,21 +64,6 @@ export default function Video() {
 
         Window.scrollTo(ref);
     };
-
-    useEffect(() => {
-        const fetchVideo = async () => {
-            let video = await api.getVideo(id);
-
-            const query = new URLSearchParams(location.search);
-            let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
-
-            dispatchVideoPlayer({ type: "VIDEO", id, video, seconds });
-            setVideo({ data: video, seconds: videoPlayer.videos[id].seconds });
-        }
-
-        fetchVideo();
-    }, [id]);
-
 
     if (video.data) {
         return (

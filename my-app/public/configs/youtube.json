@@ -1,0 +1,9 @@
+{
+    "url": "https://www.googleapis.com",
+    "key": "AIzaSyB4aoIu0cWWAPQMzaFFIe0fJVInHRJES6M",
+    "initialToken": "TOKEN",
+    "paths": {
+        "v": "/videos"
+    },
+    "version": "youtube/v3"
+}

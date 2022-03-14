@@ -1,20 +1,5 @@
-import Text from "../helpers/basic/Text.ts";
-
-const BASE_URL = "https://www.youtube.com";
-
-const API_URL = "https://www.googleapis.com";
-const API_KEY = "AIzaSyB4aoIu0cWWAPQMzaFFIe0fJVInHRJES6M";
-
-const VERSION_PATH = "youtube/v3";
-const VIDEOS_PATH_NAME = "videos";
-
-const INITIAL_TOKEN_VALUE = "INITIAL_TOKEN";
-
-interface VideoConfigurations {
-    videosPerRequest: number,
-    maxTitleLength: number,
-    maxDescriptionLength: number
-}
+import Text from "../../helpers/basic/Text.ts";
+import VideoConfigurations from "./config.ts";
 
 interface Video {
     id: number,
@@ -28,39 +13,45 @@ interface VideoResponse {
     token: string
 }
 
+interface VideoParameters {
+    videosPerRequest: number;
+    maxTitleLength: number;
+    maxDescriptionLength: number;
+}
+
 class YoutubeVideosApi {
     private config: VideoConfigurations;
-    constructor(config: VideoConfigurations) {
+    private parameters: VideoParameters;
+
+    constructor(config: VideoConfigurations, parameters: VideoParameters) {
         this.config = config;
+        this.parameters = parameters;
     }
 
-    public async getVideo(id: string) {
-        let url = this.getUrl(this.config.videosPerRequest);
-
+    public async getVideo(id: string): Promise<Video> {
+        let url = this.getUrl(this.parameters.videosPerRequest);
         url.searchParams.append("id", id);
 
-        let response: Response = await fetch(url.toString());
+        let response = await this.request(url);
 
-        if (response.ok) {
-            let result = await response.json();
-
-            let videos = this.map(result.items);
-
-            return videos[0];
-        }
+        return response.videos[0];
     }
 
     public async getVideos(pageToken: string): Promise<VideoResponse> {
-        if (!pageToken) return;
+        if (pageToken) {
+            let url = this.getUrl(this.parameters.videosPerRequest);
 
-        let url = this.getUrl(this.config.videosPerRequest);
+            if (pageToken && pageToken !== this.config.initialToken) {
+                url.searchParams.append("pageToken", pageToken);
+            }
 
-        if (pageToken && pageToken !== INITIAL_TOKEN_VALUE) {
-            url.searchParams.append("pageToken", pageToken);
+            url.searchParams.append("chart", "mostPopular");
+
+            return await this.request(url);
         }
+    }
 
-        url.searchParams.append("chart", "mostPopular");
-
+    private async request(url: URL): Promise<VideoResponse> {
         let response: Response = await fetch(url.toString());
 
         if (response.ok) {
@@ -70,6 +61,8 @@ class YoutubeVideosApi {
 
             return { videos, token: result.nextPageToken };
         }
+
+        throw response.statusText;
     }
 
     private map(items: any[]): Video[] {
@@ -79,8 +72,8 @@ class YoutubeVideosApi {
 
             return {
                 id: v.id,
-                title: title.substring(this.config.maxTitleLength),
-                description: description.substring(this.config.maxDescriptionLength),
+                title: title.substring(this.parameters.maxTitleLength),
+                description: description.substring(this.parameters.maxDescriptionLength),
                 image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                 views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                 likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
@@ -89,10 +82,10 @@ class YoutubeVideosApi {
     }
 
     private getUrl(videosPerRequest: number): URL {
-        const url = new URL(API_URL);
-        url.pathname = VERSION_PATH + "/" + VIDEOS_PATH_NAME;
+        const url = new URL(this.config.url);
+        url.pathname += this.config.paths.v;
 
-        url.searchParams.append("key", API_KEY);
+        url.searchParams.append("key", this.config.key);
         url.searchParams.append("part", "snippet, statistics");
         url.searchParams.append("maxResults", videosPerRequest.toString());
 
@@ -100,5 +93,4 @@ class YoutubeVideosApi {
     }
 }
 
-export { INITIAL_TOKEN_VALUE };
 export default YoutubeVideosApi;
