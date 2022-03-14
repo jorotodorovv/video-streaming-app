@@ -14,7 +14,7 @@ import Window from '../../helpers/dom/Window.ts';
 const TIME_QUERY_PARAMETER_NAME = "t";
 const VIDEO_WIDTH = "720px";
 
-export default function Video() {
+export default function Video(props) {
     const { id } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -24,16 +24,14 @@ export default function Video() {
     const [video, setVideo] = useState({})
 
     const api = useMemo(() => {
-        return new YoutubeVideosApi(
-            videoPlayer.config,
-            {
-                videosPerRequest: 1
-            });
-    }, [videoPlayer.config]);
+        return props.api({
+            videosPerRequest: 1
+        })
+    }, [props.api]);
 
     useEffect(() => {
         const fetchVideo = async () => {
-            if (videoPlayer.config) {
+            if (api) {
                 let video = await api.getVideo(id);
 
                 const query = new URLSearchParams(location.search);
@@ -45,7 +43,7 @@ export default function Video() {
         }
 
         fetchVideo();
-    }, [videoPlayer.config, id]);
+    }, [api, id]);
 
     const changeTimeHandler = (time) => {
         let minutes = +time[0];

@@ -19,7 +19,7 @@ interface VideoParameters {
     maxDescriptionLength: number;
 }
 
-class YoutubeVideosApi {
+class YoutubeApi {
     private config: VideoConfigurations;
     private parameters: VideoParameters;
 
@@ -38,17 +38,15 @@ class YoutubeVideosApi {
     }
 
     public async getVideos(pageToken: string): Promise<VideoResponse> {
+        let url = this.getUrl(this.parameters.videosPerRequest);
+
         if (pageToken) {
-            let url = this.getUrl(this.parameters.videosPerRequest);
-
-            if (pageToken && pageToken !== this.config.initialToken) {
-                url.searchParams.append("pageToken", pageToken);
-            }
-
-            url.searchParams.append("chart", "mostPopular");
-
-            return await this.request(url);
+            url.searchParams.append("pageToken", pageToken);
         }
+
+        url.searchParams.append("chart", "mostPopular");
+
+        return await this.request(url);
     }
 
     private async request(url: URL): Promise<VideoResponse> {
@@ -93,4 +91,4 @@ class YoutubeVideosApi {
     }
 }
 
-export default YoutubeVideosApi;
+export default YoutubeApi;

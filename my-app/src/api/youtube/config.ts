@@ -5,7 +5,7 @@ class ProviderConfigurations {
 
     public url: string;
     public key: string;
-    public initialToken: string;
+    
     public paths;
     public version: string;
 
@@ -18,7 +18,6 @@ class ProviderConfigurations {
 
         this.url = config.url + "/" + config.version;
         this.key = config.key;
-        this.initialToken = config.initialToken;
         this.paths = config.paths;
     }
 }

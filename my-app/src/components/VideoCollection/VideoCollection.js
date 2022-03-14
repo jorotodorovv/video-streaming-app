@@ -6,29 +6,26 @@ import Grid from '@mui/material/Grid';
 import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
-import YoutubeVideosApi from "../../api/youtube/youtube.ts";
 import VideoContext from "../../context/VideoContext";
 
-const VideoCollection = () => {
+const VideoCollection = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext);
 
     const api = useMemo(() => {
-        return new YoutubeVideosApi(
-            videoPlayer.config,
-            {
-                videosPerRequest: 4,
-                maxTitleLength: 30,
-                maxDescriptionLength: 100
-            });
-    }, [videoPlayer.config]);
+        return props.api({
+            videosPerRequest: 4,
+            maxTitleLength: 30,
+            maxDescriptionLength: 100
+        })
+    }, [props.api]);
 
     const fetchVideos = useCallback(async () => {
-        if (videoPlayer.config) {
+        if (api) {
             let response = await api.getVideos(videoPlayer.token);
 
             dispatchVideoPlayer({ type: "HOME", videos: response.videos, token: response.token });
         }
-    }, [videoPlayer.config, videoPlayer.token]);
+    }, [videoPlayer.token, api]);
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard
