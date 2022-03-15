@@ -5,10 +5,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 
-import styles from './VideoContent.module.css'
+import styles from './VideoBox.module.css'
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
-const VideoContent = (props) => {
+const VideoBox = (props) => {
     let media = {};
 
     if (props.load) {
@@ -34,4 +34,4 @@ const VideoContent = (props) => {
     );
 };
 
-export default VideoContent;
+export default VideoBox;

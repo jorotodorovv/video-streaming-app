@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Grid from '@mui/material/Grid';
-import VideoContent from '../VideoContent/VideoContent'
+import VideoBox from '../VideoBox/VideoBox'
 
 const VideoCard = (props) => {
     const [loadVideo, setLoadVideo] = useState(props.load);
@@ -32,7 +32,7 @@ const VideoCard = (props) => {
             onMouseEnter={() => hoverHandler(!props.hasPlayback)}
             onMouseLeave={() => hoverHandler(false)}
             item key={props.id} xs={12} sm={4} md={3}>
-            <VideoContent
+            <VideoBox
                 id={props.id}
                 title={props.title}
                 seconds={props.seconds}

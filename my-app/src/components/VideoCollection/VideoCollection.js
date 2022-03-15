@@ -11,21 +11,17 @@ import VideoContext from "../../context/VideoContext";
 const VideoCollection = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext);
 
-    const api = useMemo(() => {
-        return props.api({
-            videosPerRequest: 4,
-            maxTitleLength: 30,
-            maxDescriptionLength: 100
-        })
-    }, [props.api]);
-
     const fetchVideos = useCallback(async () => {
-        if (api) {
-            let response = await api.getVideos(videoPlayer.token);
+        if (props.api) {
+            let response = await props.api.getVideos(videoPlayer.token);
 
-            dispatchVideoPlayer({ type: "HOME", videos: response.videos, token: response.token });
+            dispatchVideoPlayer({
+                type: "HOME",
+                videos: response.videos,
+                token: response.token
+            });
         }
-    }, [videoPlayer.token, api]);
+    }, [videoPlayer.token, props.api]);
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard

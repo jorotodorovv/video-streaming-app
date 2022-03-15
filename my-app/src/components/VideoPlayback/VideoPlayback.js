@@ -1,6 +1,6 @@
 import styles from './VideoPlayback.module.css'
 
-import VideoContent from '../../components/VideoContent/VideoContent';
+import VideoBox from '../../components/VideoBox/VideoBox';
 
 import { useContext } from 'react';
 import VideoContext from '../../context/VideoContext';
@@ -20,7 +20,7 @@ const VideoPlayback = () => {
     if (player) {
         playback = (
             <Grid item md={3} className={styles.v_playback}>
-                <VideoContent
+                <VideoBox
                     id={player.video.id}
                     title={player.video.title}
                     description={player.video.description}

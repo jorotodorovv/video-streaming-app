@@ -2,8 +2,6 @@ import * as React from 'react';
 import { useEffect, useContext, useRef, useState, useMemo } from 'react'
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 
-import YoutubeVideosApi from '../../api/youtube/youtube.ts';
-
 import Layout from '../Layout/Layout';
 import VideoContext from '../../context/VideoContext';
 import VideoDescription from '../../components/VideoDescription/VideoDescription';
@@ -16,12 +14,13 @@ const VIDEO_WIDTH = "720px";
 
 export default function Video(props) {
     const { id } = useParams();
-    const location = useLocation();
-    const navigate = useNavigate();
     const ref = useRef();
 
-    const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext)
-    const [video, setVideo] = useState({})
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext);
+    const [currentVideo, setCurrentVideo] = useState({});
 
     const api = useMemo(() => {
         return props.api({
@@ -38,12 +37,20 @@ export default function Video(props) {
                 let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
 
                 dispatchVideoPlayer({ type: "VIDEO", id, video, seconds });
-                setVideo({ data: video, }); //seconds: videoPlayer.videos[id].seconds });
             }
         }
 
         fetchVideo();
     }, [api, id]);
+
+    useEffect(() => {
+        if (videoPlayer.videos) {
+            let video = videoPlayer.videos[id];
+            if (video) {
+                setCurrentVideo({ video, seconds: video.seconds });
+            }
+        }
+    }, [videoPlayer.videos]);
 
     const changeTimeHandler = (time) => {
         let minutes = +time[0];
@@ -51,34 +58,37 @@ export default function Video(props) {
 
         dispatchVideoPlayer({ type: "VIDEO", id, seconds });
 
-        navigateTime(seconds);
+        navigateTimeHandler(seconds);
     };
 
-    const navigateTime = (seconds) => {
-        const query = new URLSearchParams();
-        query.append(TIME_QUERY_PARAMETER_NAME, seconds);
+    const navigateTimeHandler = (seconds) => {
+        if (seconds > 1) {
+            const query = new URLSearchParams();
+            query.append(TIME_QUERY_PARAMETER_NAME, seconds);
 
-        navigate("?" + query.toString());
+            navigate("?" + query.toString());
+        }
 
         Window.scrollTo(ref);
     };
 
-    if (video.data) {
+    if (currentVideo.video) {
         return (
             <Layout>
                 <VideoPlayer
                     id={id}
                     key={"video_player_" + id}
                     ref={ref}
-                    seconds={video.seconds}
+                    seconds={currentVideo.seconds}
                     height={VIDEO_WIDTH}
+                    onNavigateTime={navigateTimeHandler}
                 />
                 <VideoDescription
                     id={id}
                     key={"video_description_" + id}
-                    title={video.data.title}
-                    description={video.data.description}
-                    likes={video.data.likes}
+                    title={currentVideo.video.title}
+                    description={currentVideo.video.description}
+                    likes={currentVideo.video.likes}
                     onChangeTime={changeTimeHandler} />
             </Layout >
         );
