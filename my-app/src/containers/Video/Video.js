@@ -6,8 +6,6 @@ import Layout from '../Layout/Layout';
 import VideoContext from '../../context/VideoContext';
 import VideoContent from '../../components/VideoContent/VideoContent';
 
-const TIME_QUERY_PARAMETER_NAME = "t";
-
 export default function Video(props) {
     const { id } = useParams();
     const location = useLocation();
@@ -27,7 +25,7 @@ export default function Video(props) {
                 let video = await api.getVideo(id);
 
                 const query = new URLSearchParams(location.search);
-                let seconds = +query.get(TIME_QUERY_PARAMETER_NAME);
+                let seconds = +query.get(api.timeQueryParam);
 
                 loadVideoHandler(id, seconds, video);
             }
@@ -49,14 +47,20 @@ export default function Video(props) {
         dispatchVideoPlayer({ type: "VIDEO", id, seconds, video });
     }
 
-    return (
-        <Layout>
-            <VideoContent
-                id={id}
-                key={"video_content_" + id}
-                player={currentPlayer}
-                onLoadVideo={loadVideoHandler}
-            />
-        </Layout >
-    );
+    if (currentPlayer) {
+        return (
+            <Layout>
+                <VideoContent
+                    id={id}
+                    key={"video_content_" + id}
+                    player={currentPlayer}
+                    width="720px"
+                    timeQueryParam={api.timeQueryParam}
+                    onLoadVideo={loadVideoHandler}
+                />
+            </Layout >
+        );
+    }
+
+    return null;
 }

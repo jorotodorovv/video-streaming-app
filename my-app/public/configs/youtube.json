@@ -4,5 +4,8 @@
     "paths": {
         "v": "/videos"
     },
-    "version": "youtube/v3"
+    "version": "youtube/v3",
+    "params": {
+        "timeQuery": "t"
+    }
 }

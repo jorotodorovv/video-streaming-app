@@ -6,8 +6,8 @@ class ProviderConfigurations {
     public url: string;
     public key: string;
     
-    public paths;
-    public version: string;
+    public paths : Object;
+    public params : Object;
 
     constructor(configPath: string) {
         this.file = new File(configPath);
@@ -18,7 +18,9 @@ class ProviderConfigurations {
 
         this.url = config.url + "/" + config.version;
         this.key = config.key;
+
         this.paths = config.paths;
+        this.params = config.params;
     }
 }
 

@@ -28,6 +28,10 @@ class YoutubeApi {
         this.parameters = parameters;
     }
 
+    get timeQueryParam() {
+        return this.config.params.timeQuery;
+    }
+
     public async getVideo(id: string): Promise<Video> {
         let url = this.getUrl(this.parameters.videosPerRequest);
         url.searchParams.append("id", id);
