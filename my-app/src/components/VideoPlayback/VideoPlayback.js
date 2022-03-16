@@ -10,7 +10,7 @@ import Wrapper from '../../hoc/Wrapper';
 const DEFAULT_LOAD_STATE = true;
 
 const VideoPlayback = () => {
-    const [videoPlayer] = useContext(VideoContext);
+    const { videoPlayer } = useContext(VideoContext);
 
     let playback = null;
 
