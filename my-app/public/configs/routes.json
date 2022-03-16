@@ -1,0 +1,6 @@
+{
+    "youtube": {
+        "index": "/youtube",
+        "video": "/youtube/videos/:id"
+    }
+}

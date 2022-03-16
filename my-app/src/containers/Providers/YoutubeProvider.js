@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Route, Routes } from 'react-router-dom'
 
 import Home from '../Home/Home'
 import Video from '../Video/Video'
@@ -9,6 +8,8 @@ import VideoContext from '../../context/VideoContext'
 
 import YoutubeApi from '../../api/youtube/youtube.ts';
 import ProviderConfigurations from '../../api/youtube/config.ts';
+
+import RouteBuilder from '../../helpers/routes/RouteBuilder.tsx';
 
 const YoutubeProvider = () => {
     const [videoPlayer, dispatchVideoPlayer] = useVideo({ videos: {} })
@@ -33,17 +34,18 @@ const YoutubeProvider = () => {
         }
     }, [videoConfig])
 
-    const home = <Home api={api}/>;
-    const video = <Video api={api}/>;
+    const containers = [
+        { Page: Home, path: "/youtube" },
+        { Page: Video, path: "/youtube/videos/:id" },
+    ];
+
+    const routeBuilder = new RouteBuilder(containers, { api });
+
+    const routes = routeBuilder.render("/youtube");
 
     return (
         <VideoContext.Provider value={[videoPlayer, dispatchVideoPlayer]}>
-            <Routes>
-                <Route path='/youtube'>
-                    <Route path='/youtube' element={home} />
-                    <Route path='/youtube/videos/:id' element={video} />
-                </Route>
-            </Routes>
+            {routes}
         </VideoContext.Provider>
     );
 };
