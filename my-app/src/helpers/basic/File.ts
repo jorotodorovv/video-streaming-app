@@ -4,7 +4,7 @@ class File {
         this.path = path;
     }
 
-    public async export(): Promise<string> {
+    public async export() {
         return await fetch(this.path)
             .then(response => response.json())
             .then(json => json);
