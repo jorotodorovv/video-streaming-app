@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import Layout from '../Layout/Layout';
 
-import VideoContext from '../../context/VideoContext';
+import { VideoContext } from '../../context/video-context';
 import VideoContent from '../../components/VideoContent/VideoContent';
 
 export default function Video(props) {

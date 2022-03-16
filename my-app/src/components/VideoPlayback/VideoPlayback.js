@@ -3,7 +3,7 @@ import styles from './VideoPlayback.module.css'
 import VideoBox from '../../components/VideoBox/VideoBox';
 
 import { useContext } from 'react';
-import VideoContext from '../../context/VideoContext';
+import { VideoContext } from '../../context/video-context';
 import { Grid } from '@mui/material';
 import Wrapper from '../../hoc/Wrapper';
 

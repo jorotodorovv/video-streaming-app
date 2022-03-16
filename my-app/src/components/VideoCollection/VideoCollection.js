@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
-import VideoContext from "../../context/VideoContext";
+import { VideoContext } from "../../context/video-context";
 
 const VideoCollection = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useContext(VideoContext);

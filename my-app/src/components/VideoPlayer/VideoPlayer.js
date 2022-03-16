@@ -1,6 +1,6 @@
 import { forwardRef, useContext, useMemo, useState } from 'react';
 import YouTube from 'react-youtube';
-import VideoContext from '../../context/VideoContext';
+import { VideoContext } from '../../context/video-context';
 
 import Wrapper from '../../hoc/Wrapper';
 
