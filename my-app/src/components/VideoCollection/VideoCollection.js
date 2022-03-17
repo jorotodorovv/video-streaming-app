@@ -9,13 +9,13 @@ import VideoCard from "../VideoCard/VideoCard";
 import { VideoContext } from "../../context/video-context";
 
 const VideoCollection = (props) => {
-    const { videoPlayer, loadVideos } = useContext(VideoContext);
+    const { videoPlayer, renderVideos } = useContext(VideoContext);
 
     const fetchVideos = useCallback(async () => {
         if (props.api) {
             let response = await props.api.getVideos(videoPlayer.token);
 
-            loadVideos(response.videos, response.token);
+            renderVideos(response.videos, response.token);
         }
     }, [videoPlayer.token, props.api]);
 

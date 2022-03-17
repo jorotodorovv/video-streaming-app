@@ -1,27 +1,35 @@
 import { useReducer } from "react";
 
+const actionTypes = {
+    collection: "COLLECTION",
+    video: "VIDEO",
+    seconds: "SECONDS",
+};
+
 const useVideo = (state) => {
-    const videoReducer = (state, id, seconds, video) => {
-        let player = { ...state };
-        let playerVideos = { ...player.videos };
+    const videoReducer = (state, id, video) => {
+        let player = { ...state, ...state.videos };
 
         if (video) {
             player.playbackVideoID = id;
-            playerVideos[id] = { video };
+            player.videos[id] = { video };
         }
+
+        return player;
+    };
+
+    const secondsReducer = (state, id, seconds) => {
+        let player = { ...state, ...state.videos };
 
         if (seconds > 1) {
-            playerVideos[id].seconds = seconds;
+            player.videos[id].seconds = seconds;
         }
-
-        player.videos = playerVideos;
 
         return player;
     };
 
     const collectionReducer = (state, videos, token) => {
-        let player = { ...state };
-        let playerVideos = { ...player.videos };
+        let player = { ...state, ...state.videos };
 
         if (token) {
             player.token = token;
@@ -29,25 +37,27 @@ const useVideo = (state) => {
 
         if (videos) {
             for (let video of videos) {
-                playerVideos[video.id] = { video };
+                player.videos[video.id] = { video };
             }
         }
-
-        player.videos = playerVideos;
 
         return player;
     }
 
     const playerReducer = (state, action) => {
         switch (action.type) {
-            case "HOME":
+            case actionTypes.collection:
                 return collectionReducer(state, action.videos, action.token);
-            case "VIDEO":
-                return videoReducer(state, action.id, action.seconds, action.video, action.showPlayback);
+            case actionTypes.video:
+                return videoReducer(state, action.id, action.video);
+            case actionTypes.seconds:
+                return secondsReducer(state, action.id, action.seconds);
+
         }
     }
 
     return useReducer(playerReducer, state);
 };
 
+export { actionTypes };
 export default useVideo;

@@ -3,15 +3,19 @@ import Video from '../Video/Video'
 
 import BaseRouter from './BaseRouter';
 
-const YoutubeRouter = (props) => {
-    const containers = [
+const paths = {
+    index: "/youtube",
+    containers: [
         { Page: Home, path: "/youtube" },
         { Page: Video, path: "/youtube/videos/:id" },
-    ];
+    ],
+};
+
+const YoutubeRouter = (props) => {
 
     return <BaseRouter
-        indexPath="/youtube"
-        containers={containers}
+        main={paths.index}
+        containers={paths.containers}
         dependencies={props.dependencies} />
 };
 

@@ -1,7 +1,5 @@
 import { createContext } from 'react'
-import useVideo from '../hooks/useVideo';
-
-const INITIAL_VIDEO_STATE = { videos: {} };
+import useVideo, { actionTypes } from '../hooks/useVideo';
 
 const VideoContext = createContext({
     videoPlayer: {},
@@ -10,26 +8,28 @@ const VideoContext = createContext({
     loadVideos: () => { }
 });
 
+const INITIAL_VIDEO_STATE = { videos: {} };
+
 const VideoProvider = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useVideo(INITIAL_VIDEO_STATE)
 
+    const renderVideos = (videos, token) => {
+        dispatchVideoPlayer({ type: actionTypes.collection, videos, token });
+    };
+
+    const changeVideo = (id, video) => {
+        dispatchVideoPlayer({ type: actionTypes.video, id, video });
+    };
+
     const changeSeconds = (id, seconds) => {
-        dispatchVideoPlayer({ type: "VIDEO", id, seconds });
-    };
-
-    const changeVideo = (id, seconds, video, showPlayback) => {
-        dispatchVideoPlayer({ type: "VIDEO", id, seconds, video, showPlayback });
-    };
-
-    const loadVideos = (videos, token) => {
-        dispatchVideoPlayer({ type: "HOME", videos, token });
+        dispatchVideoPlayer({ type: actionTypes.seconds, id, seconds });
     };
 
     const provider = {
         videoPlayer,
-        changeSeconds,
+        renderVideos,
         changeVideo,
-        loadVideos
+        changeSeconds,
     };
 
     return (

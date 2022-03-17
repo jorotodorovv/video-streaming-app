@@ -8,7 +8,7 @@ const BaseRouter = (props) => {
     const initRoutes = async () => {
         const routeBuilder = new RouteBuilder(props.containers, props.dependencies);
     
-        const output = routeBuilder.render(props.indexPath);
+        const output = routeBuilder.render(props.main);
     
         setRoutes(output);
     };

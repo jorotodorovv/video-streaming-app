@@ -10,7 +10,7 @@ export default function Video(props) {
     const { id } = useParams();
     const location = useLocation();
 
-    const { videoPlayer, changeVideo } = useContext(VideoContext);
+    const { videoPlayer, changeSeconds, changeVideo } = useContext(VideoContext);
     const [currentPlayer, setCurrentPlayer] = useState();
 
     const api = useMemo(() => {
@@ -27,7 +27,8 @@ export default function Video(props) {
                 const query = new URLSearchParams(location.search);
                 let seconds = +query.get(api.timeQueryParam);
 
-                changeVideo(id, seconds, video);
+                changeVideo(id, video);
+                changeSeconds(id, seconds);
             }
         }
 
