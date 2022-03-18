@@ -1,14 +1,11 @@
-import Home from '../pages/Home/Home'
-import Video from '../pages/Video/Video'
-
+import Home from '../pages/torrent/Home';
 import BaseRouter from './BaseRouter';
 
-const YoutubeRouter = (props) => {
+const TorrentRouter = (props) => {
     const paths = {
         index: props.index,
         containers: [
             { Page: Home, path: props.index },
-            { Page: Video, path: `${props.index}/videos/:id` },
         ],
     };
 
@@ -18,4 +15,4 @@ const YoutubeRouter = (props) => {
         dependencies={props.dependencies} />
 };
 
-export default YoutubeRouter;
+export default TorrentRouter;

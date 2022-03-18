@@ -32,7 +32,7 @@ const YoutubeProvider = () => {
 
     return (
         <VideoProvider>
-            <YoutubeRouter dependencies={dependencies} />
+            <YoutubeRouter index={"/youtube"} dependencies={dependencies} />
         </VideoProvider>
     );
 };
