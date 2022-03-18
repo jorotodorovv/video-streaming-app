@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import useVideo, { actionTypes } from '../hooks/useVideo';
+import useVideo, { actions } from '../hooks/useVideo';
 
 const VideoContext = createContext({
     videoPlayer: {},
@@ -14,15 +14,23 @@ const VideoProvider = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useVideo(INITIAL_VIDEO_STATE)
 
     const renderVideos = (videos, token) => {
-        dispatchVideoPlayer({ type: actionTypes.collection, videos, token });
+        dispatchVideoPlayer({ reducer: actions.collection, videos, token });
     };
 
     const changeVideo = (id, video) => {
-        dispatchVideoPlayer({ type: actionTypes.video, id, video });
+        dispatchVideoPlayer({ reducer: actions.video, id, video });
     };
 
     const changeSeconds = (id, seconds) => {
-        dispatchVideoPlayer({ type: actionTypes.seconds, id, seconds });
+        dispatchVideoPlayer({ reducer: actions.seconds, id, seconds });
+    };
+
+    const changePlayback = (id) => {
+        dispatchVideoPlayer({ reducer: actions.playback, id });
+    };
+
+    const changePlayer = (id, video, seconds) => {
+        dispatchVideoPlayer({ reducer: actions.player, id, video, seconds });
     };
 
     const provider = {
@@ -30,6 +38,8 @@ const VideoProvider = (props) => {
         renderVideos,
         changeVideo,
         changeSeconds,
+        changePlayback,
+        changePlayer,
     };
 
     return (
