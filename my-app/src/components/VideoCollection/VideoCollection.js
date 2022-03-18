@@ -26,7 +26,7 @@ const VideoCollection = (props) => {
             title={v.video.title}
             description={v.video.description}
             seconds={v.seconds}
-            hasPlayback={videoPlayer.playbackVideoID}
+            playbackID={videoPlayer.playbackVideoID}
             image={v.video.image}
             views={v.video.views}>
         </VideoCard>

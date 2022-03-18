@@ -7,6 +7,17 @@
 	        animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
 
+.v_card_content_overlay {
+  background-color: SlateGray;
+  position:relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0.20;
+  -moz-opacity: 20%;
+  -webkit-opacity: 20%;
+  z-index: 2;
+}
+
  @-webkit-keyframes scale-up-center {
     0% {
       -webkit-transform: scale(1);

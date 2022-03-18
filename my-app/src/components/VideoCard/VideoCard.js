@@ -27,9 +27,11 @@ const VideoCard = (props) => {
         }
     }
 
+    let isPlaying = props.playbackID === props.id;
+
     return (
         <Grid
-            onMouseEnter={() => hoverHandler(!props.hasPlayback)}
+            onMouseEnter={() => hoverHandler(!props.playbackID)}
             onMouseLeave={() => hoverHandler(false)}
             item key={props.id} xs={12} sm={4} md={3}>
             <VideoBox
@@ -37,6 +39,7 @@ const VideoCard = (props) => {
                 title={props.title}
                 seconds={props.seconds}
                 load={loadVideo}
+                isPlaying={isPlaying}
                 views={props.views}
                 image={props.image.url}
             />
