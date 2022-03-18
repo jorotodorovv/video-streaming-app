@@ -21,7 +21,7 @@ class RouteBuilder {
 
     private createRoute(Container, dependencies) {
         let component = <Container.Page {...dependencies} />;
-        let route = <Route path={Container.path} element={component} />;
+        let route = <Route key={"video_route_" + Container.path} path={Container.path} element={component} />;
 
         return route;
     }

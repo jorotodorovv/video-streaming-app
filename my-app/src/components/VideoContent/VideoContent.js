@@ -11,11 +11,13 @@ export default function VideoContent(props) {
     const ref = useRef();
     const navigate = useNavigate();
 
+    const video = props.player.video;
+
     const changeTimeHandler = (time) => {
         let minutes = +time[0];
         let seconds = +time[1] + minutes * 60;
 
-        props.onLoadVideo(props.id, seconds);
+        props.onChangeVideo(props.id, video);
 
         navigateTimeHandler(seconds);
     };
@@ -31,7 +33,9 @@ export default function VideoContent(props) {
         Window.scrollTo(ref);
     };
 
-    let video = props.player.video;
+    const endVideoHandler = () =>{
+        props.onChangePlayback(null);
+    }
 
     return (
         <Wrapper>
@@ -41,6 +45,7 @@ export default function VideoContent(props) {
                 ref={ref}
                 seconds={props.player.seconds}
                 height={props.width}
+                onEndVideo={endVideoHandler}
                 onNavigateTime={navigateTimeHandler}
             />
             <VideoDescription

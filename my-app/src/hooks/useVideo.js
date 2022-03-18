@@ -1,63 +1,73 @@
 import { useReducer } from "react";
 
-const actionTypes = {
-    collection: "COLLECTION",
-    video: "VIDEO",
-    seconds: "SECONDS",
+const collectionReducer = (state, { videos, token }) => {
+    let player = { ...state, videos: {...state.videos} };
+
+    if (token) {
+        player.token = token;
+    }
+
+    if (videos) {
+        for (let video of videos) {
+            player.videos[video.id] = { video };
+        }
+    }
+
+    return player;
+}
+
+const playerReducer = (state, args) => {
+    let player = { ...state };
+
+    player = videoReducer(player, args);
+    player = playbackReducer(player, args);
+    player = secondsReducer(player, args);
+
+    return player;
+}
+
+const videoReducer = (state, { id, video }) => {
+    let player = { ...state, videos: {...state.videos} };
+
+    if (video) {
+        player.videos[id] = { video };
+    }
+
+    return player;
+};
+
+const playbackReducer = (state, { id }) => {
+    let player = { ...state, playbackVideoID: id };
+
+    return player;
+};
+
+const secondsReducer = (state, { id, seconds }) => {
+    let player = { ...state, videos: {...state.videos} };
+
+    if (seconds > 1) {
+        player.videos[id].seconds = seconds;
+    }
+
+    return player;
+};
+
+const actions = {
+    collection: collectionReducer,
+    video: videoReducer,
+    seconds: secondsReducer,
+    playback: playbackReducer,
+    player: playerReducer,
 };
 
 const useVideo = (state) => {
-    const videoReducer = (state, id, video) => {
-        let player = { ...state, ...state.videos };
-
-        if (video) {
-            player.playbackVideoID = id;
-            player.videos[id] = { video };
-        }
-
-        return player;
-    };
-
-    const secondsReducer = (state, id, seconds) => {
-        let player = { ...state, ...state.videos };
-
-        if (seconds > 1) {
-            player.videos[id].seconds = seconds;
-        }
-
-        return player;
-    };
-
-    const collectionReducer = (state, videos, token) => {
-        let player = { ...state, ...state.videos };
-
-        if (token) {
-            player.token = token;
-        }
-
-        if (videos) {
-            for (let video of videos) {
-                player.videos[video.id] = { video };
-            }
-        }
-
-        return player;
+    const reducer = (state, action) => {
+        return action.reducer(state, { ...action });
     }
 
-    const playerReducer = (state, action) => {
-        switch (action.type) {
-            case actionTypes.collection:
-                return collectionReducer(state, action.videos, action.token);
-            case actionTypes.video:
-                return videoReducer(state, action.id, action.video);
-            case actionTypes.seconds:
-                return secondsReducer(state, action.id, action.seconds);
-
-        }
-    }
-
-    return useReducer(playerReducer, state);
+    return useReducer(reducer, state);
 };
 
-export { actionTypes };
+export { actions };
+
 export default useVideo;

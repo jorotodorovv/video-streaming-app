@@ -40,12 +40,20 @@ const VideoPlayer = forwardRef((props, ref) => {
         }
     };
 
+    const onEnd = (e) => {
+        if (props.onEndVideo) {
+            props.onEndVideo();
+        }
+    };
+
     return (
         <Wrapper ref={ref}>
             <YouTube
                 videoId={props.id}
                 opts={opts}
-                onStateChange={onStateChange} />
+                onStateChange={onStateChange}
+                onEnd={onEnd}
+            />
         </Wrapper>
     );
 });

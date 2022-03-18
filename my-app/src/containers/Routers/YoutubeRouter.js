@@ -12,7 +12,6 @@ const paths = {
 };
 
 const YoutubeRouter = (props) => {
-
     return <BaseRouter
         main={paths.index}
         containers={paths.containers}
