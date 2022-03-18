@@ -10,7 +10,7 @@ export default function Video(props) {
     const { id } = useParams();
     const location = useLocation();
 
-    const { videoPlayer, changePlayer, changeVideo, changePlayback} = useContext(VideoContext);
+    const { videoPlayer, changePlayer, changeVideo, changePlayback } = useContext(VideoContext);
     const [currentPlayer, setCurrentPlayer] = useState();
 
     const api = useMemo(() => {
@@ -43,21 +43,20 @@ export default function Video(props) {
         }
     }, [videoPlayer.videos]);
 
-    if (currentPlayer) {
-        return (
-            <Layout>
-                <VideoContent
-                    id={id}
-                    key={"video_content_" + id}
-                    player={currentPlayer}
-                    width="720px"
-                    timeQueryParam={api.timeQueryParam}
-                    onChangeVideo={changeVideo}
-                    onChangePlayback={changePlayback}
-                />
-            </Layout >
-        );
-    }
+    let content = currentPlayer ?
+        <VideoContent
+            id={id}
+            key={"video_content_" + id}
+            player={currentPlayer}
+            width="720px"
+            timeQueryParam={api.timeQueryParam}
+            onChangeVideo={changeVideo}
+            onChangePlayback={changePlayback}
+        /> : null;
 
-    return null;
+    return (
+        <Layout>
+            {content}
+        </Layout >
+    );
 }

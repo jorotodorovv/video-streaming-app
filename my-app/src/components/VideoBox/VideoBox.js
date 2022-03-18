@@ -26,7 +26,7 @@ const VideoBox = (props) => {
         }
     }
 
-    let content = (
+    let card = (
         <Card className={media.className} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             {media.content}
             <CardContent sx={{ flexGrow: 1 }}>
@@ -38,7 +38,7 @@ const VideoBox = (props) => {
         </Card>
     );
 
-    return props.isPlaying ? content : <Link className={styles.v_card_link} to={media.link}>{content}</Link>;
+    return props.isPlaying ? card : <Link className={styles.v_card_link} to={media.link}>{card}</Link>;
 };
 
 export default VideoBox;
