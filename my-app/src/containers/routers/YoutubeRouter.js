@@ -1,5 +1,5 @@
-import Home from '../Home/Home'
-import Video from '../Video/Video'
+import Home from '../pages/Home/Home'
+import Video from '../pages/Video/Video'
 
 import BaseRouter from './BaseRouter';
 

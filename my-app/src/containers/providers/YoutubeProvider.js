@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import YoutubeRouter from '../Routers/YoutubeRouter';
+import YoutubeRouter from '../routers/YoutubeRouter';
 
 import YoutubeApi from '../../api/youtube/youtube.ts';
 import ProviderConfigurations from '../../api/youtube/config.ts';

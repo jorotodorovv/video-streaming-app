@@ -1,7 +1,7 @@
 import Wrapper from '../../hoc/Wrapper';
-import Header from '../Layout/Header';
-import Footer from '../Layout/Footer';
-import Content from '../Layout/Content';
+import Header from '../layout/Header';
+import Footer from '../layout/Footer';
+import Content from '../layout/Content';
 
 const Layout = (props) => {
     return (

@@ -1,10 +1,10 @@
 import { useEffect, useContext, useMemo, useState } from 'react'
 import { useParams, useLocation } from 'react-router-dom';
 
-import Layout from '../Layout/Layout';
+import Layout from '../../layout/Layout';
 
-import { VideoContext } from '../../context/video-context';
-import VideoContent from '../../components/VideoContent/VideoContent';
+import { VideoContext } from '../../../context/video-context';
+import VideoContent from '../../../components/VideoContent/VideoContent';
 
 export default function Video(props) {
     const { id } = useParams();
