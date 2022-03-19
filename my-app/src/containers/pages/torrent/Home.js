@@ -16,8 +16,6 @@ export default function Home(props) {
 
     return (
         <Layout>
-            <VideoCollection api={api} />
-            <VideoPlayback />
         </Layout>
     );
 }
