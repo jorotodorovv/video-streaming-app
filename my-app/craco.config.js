@@ -11,7 +11,6 @@ module.exports = {
           "crypto": require.resolve("crypto-browserify"),
           "stream": require.resolve("stream-browserify") ,
           "querystring": require.resolve("querystring-es3"),
-          "url": false,
         },
       },
       plugins: [
