@@ -29,6 +29,10 @@ const VideoProvider = (props) => {
         dispatchVideoPlayer({ reducer: actions.playback, id });
     };
 
+    const removePlayback = () => {
+        dispatchVideoPlayer({ reducer: actions.playback, id: null });
+    };
+
     const changePlayer = (id, video, seconds) => {
         dispatchVideoPlayer({ reducer: actions.player, id, video, seconds });
     };
@@ -39,6 +43,7 @@ const VideoProvider = (props) => {
         changeVideo,
         changeSeconds,
         changePlayback,
+        removePlayback,
         changePlayer,
     };
 

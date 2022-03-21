@@ -3,6 +3,8 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import VideoBox from '../VideoBox/VideoBox'
 
+import styles from './VideoCard.module.css'
+
 const VideoCard = (props) => {
     const [loadVideo, setLoadVideo] = useState(props.load);
     const [videoTimeout, setVideoTimeout] = useState();
@@ -28,9 +30,11 @@ const VideoCard = (props) => {
     }
 
     let isPlaying = props.playbackID === props.id;
+    let className = loadVideo ? styles.v_card_grid_scale : styles.v_card_grid;
 
     return (
         <Grid
+            className={className}
             onMouseEnter={() => hoverHandler(!props.playbackID)}
             onMouseLeave={() => hoverHandler(false)}
             item key={props.id} xs={12} sm={4} md={3}>

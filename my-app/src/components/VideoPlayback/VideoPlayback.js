@@ -1,25 +1,30 @@
-import styles from './VideoPlayback.module.css'
-
-import VideoBox from '../../components/VideoBox/VideoBox';
-
 import { useContext } from 'react';
 import { VideoContext } from '../../context/video-context';
+
 import { Grid } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 import Wrapper from '../../hoc/Wrapper';
+import VideoBox from '../../components/VideoBox/VideoBox';
+
+import styles from './VideoPlayback.module.css'
 
 const DEFAULT_LOAD_STATE = true;
 
 const VideoPlayback = () => {
-    const { videoPlayer } = useContext(VideoContext);
+    const { videoPlayer, removePlayback } = useContext(VideoContext);
 
-    let playback = null;
+    const onClose = () => {
+        removePlayback();
+    };
 
     let id = videoPlayer.playbackVideoID;
     let player = videoPlayer.videos[id];
 
-    if (player) {
-        playback = (
-            <Grid item md={3} className={styles.v_playback}>
+    let playback = player ?
+        (
+            <Grid item md={12} className={styles.v_playback}>
+                <CloseIcon className={styles.v_card_close} fontSize={'large'} onClick={onClose} />;
                 <VideoBox
                     id={player.video.id}
                     title={player.video.title}
@@ -30,8 +35,7 @@ const VideoPlayback = () => {
                     load={DEFAULT_LOAD_STATE}
                 />
             </Grid>
-        );
-    }
+        ) : null;
 
     return <Wrapper>{playback}</Wrapper>;
 

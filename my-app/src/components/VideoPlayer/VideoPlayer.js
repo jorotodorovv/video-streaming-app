@@ -1,4 +1,5 @@
-import { forwardRef, useContext, useMemo, useState } from 'react';
+import { forwardRef, useContext, useMemo } from 'react';
+
 import YouTube from 'react-youtube';
 import { VideoContext } from '../../context/video-context';
 
@@ -8,7 +9,7 @@ const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
 const VideoPlayer = forwardRef((props, ref) => {
-    const { changeSeconds } = useContext(VideoContext)
+    const { changeSeconds, removePlayback } = useContext(VideoContext)
 
     const opts = useMemo(() => {
         return {
@@ -41,9 +42,7 @@ const VideoPlayer = forwardRef((props, ref) => {
     };
 
     const onEnd = (e) => {
-        if (props.onEndVideo) {
-            props.onEndVideo();
-        }
+        removePlayback();
     };
 
     return (

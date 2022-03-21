@@ -1,7 +1,17 @@
 .v_playback {
-    width: 14%;
+    width: 14.7%;
     position: fixed;
     bottom: 5rem;
     right: 5rem;
     margin: 0;
+    z-index: 2;
 }
+
+.v_card_close {
+    right: -20%;
+    position: absolute;
+    z-index: 3;
+    top: -10%;
+    cursor: pointer;
+  }
+  

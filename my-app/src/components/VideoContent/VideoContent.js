@@ -33,10 +33,6 @@ export default function VideoContent(props) {
         Window.scrollTo(ref);
     };
 
-    const endVideoHandler = () =>{
-        props.onChangePlayback(null);
-    }
-
     return (
         <Wrapper>
             <VideoPlayer
@@ -45,7 +41,6 @@ export default function VideoContent(props) {
                 ref={ref}
                 seconds={props.player.seconds}
                 height={props.width}
-                onEndVideo={endVideoHandler}
                 onNavigateTime={navigateTimeHandler}
             />
             <VideoDescription

@@ -38,7 +38,8 @@ const VideoBox = (props) => {
         </Card>
     );
 
-    return props.isPlaying ? card : <Link className={styles.v_card_link} to={media.link}>{card}</Link>;
+    return props.isPlaying ? card :
+        <Link className={styles.v_card_link} to={media.link}>{card}</Link>
 };
 
 export default VideoBox;
