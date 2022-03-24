@@ -25,7 +25,7 @@ const VideoProvider = (props) => {
         dispatchVideoPlayer({ reducer: actions.seconds, id, seconds });
     };
 
-    const refreshSeconds = (id) => {
+    const resetSeconds = (id) => {
         dispatchVideoPlayer({ reducer: actions.seconds, id, seconds: 0});
     };
 
@@ -46,7 +46,7 @@ const VideoProvider = (props) => {
         renderVideos,
         changeVideo,
         changeSeconds,
-        refreshSeconds,
+        resetSeconds,
         changePlayback,
         removePlayback,
         changePlayer,
