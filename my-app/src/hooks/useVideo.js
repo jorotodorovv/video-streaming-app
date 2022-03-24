@@ -1,7 +1,7 @@
 import { useReducer } from "react";
 
 const collectionReducer = (state, { videos, token }) => {
-    let player = { ...state, videos: {...state.videos} };
+    let player = { ...state, videos: { ...state.videos } };
 
     if (token) {
         player.token = token;
@@ -27,7 +27,7 @@ const playerReducer = (state, args) => {
 }
 
 const videoReducer = (state, { id, video }) => {
-    let player = { ...state, videos: {...state.videos} };
+    let player = { ...state, videos: { ...state.videos } };
 
     if (video) {
         player.videos[id] = { video };
@@ -43,11 +43,9 @@ const playbackReducer = (state, { id }) => {
 };
 
 const secondsReducer = (state, { id, seconds }) => {
-    let player = { ...state, videos: {...state.videos} };
+    let player = { ...state, videos: { ...state.videos } };
 
-    if (seconds > 1) {
-        player.videos[id].seconds = seconds;
-    }
+    player.videos[id].seconds = seconds;
 
     return player;
 };
