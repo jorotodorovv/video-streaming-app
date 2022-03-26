@@ -7,7 +7,7 @@ import VideoPlayback from '../../../components/VideoPlayback/VideoPlayback';
 export default function Home(props) {
   const api = useMemo(() => {
     return props.api({
-      videosPerRequest: 4,
+      videosPerRequest: 16,
       maxTitleLength: 30,
       maxDescriptionLength: 100
     })

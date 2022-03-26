@@ -32,8 +32,59 @@ class YoutubeApi {
         return this.config.params.timeQuery;
     }
 
+    public async getChannel(channelName: string) {
+        let url = this.getUrl(this.config.paths.ch);
+
+        url.searchParams.append("part", "snippet");
+        url.searchParams.append("forUsername", channelName);
+
+        let response = await fetch(url.toString());
+
+        if (response.ok) {
+            let result = await response.json();
+
+            if (result && result.items.length) {
+                return result.items[0];
+            }
+        }
+    }
+
+    public async getPlaylists(channelId: string) {
+        let url = this.getUrl(this.config.paths.p);
+
+        url.searchParams.append("channelId", channelId);
+
+        let response = await fetch(url.toString());
+
+        if (response.ok) {
+            let result = await response.json();
+
+            if (result && result.items.length) {
+                return result.items;
+            }
+        }
+    }
+
+    public async getPlaylistVideos(playlistId: string) {
+        let url = this.getUrl(this.config.paths.i);
+
+        url.searchParams.append("playlistId", playlistId);
+        url.searchParams.append("part", "snippet");
+
+        let response = await fetch(url.toString());
+
+        if (response.ok) {
+            let result = await response.json();
+
+            if (result && result.items.length) {
+                return result.items;
+            }
+        }
+    }
+
     public async getVideo(id: string): Promise<Video> {
-        let url = this.getUrl(this.parameters.videosPerRequest);
+        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
+
         url.searchParams.append("id", id);
 
         let response = await this.request(url);
@@ -41,20 +92,33 @@ class YoutubeApi {
         return response.videos[0];
     }
 
-    public async getVideos(pageToken: string): Promise<VideoResponse> {
-        let url = this.getUrl(this.parameters.videosPerRequest);
+    public async getVideos(pageToken: string = null): Promise<VideoResponse> {
+        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
+
+        url.searchParams.append("part", "snippet, statistics");
+        url.searchParams.append("chart", "mostPopular");
 
         if (pageToken) {
             url.searchParams.append("pageToken", pageToken);
         }
 
-        url.searchParams.append("chart", "mostPopular");
-
         return await this.request(url);
     }
 
+    public async getVideosByChannel(channelId: string) {
+        let playlists = await this.getPlaylists(channelId);
+        
+        if (playlists) {
+            for (let playlist of playlists) {
+                let videos = await this.getPlaylistVideos(playlist.id);
+
+                console.log(videos);
+            }
+        }
+    }
+
     private async request(url: URL): Promise<VideoResponse> {
-        let response: Response = await fetch(url.toString());
+        let response = await fetch(url.toString());
 
         if (response.ok) {
             let result = await response.json();
@@ -73,23 +137,25 @@ class YoutubeApi {
             let description: string = new Text(v.snippet.description);
 
             return {
-                id: v.id,
+                id: v.id.videoId ?? v.id,
                 title: title.substring(this.parameters.maxTitleLength),
                 description: description.substring(this.parameters.maxDescriptionLength),
                 image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
-                views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
-                likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                // views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                // likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
             };
         });
     }
 
-    private getUrl(videosPerRequest: number): URL {
+    private getUrl(pathName: string, videosPerRequest: number = null): URL {
         const url = new URL(this.config.url);
-        url.pathname += this.config.paths.v;
+        url.pathname += pathName;
 
         url.searchParams.append("key", this.config.key);
-        url.searchParams.append("part", "snippet, statistics");
-        url.searchParams.append("maxResults", videosPerRequest.toString());
+
+        if (videosPerRequest) {
+            url.searchParams.append("maxResults", videosPerRequest.toString());
+        }
 
         return url;
     }
