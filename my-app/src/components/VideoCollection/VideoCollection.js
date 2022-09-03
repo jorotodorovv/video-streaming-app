@@ -12,6 +12,8 @@ import Wrapper from "../../hoc/Wrapper";
 import Cache from '../../helpers/basic/Cache.ts'
 
 const INITIAL_VIDEO_TOKEN = "default";
+const END_VIDEO_TOKEN = "end";
+
 const VIDEO_COLLECTION_CACHE_KEY = "youtube_vid_col";
 
 const VideoCollection = (props) => {
@@ -21,20 +23,25 @@ const VideoCollection = (props) => {
     const [channel, setChannel] = useState();
 
     const fetchVideos = useCallback(async () => {
-        if (props.api) {
-            let ch = await props.api.getChannel("thehungrypartier");
-            // let vids = await props.api.getVideosByChannel(ch.id);
-            // let response = await props.api.getVideos(videoPlayer.token);
+        if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
             let response = await cache.receive(
                 videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
 
-            setChannel(ch);
-            renderVideos(response.videos, response.token);
+            //setChannel(ch);
+
+            let token = response.token !== videoPlayer.token ?
+                 response.token : END_VIDEO_TOKEN;
+
+            renderVideos(response.videos, token);
         }
     }, [videoPlayer.token, props.api]);
 
     const getVideos = async () => {
-        return await props.api.getVideos(videoPlayer.token);
+        let channelResponse = await props.api.getChannel("thehungrypartier");
+        let channelPlaylists = await props.api.getPlaylists(channelResponse.id, videoPlayer.token);
+
+        return await props.api.getPlaylistVideos(channelPlaylists[0].id);
+        //return await props.api.getVideos(videoPlayer.token);
     }
 
     let data = Object.values(videoPlayer.videos).map(v =>
@@ -50,7 +57,7 @@ const VideoCollection = (props) => {
         </VideoCard>
     );
 
-    let loadingBar = videoPlayer.token ?
+    let loadingBar = videoPlayer.token && videoPlayer.token !== END_VIDEO_TOKEN ?
         <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
     let ch = channel ? <VideoChannel image={channel.snippet.thumbnails.default.url} /> : null;

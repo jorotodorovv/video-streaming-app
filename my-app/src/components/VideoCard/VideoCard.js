@@ -45,7 +45,7 @@ const VideoCard = (props) => {
                 load={loadVideo}
                 isPlaying={isPlaying}
                 views={props.views}
-                image={props.image.url}
+                image={props.image?.url}
             />
         </Grid>
     );

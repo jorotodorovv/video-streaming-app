@@ -65,11 +65,15 @@ class YoutubeApi {
         }
     }
 
-    public async getPlaylistVideos(playlistId: string) {
-        let url = this.getUrl(this.config.paths.i);
+    public async getPlaylistVideos(playlistId: string, pageToken: string = null) {
+        let url = this.getUrl(this.config.paths.i, this.parameters.videosPerRequest);
 
         url.searchParams.append("playlistId", playlistId);
-        url.searchParams.append("part", "snippet");
+        url.searchParams.append("part", "snippet, contentDetails");
+
+        if (pageToken) {
+            url.searchParams.append("pageToken", pageToken);
+        }
 
         let response = await fetch(url.toString());
 
@@ -77,19 +81,35 @@ class YoutubeApi {
             let result = await response.json();
 
             if (result && result.items.length) {
-                return result.items;
+                let videos: any = [];
+
+                for (let item of result.items) {
+                    let itemId = item.contentDetails.videoId;
+                    let video = await this.getVideo(itemId);
+
+                    videos.push(video);
+                }
+
+                videos = this.map(videos);
+
+                return { videos, token: result.nextPageToken };
             }
         }
     }
 
     public async getVideo(id: string): Promise<Video> {
-        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
+        let url = this.getUrl(this.config.paths.v);
 
         url.searchParams.append("id", id);
+        url.searchParams.append("part", "snippet, statistics");
 
-        let response = await this.request(url);
+        let response = await fetch(url.toString());
 
-        return response.videos[0];
+        if (response.ok) {
+            let result = await response.json();
+            
+            return result.items[0];
+        }
     }
 
     public async getVideos(pageToken: string = null): Promise<VideoResponse> {
@@ -103,18 +123,6 @@ class YoutubeApi {
         }
 
         return await this.request(url);
-    }
-
-    public async getVideosByChannel(channelId: string) {
-        let playlists = await this.getPlaylists(channelId);
-        
-        if (playlists) {
-            for (let playlist of playlists) {
-                let videos = await this.getPlaylistVideos(playlist.id);
-
-                console.log(videos);
-            }
-        }
     }
 
     private async request(url: URL): Promise<VideoResponse> {
@@ -132,7 +140,8 @@ class YoutubeApi {
     }
 
     private map(items: any[]): Video[] {
-        return items.map(v => {
+        return items.filter(v => v !== undefined)
+        .map(v => {
             let title: string = new Text(v.snippet.title);
             let description: string = new Text(v.snippet.description);
 
@@ -141,13 +150,13 @@ class YoutubeApi {
                 title: title.substring(this.parameters.maxTitleLength),
                 description: description.substring(this.parameters.maxDescriptionLength),
                 image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
-                // views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
-                // likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
             };
         });
     }
 
-    private getUrl(pathName: string, videosPerRequest: number = null): URL {
+    private getUrl(pathName: string, videosPerRequest: number | null = null): URL {
         const url = new URL(this.config.url);
         url.pathname += pathName;
 
