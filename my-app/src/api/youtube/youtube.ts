@@ -90,8 +90,6 @@ class YoutubeApi {
                     videos.push(video);
                 }
 
-                videos = this.map(videos);
-
                 return { videos, token: result.nextPageToken };
             }
         }
@@ -103,13 +101,9 @@ class YoutubeApi {
         url.searchParams.append("id", id);
         url.searchParams.append("part", "snippet, statistics");
 
-        let response = await fetch(url.toString());
+        let response = await this.request(url);
 
-        if (response.ok) {
-            let result = await response.json();
-            
-            return result.items[0];
-        }
+        return response.videos[0];
     }
 
     public async getVideos(pageToken: string = null): Promise<VideoResponse> {
