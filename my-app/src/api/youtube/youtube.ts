@@ -81,16 +81,7 @@ class YoutubeApi {
             let result = await response.json();
 
             if (result && result.items.length) {
-                let videos: any = [];
-
-                for (let item of result.items) {
-                    let itemId = item.contentDetails.videoId;
-                    let video = await this.getVideo(itemId);
-
-                    videos.push(video);
-                }
-
-                return { videos, token: result.nextPageToken };
+                return { items: result.items, token: result.nextPageToken };
             }
         }
     }

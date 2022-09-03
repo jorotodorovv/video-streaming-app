@@ -14,7 +14,7 @@ import Cache from '../../helpers/basic/Cache.ts'
 const INITIAL_VIDEO_TOKEN = "default";
 const END_VIDEO_TOKEN = "end";
 
-const VIDEO_COLLECTION_CACHE_KEY = "youtube_vid_col";
+const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
 
 const VideoCollection = (props) => {
     var cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
@@ -30,7 +30,7 @@ const VideoCollection = (props) => {
             //setChannel(ch);
 
             let token = response.token !== videoPlayer.token ?
-                 response.token : END_VIDEO_TOKEN;
+                response.token : END_VIDEO_TOKEN;
 
             renderVideos(response.videos, token);
         }
@@ -40,8 +40,20 @@ const VideoCollection = (props) => {
         let channelResponse = await props.api.getChannel("thehungrypartier");
         let channelPlaylists = await props.api.getPlaylists(channelResponse.id, videoPlayer.token);
 
-        return await props.api.getPlaylistVideos(channelPlaylists[0].id);
-        //return await props.api.getVideos(videoPlayer.token);
+        let response = await props.api.getPlaylistVideos(channelPlaylists[0].id);
+
+        let videos = [];
+
+        for (let item of response.items) {
+            let itemId = item.contentDetails.videoId;
+            let video = await props.api.getVideo(itemId);
+
+            if (video) {
+                videos.push(video);
+            }
+        }
+
+        return { videos, token: response.token };
     }
 
     let data = Object.values(videoPlayer.videos).map(v =>

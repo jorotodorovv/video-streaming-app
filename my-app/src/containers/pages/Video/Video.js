@@ -6,7 +6,11 @@ import Layout from '../../layout/Layout';
 import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
+const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
+
 export default function Video(props) {
+    var cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+
     const { id } = useParams();
     const location = useLocation();
 
