@@ -8,7 +8,7 @@ const INTERVAL_SECONDS_ADVANTAGE = 0.25;
 const INTERVAL_DURATION = 1000;
 
 const VideoPlayer = forwardRef((props, ref) => {
-    const { changeSeconds, resetSeconds } = useContext(VideoContext);
+    const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
     const [secondsInterval, setSecondsInterval] = useState();
 
     useEffect(() => {
@@ -52,6 +52,7 @@ const VideoPlayer = forwardRef((props, ref) => {
 
     const resetPlayerHandler = (e) => {
         resetSeconds(props.id);
+        removePlayback();
     }
 
     return <VideoFrame

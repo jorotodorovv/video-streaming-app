@@ -9,21 +9,33 @@ import VideoCard from "../VideoCard/VideoCard";
 import { VideoContext } from "../../context/video-context";
 import VideoChannel from "../VideoChannel/VideoChannel";
 import Wrapper from "../../hoc/Wrapper";
+import Cache from '../../helpers/basic/Cache.ts'
+
+const INITIAL_VIDEO_TOKEN = "default";
+const VIDEO_COLLECTION_CACHE_KEY = "youtube_vid_col";
 
 const VideoCollection = (props) => {
+    var cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+
     const { videoPlayer, renderVideos } = useContext(VideoContext);
     const [channel, setChannel] = useState();
 
     const fetchVideos = useCallback(async () => {
         if (props.api) {
             let ch = await props.api.getChannel("thehungrypartier");
-            let vids = await props.api.getVideosByChannel(ch.id);
-            let response = await props.api.getVideos(videoPlayer.token);
+            // let vids = await props.api.getVideosByChannel(ch.id);
+            // let response = await props.api.getVideos(videoPlayer.token);
+            let response = await cache.receive(
+                videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
 
             setChannel(ch);
             renderVideos(response.videos, response.token);
         }
     }, [videoPlayer.token, props.api]);
+
+    const getVideos = async () => {
+        return await props.api.getVideos(videoPlayer.token);
+    }
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard
