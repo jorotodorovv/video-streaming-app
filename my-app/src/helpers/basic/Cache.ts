@@ -19,11 +19,11 @@ class Cache {
     }
     
     private get(key: string) {
-        return sessionStorage.getItem(this.prefix + "_" + key);
+        return localStorage.getItem(this.prefix + "_" + key);
     }
 
     private set(key: string, value: string) {
-        sessionStorage.setItem(this.prefix + "_" + key, value);
+        localStorage.setItem(this.prefix + "_" + key, value);
     }
 }
 

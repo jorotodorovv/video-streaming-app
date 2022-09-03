@@ -10,15 +10,17 @@ import { VideoContext } from "../../context/video-context";
 import Cache from '../../helpers/basic/Cache.ts'
 
 const INITIAL_VIDEO_TOKEN = "default";
+const VIDEO_COLLECTION_CACHE_KEY = "youtube_vid_col";
 
 const VideoCollection = (props) => {
-    var cache = new Cache("vid_col");
+    var cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
 
     const { videoPlayer, renderVideos } = useContext(VideoContext);
 
     const fetchVideos = useCallback(async () => {
         if (props.api) {
-            let response = await cache.receive(videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
+            let response = await cache.receive(
+                videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
 
             renderVideos(response.videos, response.token);
         }
