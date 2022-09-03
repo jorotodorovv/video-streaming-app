@@ -7,17 +7,26 @@ import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
 import { VideoContext } from "../../context/video-context";
+import Cache from '../../helpers/basic/Cache.ts'
+
+const INITIAL_VIDEO_TOKEN = "default";
 
 const VideoCollection = (props) => {
+    var cache = new Cache("vid_col");
+
     const { videoPlayer, renderVideos } = useContext(VideoContext);
 
     const fetchVideos = useCallback(async () => {
         if (props.api) {
-            let response = await props.api.getVideos(videoPlayer.token);
+            let response = await cache.receive(videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
 
             renderVideos(response.videos, response.token);
         }
     }, [videoPlayer.token, props.api]);
+
+    const getVideos = async () => {
+        return await props.api.getVideos(videoPlayer.token);
+    }
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard
