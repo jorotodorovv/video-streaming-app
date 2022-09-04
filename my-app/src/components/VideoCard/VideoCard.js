@@ -40,12 +40,13 @@ const VideoCard = (props) => {
             item key={props.id} xs={12} sm={4} md={3}>
             <VideoBox
                 id={props.id}
+                token={props.token}
                 title={props.title}
                 seconds={props.seconds}
                 load={loadVideo}
                 isPlaying={isPlaying}
                 views={props.views}
-                image={props.image.url}
+                image={props.image?.url}
             />
         </Grid>
     );

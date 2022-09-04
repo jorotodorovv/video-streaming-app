@@ -6,8 +6,14 @@ import Layout from '../../layout/Layout';
 import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
+import Cache from '../../../helpers/basic/Cache.ts'
+
+
 export default function Video(props) {
-    const { id } = useParams();
+    const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
+    let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+
+    const { id, token } = useParams();
     const location = useLocation();
 
     const { videoPlayer, changePlayer, changeVideo } = useContext(VideoContext);
@@ -22,7 +28,7 @@ export default function Video(props) {
     useEffect(() => {
         const fetchVideo = async () => {
             if (api) {
-                let video = await api.getVideo(id);
+                let video = await getVideo();
 
                 const query = new URLSearchParams(location.search);
                 let seconds = +query.get(api.timeQueryParam);
@@ -33,6 +39,16 @@ export default function Video(props) {
 
         fetchVideo();
     }, [api, id]);
+
+    let getVideo = async () => {
+        let video = videoPlayer.videos[id].video;
+
+        if (!video) {
+            video = await api.getVideo(id);
+        }
+
+        return video;
+    }
 
     useEffect(() => {
         if (videoPlayer.videos) {
