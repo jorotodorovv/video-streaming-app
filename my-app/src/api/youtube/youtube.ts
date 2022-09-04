@@ -19,6 +19,8 @@ interface VideoParameters {
     maxDescriptionLength: number;
 }
 
+const INITIAL_VIDEO_TOKEN = "default";
+
 class YoutubeApi {
     private config: VideoConfigurations;
     private parameters: VideoParameters;
@@ -65,7 +67,7 @@ class YoutubeApi {
         }
     }
 
-    public async getPlaylistVideos(playlistId: string, pageToken: string = null) {
+    public async getPlaylistVideos(playlistId: string, pageToken: string | null = null) {
         let url = this.getUrl(this.config.paths.i, this.parameters.videosPerRequest);
 
         url.searchParams.append("playlistId", playlistId);
@@ -86,18 +88,18 @@ class YoutubeApi {
         }
     }
 
-    public async getVideo(id: string): Promise<Video> {
+    public async getVideo(id: string, pageToken: string): Promise<Video> {
         let url = this.getUrl(this.config.paths.v);
 
         url.searchParams.append("id", id);
         url.searchParams.append("part", "snippet, statistics");
 
-        let response = await this.request(url);
+        let response = await this.request(url, pageToken);
 
         return response.videos[0];
     }
 
-    public async getVideos(pageToken: string = null): Promise<VideoResponse> {
+    public async getVideos(pageToken: string): Promise<VideoResponse> {
         let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
 
         url.searchParams.append("part", "snippet, statistics");
@@ -107,16 +109,16 @@ class YoutubeApi {
             url.searchParams.append("pageToken", pageToken);
         }
 
-        return await this.request(url);
+        return await this.request(url, pageToken);
     }
 
-    private async request(url: URL): Promise<VideoResponse> {
+    private async request(url: URL, token: string): Promise<VideoResponse> {
         let response = await fetch(url.toString());
 
         if (response.ok) {
             let result = await response.json();
 
-            let videos = this.map(result.items);
+            let videos = this.map(result.items, token);
 
             return { videos, token: result.nextPageToken };
         }
@@ -124,8 +126,9 @@ class YoutubeApi {
         throw response.statusText;
     }
 
-    private map(items: any[]): Video[] {
-        return items.filter(v => v !== undefined)
+    private map(items: any[], pageToken: string): Video[] {
+        return items
+        .filter(v => v !== undefined)
         .map(v => {
             let title: string = new Text(v.snippet.title);
             let description: string = new Text(v.snippet.description);
@@ -137,6 +140,7 @@ class YoutubeApi {
                 image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                 views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                 likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                token: pageToken ?? INITIAL_VIDEO_TOKEN,
             };
         });
     }

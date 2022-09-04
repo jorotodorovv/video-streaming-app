@@ -40,6 +40,7 @@ const VideoCard = (props) => {
             item key={props.id} xs={12} sm={4} md={3}>
             <VideoBox
                 id={props.id}
+                token={props.token}
                 title={props.title}
                 seconds={props.seconds}
                 load={loadVideo}

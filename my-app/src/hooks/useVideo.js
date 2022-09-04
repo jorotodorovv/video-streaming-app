@@ -50,12 +50,17 @@ const secondsReducer = (state, { id, seconds }) => {
     return player;
 };
 
+const clearReducer = () => {
+    return { videos: [] };
+};
+
 const actions = {
     collection: collectionReducer,
     video: videoReducer,
     seconds: secondsReducer,
     playback: playbackReducer,
     player: playerReducer,
+    clear: clearReducer,
 };
 
 const useVideo = (state) => {

@@ -11,7 +11,7 @@ import styles from './VideoBox.module.css'
 
 const VideoBox = (props) => {
     let media = {
-        link: `/youtube/videos/${props.id}`,
+        link: `/youtube/videos/${props.token}/${props.id}`,
     };
 
     if (props.load) {

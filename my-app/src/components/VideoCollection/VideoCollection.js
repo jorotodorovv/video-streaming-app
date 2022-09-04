@@ -16,50 +16,87 @@ const END_VIDEO_TOKEN = "end";
 
 const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
 
-const VideoCollection = (props) => {
-    var cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+const channelNames = ["thehungrypartier"];
 
-    const { videoPlayer, renderVideos } = useContext(VideoContext);
-    const [channel, setChannel] = useState();
+const VideoCollection = (props) => {
+    const { videoPlayer, renderVideos, clearVideos } = useContext(VideoContext);
+
+    const [currentChannel, setCurrentChannel] = useState();
+    const [channels, setChannels] = useState([]);
+
+    let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
 
     const fetchVideos = useCallback(async () => {
         if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
-            let response = await cache.receive(
-                videoPlayer.token ?? INITIAL_VIDEO_TOKEN, getVideos);
+            let tokenKey = videoPlayer.token ?? INITIAL_VIDEO_TOKEN;
 
-            //setChannel(ch);
+            if (currentChannel) {
+                tokenKey += `_${currentChannel}`;
+            }
+
+            let response = await cache.receive(tokenKey, getVideos);
 
             let token = response.token !== videoPlayer.token ?
                 response.token : END_VIDEO_TOKEN;
 
             renderVideos(response.videos, token);
         }
-    }, [videoPlayer.token, props.api]);
+    }, [videoPlayer.token, currentChannel, props.api]);
+
+    const fetchChannels = async (props) => {
+        let userChannels = [];
+
+        for (let username of channelNames) {
+            let userChannel = await props.api.getChannel(username);
+
+            userChannels.push(userChannel);
+        }
+
+        setChannels(userChannels);
+    };
+
+    useEffect(async () => {
+        if (props.api) {
+            await fetchChannels(props);
+        }
+    }, [props.api]);
 
     const getVideos = async () => {
-        let channelResponse = await props.api.getChannel("thehungrypartier");
-        let channelPlaylists = await props.api.getPlaylists(channelResponse.id, videoPlayer.token);
-
-        let response = await props.api.getPlaylistVideos(channelPlaylists[0].id);
-
         let videos = [];
+        let response;
 
-        for (let item of response.items) {
-            let itemId = item.contentDetails.videoId;
-            let video = await props.api.getVideo(itemId);
+        if (!currentChannel) {
+            response = await props.api.getVideos(videoPlayer.token);
+            videos = response.videos;
+        }
+        else {
+            let channelPlaylist = await props.api.getPlaylists(currentChannel);
 
-            if (video) {
-                videos.push(video);
+            response = await props.api.getPlaylistVideos(channelPlaylist[0].id);
+
+            for (let item of response.items) {
+                let itemId = item.contentDetails.videoId;
+                let video = await props.api.getVideo(itemId, videoPlayer.token);
+
+                if (video) {
+                    videos.push(video);
+                }
             }
         }
 
         return { videos, token: response.token };
     }
 
+    const selectChannel = (id) => {
+        setCurrentChannel(id);
+        clearVideos();
+    };
+
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard
             id={v.video.id}
             key={"video_card_" + v.video.id}
+            token={v.video.token}
             title={v.video.title}
             description={v.video.description}
             seconds={v.seconds}
@@ -70,14 +107,21 @@ const VideoCollection = (props) => {
     );
 
     let loadingBar = videoPlayer.token && videoPlayer.token !== END_VIDEO_TOKEN ?
-        <CircularProgress sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
+        <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
-    let ch = channel ? <VideoChannel image={channel.snippet.thumbnails.default.url} /> : null;
+    let videoChannels = channels.map(c =>
+        <Wrapper onClick={selectChannel.bind(null, c.id)}>
+            <VideoChannel
+                selected={currentChannel === c.id}
+                key={"video_channel_" + c.id}
+                image={c.snippet.thumbnails.default.url} />
+        </Wrapper>
+    );
 
     return (
         <Wrapper>
             <Grid container spacing={2}>
-                {ch}
+                {videoChannels}
             </Grid>
             <Grid container spacing={4}>
                 {data}

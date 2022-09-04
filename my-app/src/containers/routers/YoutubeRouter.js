@@ -8,7 +8,7 @@ const YoutubeRouter = (props) => {
         index: props.index,
         containers: [
             { Page: Home, path: props.index },
-            { Page: Video, path: `${props.index}/videos/:id` },
+            { Page: Video, path: `${props.index}/videos/:token/:id` },
         ],
     };
 
