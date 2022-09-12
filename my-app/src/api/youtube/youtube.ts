@@ -51,6 +51,24 @@ class YoutubeApi {
         }
     }
 
+    public async getSubscriptions(accessToken: string) {
+        let url = this.getUrl(this.config.paths.subs);
+
+        url.searchParams.append("part", "snippet");
+        url.searchParams.append("mine", "true");
+        url.searchParams.append("access_token", accessToken);
+
+        let response = await fetch(url.toString());
+
+        if (response.ok) {
+            let result = await response.json();
+
+            if (result && result.items.length) {
+                return result.items;
+            }
+        }
+    }
+
     public async getPlaylists(channelId: string) {
         let url = this.getUrl(this.config.paths.p);
 
@@ -128,21 +146,21 @@ class YoutubeApi {
 
     private map(items: any[], pageToken: string): Video[] {
         return items
-        .filter(v => v !== undefined)
-        .map(v => {
-            let title: string = new Text(v.snippet.title);
-            let description: string = new Text(v.snippet.description);
+            .filter(v => v !== undefined)
+            .map(v => {
+                let title: string = new Text(v.snippet.title);
+                let description: string = new Text(v.snippet.description);
 
-            return {
-                id: v.id.videoId ?? v.id,
-                title: title.substring(this.parameters.maxTitleLength),
-                description: description.substring(this.parameters.maxDescriptionLength),
-                image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
-                views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
-                likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
-                token: pageToken ?? INITIAL_VIDEO_TOKEN,
-            };
-        });
+                return {
+                    id: v.id.videoId ?? v.id,
+                    title: title.substring(this.parameters.maxTitleLength),
+                    description: description.substring(this.parameters.maxDescriptionLength),
+                    image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
+                    views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                    likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
+                    token: pageToken ?? INITIAL_VIDEO_TOKEN,
+                };
+            });
     }
 
     private getUrl(pathName: string, videosPerRequest: number | null = null): URL {

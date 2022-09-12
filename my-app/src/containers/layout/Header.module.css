@@ -1,0 +1,13 @@
+.v_header_nav {
+    display: grid;
+    grid-auto-columns: 10rem;
+}
+
+.v_header_nav_home{
+    grid-column: 1;
+}
+
+.v_header_nav_signin{
+    grid-column: 5;
+    padding: 1rem 4rem;
+}

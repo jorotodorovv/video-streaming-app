@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useContext, useEffect, useState } from "react"
+import { useCallback, useContext, useEffect, useState } from "react"
 
 import { CircularProgress } from "@mui/material";
 import Grid from '@mui/material/Grid';
@@ -16,15 +16,14 @@ const END_VIDEO_TOKEN = "end";
 
 const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
 
-const channelNames = ["thehungrypartier"];
-
 const VideoCollection = (props) => {
-    const { videoPlayer, renderVideos, clearVideos } = useContext(VideoContext);
+    const { videoPlayer, renderVideos, clearVideos, gToken } = useContext(VideoContext);
 
     const [currentChannel, setCurrentChannel] = useState();
     const [channels, setChannels] = useState([]);
 
     let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+    let gCache = new Cache('g_access_token');
 
     const fetchVideos = useCallback(async () => {
         if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
@@ -42,24 +41,6 @@ const VideoCollection = (props) => {
             renderVideos(response.videos, token);
         }
     }, [videoPlayer.token, currentChannel, props.api]);
-
-    const fetchChannels = async (props) => {
-        let userChannels = [];
-
-        for (let username of channelNames) {
-            let userChannel = await props.api.getChannel(username);
-
-            userChannels.push(userChannel);
-        }
-
-        setChannels(userChannels);
-    };
-
-    useEffect(async () => {
-        if (props.api) {
-            await fetchChannels(props);
-        }
-    }, [props.api]);
 
     const getVideos = async () => {
         let videos = [];
@@ -87,6 +68,23 @@ const VideoCollection = (props) => {
         return { videos, token: response.token };
     }
 
+    useEffect(() => {
+        if (props.googleClient && !gToken) {
+            props.googleClient.requestAccessToken();
+        }
+    }, [props.googleClient]);
+
+    useEffect(async () => {
+        if (props.api && gToken) {
+            await fetchChannels(props.api, gToken);
+        }
+    }, [props.api, gToken]);
+
+    const fetchChannels = async (api, token) => {
+        let channels = await api.getSubscriptions(token);
+        setChannels(channels);
+    };
+
     const selectChannel = (id) => {
         setCurrentChannel(id);
         clearVideos();
@@ -110,10 +108,10 @@ const VideoCollection = (props) => {
         <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
     let videoChannels = channels.map(c =>
-        <Wrapper onClick={selectChannel.bind(null, c.id)}>
+        <Wrapper onClick={selectChannel.bind(null, c.snippet.resourceId.channelId)}>
             <VideoChannel
-                selected={currentChannel === c.id}
                 key={"video_channel_" + c.id}
+                selected={currentChannel === c.snippet.resourceId.channelId}
                 image={c.snippet.thumbnails.default.url} />
         </Wrapper>
     );
