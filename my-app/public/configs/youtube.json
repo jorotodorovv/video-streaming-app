@@ -1,12 +1,13 @@
 {
     "url": "https://www.googleapis.com",
-    "key": "AIzaSyDBGJ3bpQV9f3Ok59hS3eSemC1YhNrwxaQ",
+    "key": "AIzaSyCoGsVezkfJWSiWjVWODCkgXxH67x26Ztg",
     "version": "youtube/v3",
     "paths": {
         "v": "/videos",
         "ch": "/channels",
         "p": "/playlists",
-        "i": "/playlistItems"
+        "i": "/playlistItems",
+        "subs": "/subscriptions"
     },
     "params": {
         "timeQuery": "t"

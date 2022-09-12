@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 
 const Wrapper = forwardRef((props, ref) => {
-    if (ref || props.onClick) {
+    if (ref || props.onClick || props.className) {
         return (
-            <div onClick={props.onClick} ref={ref}>
+            <div className={props.className} onClick={props.onClick} ref={ref}>
                 {props.children}
             </div>
         );

@@ -26,9 +26,19 @@ const YoutubeProvider = () => {
                 videoConfig,
                 parameters);
         }
-    }, [videoConfig])
+    }, [videoConfig]);
 
-    let dependencies = { api };
+    const client = useCallback((callback) => {
+        if (window.google) {
+            return window.google.accounts.oauth2.initTokenClient({
+                client_id: '545284710817-3cba0dmurvn7l65ih5iphb3u0ladu22j.apps.googleusercontent.com',
+                scope: 'https://www.googleapis.com/auth/youtube.readonly',
+                callback
+            });
+        }
+    }, [window.google]);
+
+    let dependencies = { api, client };
 
     return (
         <VideoProvider>
