@@ -6,10 +6,18 @@ import { VideoContext } from "../../../context/video-context";
 
 import VideoChannel from "../../../components/VideoChannel/VideoChannel";
 
+import styles from './VideoChannels.module.css';
+
 const VideoChannels = (props) => {
     const [channels, setChannels] = useState([]);
 
     const { gToken } = useContext(VideoContext);
+
+    useEffect(() => {
+        if (props.googleClient && !gToken) {
+            props.googleClient.requestAccessToken();
+        }
+    }, [props.googleClient]);
 
     useEffect(async () => {
         if (props.api && gToken) {
@@ -31,7 +39,7 @@ const VideoChannels = (props) => {
             image={c.snippet.thumbnails.default.url} />
     );
 
-    return (<Grid container spacing={props.spacing}>
+    return (<Grid className={styles.v_channel_section} container spacing={props.spacing}>
         {videoChannels}
     </Grid>);
 };

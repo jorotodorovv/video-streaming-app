@@ -17,7 +17,7 @@ const END_VIDEO_TOKEN = "end";
 const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
 
 const VideoCollection = (props) => {
-    const { videoPlayer, renderVideos, clearVideos, gToken } = useContext(VideoContext);
+    const { videoPlayer, renderVideos, clearVideos } = useContext(VideoContext);
 
     const [currentChannel, setCurrentChannel] = useState();
 
@@ -66,13 +66,9 @@ const VideoCollection = (props) => {
         return { videos, token: response.token };
     }
 
-    useEffect(() => {
-        if (props.googleClient && !gToken) {
-            props.googleClient.requestAccessToken();
-        }
-    }, [props.googleClient]);
-
     const selectChannel = (id) => {
+        if (currentChannel === id) return;
+
         setCurrentChannel(id);
         clearVideos();
     };
@@ -98,6 +94,7 @@ const VideoCollection = (props) => {
         <Wrapper>
             <VideoChannels
                 api={props.api}
+                googleClient={props.googleClient}
                 currentChannel={currentChannel}
                 onSelectChannel={selectChannel}
                 spacing={2} />
