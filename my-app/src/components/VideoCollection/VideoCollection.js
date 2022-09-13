@@ -7,9 +7,9 @@ import Observer from "../../hoc/Observer";
 import VideoCard from "../VideoCard/VideoCard";
 
 import { VideoContext } from "../../context/video-context";
-import VideoChannel from "../VideoChannel/VideoChannel";
 import Wrapper from "../../hoc/Wrapper";
 import Cache from '../../helpers/basic/Cache.ts'
+import VideoChannels from "../../containers/sections/VideoChannels/VideoChannels";
 
 const INITIAL_VIDEO_TOKEN = "default";
 const END_VIDEO_TOKEN = "end";
@@ -20,10 +20,8 @@ const VideoCollection = (props) => {
     const { videoPlayer, renderVideos, clearVideos, gToken } = useContext(VideoContext);
 
     const [currentChannel, setCurrentChannel] = useState();
-    const [channels, setChannels] = useState([]);
 
     let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
-    let gCache = new Cache('g_access_token');
 
     const fetchVideos = useCallback(async () => {
         if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
@@ -74,17 +72,6 @@ const VideoCollection = (props) => {
         }
     }, [props.googleClient]);
 
-    useEffect(async () => {
-        if (props.api && gToken) {
-            await fetchChannels(props.api, gToken);
-        }
-    }, [props.api, gToken]);
-
-    const fetchChannels = async (api, token) => {
-        let channels = await api.getSubscriptions(token);
-        setChannels(channels);
-    };
-
     const selectChannel = (id) => {
         setCurrentChannel(id);
         clearVideos();
@@ -107,20 +94,13 @@ const VideoCollection = (props) => {
     let loadingBar = videoPlayer.token && videoPlayer.token !== END_VIDEO_TOKEN ?
         <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
-    let videoChannels = channels.map(c =>
-        <Wrapper onClick={selectChannel.bind(null, c.snippet.resourceId.channelId)}>
-            <VideoChannel
-                key={"video_channel_" + c.id}
-                selected={currentChannel === c.snippet.resourceId.channelId}
-                image={c.snippet.thumbnails.default.url} />
-        </Wrapper>
-    );
-
     return (
         <Wrapper>
-            <Grid container spacing={2}>
-                {videoChannels}
-            </Grid>
+            <VideoChannels
+                api={props.api}
+                currentChannel={currentChannel}
+                onSelectChannel={selectChannel}
+                spacing={2} />
             <Grid container spacing={4}>
                 {data}
                 <Observer callback={fetchVideos} state={[videoPlayer]} />
