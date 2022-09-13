@@ -1,7 +1,10 @@
 {
     "url": "https://www.googleapis.com",
     "key": "AIzaSyCoGsVezkfJWSiWjVWODCkgXxH67x26Ztg",
+    "clientId": "545284710817-3cba0dmurvn7l65ih5iphb3u0ladu22j.apps.googleusercontent.com",
+    "scope": "https://www.googleapis.com/auth/youtube.readonly",
     "version": "youtube/v3",
+    "index": "/youtube",
     "paths": {
         "v": "/videos",
         "ch": "/channels",

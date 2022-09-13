@@ -10,7 +10,7 @@ const TorrentRouter = (props) => {
     };
 
     return <BaseRouter
-        main={paths.index}
+        index={paths.index}
         containers={paths.containers}
         dependencies={props.dependencies} />
 };

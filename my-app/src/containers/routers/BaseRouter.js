@@ -4,20 +4,22 @@ import RouteBuilder from '../../helpers/routes/RouteBuilder.tsx';
 
 const BaseRouter = (props) => {
     const [routes, setRoutes] = useState([]);
-    
-    const initRoutes = async () => {
-        const routeBuilder = new RouteBuilder(props.containers, props.dependencies);
-    
-        const output = routeBuilder.render(props.main);
-    
-        setRoutes(output);
-    };
-    
+
     useEffect(() => {
-        if (props.dependencies) {
+        if (props.index &&
+            props.containers &&
+            props.dependencies) {
             initRoutes();
         }
-    }, [props.dependencies]);
+    }, [props.index, props.containers, props.dependencies]);
+
+    const initRoutes = async () => {
+        const routeBuilder = new RouteBuilder(props.containers, props.dependencies);
+
+        const output = routeBuilder.render(props.index);
+
+        setRoutes(output);
+    };
 
     return routes;
 };

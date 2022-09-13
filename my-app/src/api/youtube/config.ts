@@ -5,6 +5,11 @@ class ProviderConfigurations extends BaseConfigurations {
     public url: string;
     public key: string;
 
+    public clientId: string;
+    public scope: string;
+
+    public index: string;
+
     public paths: Object;
     public params: Object;
 
@@ -17,6 +22,11 @@ class ProviderConfigurations extends BaseConfigurations {
 
         this.url = config.url.concat(`/${config.version}`);
         this.key = config.key;
+
+        this.index = config.index;
+
+        this.clientId = config.clientId;
+        this.scope = config.scope;
 
         this.paths = config.paths;
         this.params = config.params;
