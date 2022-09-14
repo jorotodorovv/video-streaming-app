@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 import reactStringReplace from 'react-string-replace'
 
 const DEFAULT_SUFFIX: string = "...";
