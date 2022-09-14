@@ -100,7 +100,7 @@ const VideoCollection = (props) => {
                 spacing={2} />
             <Grid container spacing={4}>
                 {data}
-                <Observer callback={fetchVideos} state={[videoPlayer]} />
+                <Observer callback={fetchVideos} state={[videoPlayer.videos]} />
                 {loadingBar}
             </Grid>
         </Wrapper>

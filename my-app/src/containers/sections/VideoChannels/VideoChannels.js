@@ -19,10 +19,14 @@ const VideoChannels = (props) => {
         }
     }, [props.googleClient]);
 
-    useEffect(async () => {
-        if (props.api && gToken) {
-            await fetchChannels(props.api, gToken);
-        }
+    useEffect(() => {
+        const renderChannels = async () => {
+            if (props.api && gToken) {
+                await fetchChannels(props.api, gToken);
+            }
+        };
+
+        renderChannels();
     }, [props.api, gToken]);
 
     const fetchChannels = async (api, token) => {

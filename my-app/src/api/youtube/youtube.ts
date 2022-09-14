@@ -1,5 +1,5 @@
-import Text from "../../helpers/basic/Text.ts";
-import VideoConfigurations from "./config.ts";
+import Text from "../../helpers/basic/Text";
+import VideoConfigurations from "./config";
 
 interface Video {
     id: number,
@@ -148,8 +148,8 @@ class YoutubeApi {
         return items
             .filter(v => v !== undefined)
             .map(v => {
-                let title: string = new Text(v.snippet.title);
-                let description: string = new Text(v.snippet.description);
+                let title = new Text(v.snippet.title);
+                let description = new Text(v.snippet.description);
 
                 return {
                     id: v.id.videoId ?? v.id,

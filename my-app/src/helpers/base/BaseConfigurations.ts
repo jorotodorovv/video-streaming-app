@@ -1,4 +1,4 @@
-import File from "../../helpers/basic/File.ts";
+import File from "../../helpers/basic/File";
 
 abstract class BaseConfigurations {
     private file : File;

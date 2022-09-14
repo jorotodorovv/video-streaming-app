@@ -1,5 +1,16 @@
-import BaseConfigurations from "../../helpers/base/BaseConfigurations.ts";
-import File from "../../helpers/basic/File.ts";
+import BaseConfigurations from "../../helpers/base/BaseConfigurations";
+
+interface ProviderPaths {
+    v: string,
+    ch: string,
+    p: string,
+    i: string,
+    subs: string,
+}
+
+interface ProviderParams {
+    timeQuery: string,
+}
 
 class ProviderConfigurations extends BaseConfigurations {
     public url: string;
@@ -10,8 +21,8 @@ class ProviderConfigurations extends BaseConfigurations {
 
     public index: string;
 
-    public paths: Object;
-    public params: Object;
+    public paths: ProviderPaths;
+    public params: ProviderParams;
 
     constructor(configPath: string) {
         super(configPath);

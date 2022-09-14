@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
-import DOMObserver from "../helpers/dom/DomObserver.ts";
+import DOMObserver from "../helpers/dom/DomObserver";
 import Wrapper from "./Wrapper";
 
 const Observer = (props) => {
