@@ -41,13 +41,13 @@ export default function Video(props) {
     }, [api, id]);
 
     let getVideo = async () => {
-        let video = videoPlayer.videos[id].video;
+        let videoData = videoPlayer.videos[id];
 
-        if (!video) {
-            video = await api.getVideo(id);
+        if (!videoData) {
+            return await api.getVideo(id);
         }
 
-        return video;
+        return videoData.video;
     }
 
     useEffect(() => {
