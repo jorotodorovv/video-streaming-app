@@ -11,7 +11,7 @@ import styles from './VideoChannels.module.css';
 const VideoChannels = (props) => {
     const [channels, setChannels] = useState([]);
 
-    const { gToken } = useContext(VideoContext);
+    const { gToken, clearVideos } = useContext(VideoContext);
 
     useEffect(() => {
         if (props.googleClient && !gToken) {
@@ -34,12 +34,19 @@ const VideoChannels = (props) => {
         setChannels(channels);
     };
 
+    const selectChannel = (id) => {
+        if (props.currentChannel === id) return;
+    
+        props.setCurrentChannel(id);
+        clearVideos();
+    };    
+
     let videoChannels = channels.map(c =>
         <VideoChannel
             key={"video_channel_" + c.id}
             selectedChannelId={props.currentChannel}
             channelId={c.snippet.resourceId.channelId}
-            onSelectChannel={props.onSelectChannel}
+            onSelectChannel={selectChannel}
             image={c.snippet.thumbnails.default.url} />
     );
 

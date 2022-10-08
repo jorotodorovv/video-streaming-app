@@ -1,15 +1,14 @@
-import { useCallback, useContext, useEffect, useState } from "react"
+import { useCallback, useContext } from "react"
 
 import { CircularProgress } from "@mui/material";
-import Grid from '@mui/material/Grid';
 
-import Observer from "../../hoc/Observer";
-import VideoCard from "../VideoCard/VideoCard";
+import Observer from "../../../hoc/Observer";
+import VideoCard from "../../../components/VideoCard/VideoCard";
 
-import { VideoContext } from "../../context/video-context";
-import Wrapper from "../../hoc/Wrapper";
-import Cache from '../../helpers/basic/Cache.ts'
-import VideoChannels from "../../containers/sections/VideoChannels/VideoChannels";
+import { VideoContext } from "../../../context/video-context";
+import Cache from '../../../helpers/basic/Cache.ts'
+
+import styles from './VideoCollection.module.css'
 
 const INITIAL_VIDEO_TOKEN = "default";
 const END_VIDEO_TOKEN = "end";
@@ -17,9 +16,7 @@ const END_VIDEO_TOKEN = "end";
 const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
 
 const VideoCollection = (props) => {
-    const { videoPlayer, renderVideos, clearVideos } = useContext(VideoContext);
-
-    const [currentChannel, setCurrentChannel] = useState();
+    const { videoPlayer, renderVideos } = useContext(VideoContext);
 
     let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
 
@@ -27,8 +24,8 @@ const VideoCollection = (props) => {
         if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
             let tokenKey = videoPlayer.token ?? INITIAL_VIDEO_TOKEN;
 
-            if (currentChannel) {
-                tokenKey += `_${currentChannel}`;
+            if (props.currentChannel) {
+                tokenKey += `_${props.currentChannel}`;
             }
 
             let response = await cache.receive(tokenKey, getVideos);
@@ -38,18 +35,18 @@ const VideoCollection = (props) => {
 
             renderVideos(response.videos, token);
         }
-    }, [videoPlayer.token, currentChannel, props.api]);
+    }, [videoPlayer.token, props.currentChannel, props.api]);
 
     const getVideos = async () => {
         let videos = [];
         let response;
 
-        if (!currentChannel) {
+        if (!props.currentChannel) {
             response = await props.api.getVideos(videoPlayer.token);
             videos = response.videos;
         }
         else {
-            let channelPlaylist = await props.api.getPlaylists(currentChannel);
+            let channelPlaylist = await props.api.getPlaylists(props.currentChannel);
 
             response = await props.api.getPlaylistVideos(channelPlaylist[0].id);
 
@@ -64,13 +61,6 @@ const VideoCollection = (props) => {
         }
 
         return { videos, token: response.token };
-    }
-
-    const selectChannel = (id) => {
-        if (currentChannel === id) return;
-
-        setCurrentChannel(id);
-        clearVideos();
     };
 
     let data = Object.values(videoPlayer.videos).map(v =>
@@ -90,21 +80,11 @@ const VideoCollection = (props) => {
     let loadingBar = videoPlayer.token && videoPlayer.token !== END_VIDEO_TOKEN ?
         <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
 
-    return (
-        <Wrapper>
-            <VideoChannels
-                api={props.api}
-                googleClient={props.googleClient}
-                currentChannel={currentChannel}
-                onSelectChannel={selectChannel}
-                spacing={2} />
-            <Grid container spacing={4}>
-                {data}
-                <Observer callback={fetchVideos} state={[videoPlayer.videos]} />
-                {loadingBar}
-            </Grid>
-        </Wrapper>
-    );
-}
+    return <div className={styles.v_collection}>
+        {data}
+            <Observer callback={fetchVideos} state={[videoPlayer.videos]} />
+        {loadingBar}
+    </div>
+};
 
 export default VideoCollection;

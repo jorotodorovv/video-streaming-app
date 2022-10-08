@@ -1,14 +1,19 @@
-import { useContext, useMemo } from 'react';
+import { useState, useContext, useMemo } from 'react';
 
 import Layout from '../../layout/Layout';
+import Wrapper from '../../../hoc/Wrapper';
 
 import { VideoContext } from "../../../context/video-context";
 
-import VideoCollection from '../../../components/VideoCollection/VideoCollection'
+import VideoCollection from '../../sections/VideoCollection/VideoCollection';
+import VideoChannels from '../../sections/VideoChannels/VideoChannels';
+
 import VideoPlayback from '../../../components/VideoPlayback/VideoPlayback';
 
 export default function Home(props) {
   const { changeGToken } = useContext(VideoContext);
+
+  const [currentChannel, setCurrentChannel] = useState();
 
   const api = useMemo(() => {
     return props.api({
@@ -26,9 +31,18 @@ export default function Home(props) {
 
   return (
     <Layout>
-      <VideoCollection
-        api={api}
-        googleClient={client} />
+      <Wrapper>
+        <VideoChannels
+          api={api}
+          googleClient={client}
+          currentChannel={currentChannel}
+          spacing={2} />
+        <VideoCollection
+          api={api}
+          googleClient={client}
+          currentChannel={currentChannel}
+          setCurrentChannel={setCurrentChannel} />
+      </Wrapper>
       <VideoPlayback />
     </Layout>
   );
