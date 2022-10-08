@@ -10,27 +10,27 @@ const VideoBox = (props) => {
     };
 
     if (props.load) {
-        media.content = <VideoPlayer id={props.id} seconds={props.seconds} />;
-        media.className = styles.v_card_content_scale;
+        media.content =
+            <div className={styles.v_card_content_scale}>
+                <VideoPlayer id={props.id} seconds={props.seconds} />
+            </div>;
     }
     else {
-        media.content = <img width={300} src={props.image} alt={props.id} />;
+        let mediaClass = props.isPlaying ? styles.v_card_content_overlay : null;
 
-        if (props.isPlaying) {
-            media.className = styles.v_card_content_overlay
-        }
+        media.content =
+            <div className={mediaClass}>
+                <img width={300} src={props.image} alt={props.id} />
+                <div className={styles.v_card_content_text}>
+                    <p>{props.title}</p>
+                    <p>Views: {props.views}</p>
+                </div>
+            </div>;
     }
 
-    let card = <div className={media.className}>
-        {media.content}
-        <div className={styles.v_card_content_text}>
-            <p>{props.title}</p>
-            <p>Views: {props.views}</p>
-        </div>
-    </div>
-
-    return props.isPlaying ? card :
-        <Link className={styles.v_card_link} to={media.link}>{card}</Link>
+    return props.isPlaying ?
+        media.content :
+        <Link className={styles.v_card_link} to={media.link}>{media.content}</Link>
 };
 
 export default VideoBox;

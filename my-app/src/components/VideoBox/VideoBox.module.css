@@ -4,11 +4,9 @@
   z-index: 1;
 }
 
-.v_card_content_overlay {
+.v_card_content_overlay img {
   background-color: SlateGray;
   position:relative;
-  width: 100%;
-  height: 100%;
   opacity: 0.20;
   -moz-opacity: 20%;
   -webkit-opacity: 20%;
@@ -16,7 +14,7 @@
 }
 
 .v_card_content_scale {
-  z-index: 0;
+  z-index: 1;
 	-webkit-animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }
