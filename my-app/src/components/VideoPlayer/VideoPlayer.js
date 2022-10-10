@@ -1,4 +1,4 @@
-import { forwardRef, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { VideoContext } from '../../context/video-context';
 
@@ -7,7 +7,7 @@ import VideoFrame from '../VideoFrame/VideoFrame'
 const INTERVAL_SECONDS_ADVANTAGE = 0.25;
 const INTERVAL_DURATION = 1000;
 
-const VideoPlayer = forwardRef((props, ref) => {
+const VideoPlayer = (props) => {
     const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
     const [secondsInterval, setSecondsInterval] = useState();
 
@@ -57,13 +57,12 @@ const VideoPlayer = forwardRef((props, ref) => {
 
     return <VideoFrame
         {...props}
-        ref={ref}
         interval={secondsInterval}
         onSetSeconds={setSecondsHandler}
         onSetInterval={setIntervalHandler}
         onClearInterval={clearIntervalHandler}
         onResetPlayer={resetPlayerHandler}
     />
-});
+};
 
 export default VideoPlayer;

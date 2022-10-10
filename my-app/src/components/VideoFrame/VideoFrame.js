@@ -1,28 +1,35 @@
-import { forwardRef, useMemo } from 'react';
+import { useMemo } from 'react';
 
-import YouTube from 'react-youtube';
-
-import Wrapper from '../../hoc/Wrapper';
+import YoutubeFrame from '../../api/youtube/iframe.js';
 
 const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
 
-const VideoPlayer = forwardRef((props, ref) => {
+const VideoPlayer = (props) => {
     const opts = useMemo(() => {
         return {
+            videoId: props.id,
             height: props.height ?? MAX_HEIGHT,
             width: props.width ?? MAX_WIDTH,
             playerVars: {
                 start: props.seconds,
                 autoplay: 1,
                 modestbranding: 1,
+                enablejsapi: 1,
                 rel: 0,
                 fs: 0,
-            }
+            },
+            events: {
+                onReady,
+                onStateChange,
+                onEnd,
+            },
         };
     }, []);
 
     const onReady = (e) => {
+        e.target.playVideo();
+
         props.onSetInterval(e);
     };
 
@@ -37,17 +44,7 @@ const VideoPlayer = forwardRef((props, ref) => {
         props.onResetPlayer(e);
     };
 
-    return (
-        <Wrapper ref={ref}>
-            <YouTube
-                videoId={props.id}
-                opts={opts}
-                onReady={onReady}
-                onStateChange={onStateChange}
-                onEnd={onEnd}
-            />
-        </Wrapper>
-    );
-});
+    return <YoutubeFrame opts={opts} />;
+};
 
 export default VideoPlayer;
