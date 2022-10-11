@@ -1,5 +1,5 @@
 .v_description_button {
-    background-color: #eee;
+    background-color: inherit;
     color: #444;
     cursor: pointer;
     padding: 18px;
@@ -12,7 +12,7 @@
 
   .v_description_panel {
     padding: 0 18px;
-    background-color: white;
+    background-color: inherit;
     display: none;
     visibility: hidden;
     overflow: hidden;

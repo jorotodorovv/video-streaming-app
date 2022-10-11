@@ -35,7 +35,7 @@ const VideoChannels = (props) => {
     const selectChannel = (id) => {
         if (props.currentChannel === id) return;
 
-        props.setCurrentChannel(id);
+        props.onSetCurrentChannel(id);
         clearVideos();
     };
 

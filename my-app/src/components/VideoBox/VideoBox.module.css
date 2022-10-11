@@ -10,6 +10,7 @@
 
 .v_card_link {
   text-decoration: none; 
+  color: inherit;
 }
 
 .v_card_content_overlay img {

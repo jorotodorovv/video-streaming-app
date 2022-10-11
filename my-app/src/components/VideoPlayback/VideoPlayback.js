@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { VideoContext } from '../../context/video-context';
 
-import { Grid } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 import Wrapper from '../../hoc/Wrapper';
@@ -23,7 +22,7 @@ const VideoPlayback = () => {
 
     let playback = player ?
         (
-            <Grid item md={12} className={styles.v_playback}>
+            <div className={styles.v_playback}>
                 <CloseIcon className={styles.v_card_close} fontSize={'large'} onClick={onClose} />;
                 <VideoBox
                     id={player.video.id}
@@ -34,7 +33,7 @@ const VideoPlayback = () => {
                     views={player.video.views}
                     load={DEFAULT_LOAD_STATE}
                 />
-            </Grid>
+            </div>
         ) : null;
 
     return <Wrapper>{playback}</Wrapper>;
