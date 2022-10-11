@@ -46,8 +46,8 @@ export default function VideoContent(props) {
             <VideoDescription
                 id={props.id}
                 key={"video_description_" + props.id}
-                title={video.title}
-                description={video.description}
+                title={video.title.text}
+                description={video.description.text}
                 likes={video.likes}
                 onChangeTime={changeTimeHandler} />
         </Wrapper >

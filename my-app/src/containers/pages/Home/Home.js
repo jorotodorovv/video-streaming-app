@@ -18,8 +18,6 @@ export default function Home(props) {
   const api = useMemo(() => {
     return props.api({
       videosPerRequest: 16,
-      maxTitleLength: 30,
-      maxDescriptionLength: 100
     })
   }, [props.api]);
 
