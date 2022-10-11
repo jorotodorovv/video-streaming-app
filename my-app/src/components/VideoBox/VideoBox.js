@@ -1,10 +1,5 @@
 import { Link } from 'react-router-dom';
 
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
 import styles from './VideoBox.module.css'
@@ -15,31 +10,27 @@ const VideoBox = (props) => {
     };
 
     if (props.load) {
-        media.content = <VideoPlayer id={props.id} seconds={props.seconds} />;
-        media.className = styles.v_card_content_scale;
+        media.content =
+            <div className={styles.v_card_content_scale}>
+                <VideoPlayer id={props.id} seconds={props.seconds} />
+            </div>;
     }
     else {
-        media.content = <CardMedia component="img" image={props.image} alt={props.id} />;
+        let mediaClass = props.isPlaying ? styles.v_card_content_overlay : null;
 
-        if (props.isPlaying) {
-            media.className = styles.v_card_content_overlay
-        }
+        media.content =
+            <div className={mediaClass}>
+                <img width={300} src={props.image} alt={props.id} />
+                <div className={styles.v_card_content_text}>
+                    <p>{props.title}</p>
+                    <p>Views: {props.views}</p>
+                </div>
+            </div>;
     }
 
-    let card = (
-        <Card className={media.className} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-            {media.content}
-            <CardContent sx={{ flexGrow: 1 }}>
-                {props.title}
-                <Typography variant="body2" color="secondary">
-                    Views: {props.views}
-                </Typography>
-            </CardContent>
-        </Card>
-    );
-
-    return props.isPlaying ? card :
-        <Link className={styles.v_card_link} to={media.link}>{card}</Link>
+    return props.isPlaying ?
+        media.content :
+        <Link className={styles.v_card_link} to={media.link}>{media.content}</Link>
 };
 
 export default VideoBox;
