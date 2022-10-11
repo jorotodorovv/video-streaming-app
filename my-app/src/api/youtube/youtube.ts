@@ -3,8 +3,8 @@ import VideoConfigurations from "./config";
 
 interface Video {
     id: number,
-    title: Text,
-    description: Text,
+    title: string,
+    description: string,
     image: string,
     views: string,
     likes: string,
@@ -154,8 +154,8 @@ class YoutubeApi {
 
                 return {
                     id: v.id.videoId ?? v.id,
-                    title: title,
-                    description: description,
+                    title: title.text,
+                    description: description.text,
                     image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                     views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
