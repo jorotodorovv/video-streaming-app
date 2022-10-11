@@ -25,7 +25,7 @@ const VideoDescription = (props) => {
             buttonClass={styles.v_description_button}
             panelClass={styles.v_description_panel}
             activeClass={styles.active}>
-            <h4>{props.likes}</h4>
+            <h4>{props.likes} likes</h4>
             {description}
         </Accordion>
     );

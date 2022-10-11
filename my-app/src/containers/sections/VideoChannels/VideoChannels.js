@@ -1,7 +1,5 @@
 import { useEffect, useState, useContext } from "react"
 
-import Grid from '@mui/material/Grid';
-
 import { VideoContext } from "../../../context/video-context";
 
 import VideoChannel from "../../../components/VideoChannel/VideoChannel";
@@ -36,10 +34,10 @@ const VideoChannels = (props) => {
 
     const selectChannel = (id) => {
         if (props.currentChannel === id) return;
-    
+
         props.setCurrentChannel(id);
         clearVideos();
-    };    
+    };
 
     let videoChannels = channels.map(c =>
         <VideoChannel
@@ -50,9 +48,10 @@ const VideoChannels = (props) => {
             image={c.snippet.thumbnails.default.url} />
     );
 
-    return (<Grid className={styles.v_channel_section} container spacing={props.spacing}>
-        {videoChannels}
-    </Grid>);
+    return (
+        <div className={styles.v_channel_section}>
+            {videoChannels}
+        </div>);
 };
 
 export default VideoChannels;
