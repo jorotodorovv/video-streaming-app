@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import Renderer from '../../hoc/Renderer';
 
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
@@ -13,10 +14,10 @@ const VideoBox = (props) => {
         </div>;
     }
 
-    let mediaClass = props.isPlaying ? styles.v_card_content_overlay : null;
+    let overlayClass = props.isPlaying ? styles.v_card_content_overlay : null;
 
     let content =
-        <div className={mediaClass}>
+        <div className={overlayClass}>
             <img width={300} src={props.image} alt={props.id} />
             <div className={styles.v_card_content_text}>
                 <p>{props.title}</p>
@@ -24,7 +25,15 @@ const VideoBox = (props) => {
             </div>
         </div>;
 
-    return props.isPlaying ? content : <Link className={styles.v_card_link} to={link}>{content}</Link>
+    return props.isPlaying ?
+        content :
+        <Link className={styles.v_card_link} to={link}>
+            <Renderer
+                loadingClass={styles.v_card_loading}
+                loadedClass={styles.v_card_loaded}>
+                {content}
+            </Renderer>
+        </Link >
 };
 
 export default VideoBox;

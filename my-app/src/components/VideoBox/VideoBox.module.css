@@ -1,7 +1,15 @@
-.v_card_link {
-  text-decoration: none; 
+.v_card_loading {
+  visibility: hidden;
+}
+
+.v_card_loaded {
+  visibility: visible;
   position: relative;
   z-index: 1;
+}
+
+.v_card_link {
+  text-decoration: none; 
 }
 
 .v_card_content_overlay img {
