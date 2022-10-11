@@ -36,12 +36,12 @@ export default function Home(props) {
           api={api}
           googleClient={client}
           currentChannel={currentChannel}
+          onSetCurrentChannel={setCurrentChannel}
           spacing={2} />
         <VideoCollection
           api={api}
           googleClient={client}
-          currentChannel={currentChannel}
-          setCurrentChannel={setCurrentChannel} />
+          currentChannel={currentChannel} />
       </Wrapper>
       <VideoPlayback />
     </Layout>

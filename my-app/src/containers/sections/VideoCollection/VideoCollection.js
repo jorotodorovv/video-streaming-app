@@ -48,19 +48,21 @@ const VideoCollection = (props) => {
         else {
             let channelPlaylist = await props.api.getPlaylists(props.currentChannel);
 
-            response = await props.api.getPlaylistVideos(channelPlaylist[0].id);
+            if (channelPlaylist) {
+                response = await props.api.getPlaylistVideos(channelPlaylist[0].id);
 
-            for (let item of response.items) {
-                let itemId = item.contentDetails.videoId;
-                let video = await props.api.getVideo(itemId, videoPlayer.token);
+                for (let item of response.items) {
+                    let itemId = item.contentDetails.videoId;
+                    let video = await props.api.getVideo(itemId, videoPlayer.token);
 
-                if (video) {
-                    videos.push(video);
+                    if (video) {
+                        videos.push(video);
+                    }
                 }
             }
         }
 
-        return { videos, token: response.token };
+        return { videos, token: response?.token };
     };
 
     let data = Object.values(videoPlayer.videos).map(v =>
@@ -82,7 +84,7 @@ const VideoCollection = (props) => {
 
     return <div className={styles.v_collection}>
         {data}
-            <Observer callback={fetchVideos} state={[videoPlayer.videos]} />
+        <Observer callback={fetchVideos} state={[videoPlayer.videos]} />
         {loadingBar}
     </div>
 };
