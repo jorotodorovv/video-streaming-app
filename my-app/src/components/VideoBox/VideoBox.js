@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Renderer from '../../hoc/Renderer';
+import Wrapper from '../../hoc/Wrapper';
 
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
@@ -29,8 +30,8 @@ const VideoBox = (props) => {
         content :
         <Link className={styles.v_card_link} to={link}>
             <Renderer
-                loadingClass={styles.v_card_loading}
-                loadedClass={styles.v_card_loaded}>
+                className={styles.v_card}
+                activeClass={styles.active}>
                 {content}
             </Renderer>
         </Link >

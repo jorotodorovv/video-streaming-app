@@ -6,10 +6,10 @@ const Renderer = (props) => {
 
     const loadHandler = () => setRendered(true);
 
-    let className = rendered ? props.loadedClass : props.loadingClass;
+    let className = rendered ? [props.className, props.activeClass] : [props.className];
 
     return <Wrapper
-        className={className}
+        className={className.join(' ')}
         onLoad={loadHandler}>
         {props.children}
     </Wrapper>
