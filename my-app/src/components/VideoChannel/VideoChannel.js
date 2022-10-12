@@ -1,5 +1,3 @@
-import { Grid } from "@mui/material";
-
 import Wrapper from "../../hoc/Wrapper";
 
 import CircularImage from "../base/CircularImage/CircularImage"
@@ -16,10 +14,8 @@ const VideoChannel = (props) => {
     const onSelectChannel = props.onSelectChannel.bind(this, props.channelId);
 
     return (
-        <Wrapper onClick={onSelectChannel}>
-            <Grid item xs={1}>
-                <CircularImage className={classes.join(' ')} image={props.image} height={80} width={80} />
-            </Grid>
+        <Wrapper className={styles.v_channel_box} onClick={onSelectChannel}>
+            <CircularImage className={classes.join(' ')} image={props.image} height={80} width={80} />
         </Wrapper>
     );
 };

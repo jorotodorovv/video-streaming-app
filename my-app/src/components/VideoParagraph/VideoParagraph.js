@@ -1,4 +1,3 @@
-import { Link, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
 import Text from "../../helpers/basic/Text.ts";
@@ -14,22 +13,17 @@ const VideoParagraph = (props) => {
             let time = timestamp.split(":");
 
             return (
-                <Link
-                    style={{ cursor: "pointer" }}
+                <a style={{ cursor: "pointer" }}
                     onClick={props.onChangeTime.bind(this, time)}
-                    color="secondary"
-                    underline="none">
+                    color="secondary">
                     {timestamp}
-                </Link>
+                </a>
             );
         }
     }
 
     const replaceHyperlinks = (link, i) => {
-        return <Link href={link}
-            color="secondary"
-            underline="none"
-            target="_blank">{link}</Link>;
+        return <a href={link} target="_blank">{link}</a>;
     }
 
     useEffect(() => {
@@ -45,7 +39,7 @@ const VideoParagraph = (props) => {
             for (let element of text) {
                 let elementSegments = new Text(element)
                     .replace(URL_FORMAT_RGX, replaceHyperlinks);
-                    
+
                 for (let elementText of elementSegments) {
                     elements.push(elementText);
                 }
@@ -55,7 +49,7 @@ const VideoParagraph = (props) => {
         setParagraph(elements);
     }, []);
 
-    return <Typography>{paragraph}</Typography>;
+    return <p>{paragraph}</p>;
 };
 
 export default VideoParagraph;

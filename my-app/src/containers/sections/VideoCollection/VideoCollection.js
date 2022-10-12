@@ -71,7 +71,6 @@ const VideoCollection = (props) => {
             key={"video_card_" + v.video.id}
             token={v.video.token}
             title={v.video.title}
-            description={v.video.description}
             seconds={v.seconds}
             playbackID={videoPlayer.playbackVideoID}
             image={v.video.image}

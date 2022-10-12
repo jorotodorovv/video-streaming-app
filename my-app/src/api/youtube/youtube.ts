@@ -4,8 +4,11 @@ import VideoConfigurations from "./config";
 interface Video {
     id: number,
     title: string,
-    description: string
-    image: string
+    description: string,
+    image: string,
+    views: string,
+    likes: string,
+    token: string
 }
 
 interface VideoResponse {
@@ -15,8 +18,6 @@ interface VideoResponse {
 
 interface VideoParameters {
     videosPerRequest: number;
-    maxTitleLength: number;
-    maxDescriptionLength: number;
 }
 
 const INITIAL_VIDEO_TOKEN = "default";
@@ -148,13 +149,10 @@ class YoutubeApi {
         return items
             .filter(v => v !== undefined)
             .map(v => {
-                let title = new Text(v.snippet.title);
-                let description = new Text(v.snippet.description);
-
                 return {
                     id: v.id.videoId ?? v.id,
-                    title: title.substring(this.parameters.maxTitleLength),
-                    description: description.substring(this.parameters.maxDescriptionLength),
+                    title: v.snippet.title,
+                    description: v.snippet.description,
                     image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                     views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),

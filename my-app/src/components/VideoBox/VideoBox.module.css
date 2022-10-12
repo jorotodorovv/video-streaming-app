@@ -1,15 +1,15 @@
-.v_card_loading {
+.v_card {
   visibility: hidden;
-}
-
-.v_card_loaded {
-  visibility: visible;
+  display: none;
   position: relative;
   z-index: 1;
+  -webkit-animation: zoom-center 0.5s both;
+  animation: zoom-center 0.5s both;
 }
 
 .v_card_link {
   text-decoration: none; 
+  color: inherit;
 }
 
 .v_card_content_overlay img {
@@ -23,8 +23,14 @@
 
 .v_card_content_scale {
   z-index: 1;
-	-webkit-animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
-	        animation: scale-up-center 0.5s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
+}
+
+.active {
+  visibility: visible;
+  display: block;
+  opacity: 1;
 }
 
 .v_card_content_text {
@@ -38,21 +44,35 @@
  @-webkit-keyframes scale-up-center {
     0% {
       -webkit-transform: scale(1);
-              transform: scale(1);
     }
     100% {
       -webkit-transform: scale(1.5);
-              transform: scale(1.5);
     }
   }
   
   @keyframes scale-up-center {
     0% {
-      -webkit-transform: scale(1);
-              transform: scale(1);
+      transform: scale(1);
     }
     100% {
-      -webkit-transform: scale(1.5);
-              transform: scale(1.5);
+      transform: scale(1.5);
+    }
+  }
+
+  @-webkit-keyframes zoom-center {
+    0% {
+      -webkit-transform: scale(0.2);
+    }
+    100% {
+      -webkit-transform: scale(1);
+    }
+  }
+  
+  @keyframes zoom-center {
+    0% {
+      transform: scale(0.2);
+    }
+    100% {
+      transform: scale(1);
     }
   }

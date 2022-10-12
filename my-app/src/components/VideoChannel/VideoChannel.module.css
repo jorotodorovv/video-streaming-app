@@ -1,3 +1,7 @@
+.v_channel_box {
+    padding: 1rem;
+}
+
 .v_channel:hover {
     cursor: pointer;
     box-shadow: 0 0 20px 1px #d43232;

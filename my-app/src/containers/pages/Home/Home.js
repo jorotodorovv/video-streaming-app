@@ -18,8 +18,6 @@ export default function Home(props) {
   const api = useMemo(() => {
     return props.api({
       videosPerRequest: 16,
-      maxTitleLength: 30,
-      maxDescriptionLength: 100
     })
   }, [props.api]);
 
@@ -36,8 +34,7 @@ export default function Home(props) {
           api={api}
           googleClient={client}
           currentChannel={currentChannel}
-          onSetCurrentChannel={setCurrentChannel}
-          spacing={2} />
+          onSetCurrentChannel={setCurrentChannel} />
         <VideoCollection
           api={api}
           googleClient={client}

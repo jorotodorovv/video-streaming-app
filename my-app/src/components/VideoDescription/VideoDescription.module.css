@@ -1,0 +1,25 @@
+.v_description_button {
+    background-color: inherit;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+  }
+  
+
+  .v_description_panel {
+    padding: 0 18px;
+    background-color: inherit;
+    display: none;
+    visibility: hidden;
+    overflow: hidden;
+    transition: 0.2s ease;
+  }
+
+  .active {
+    display: block;
+    visibility: visible;
+  }
