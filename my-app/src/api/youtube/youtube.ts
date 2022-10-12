@@ -149,13 +149,10 @@ class YoutubeApi {
         return items
             .filter(v => v !== undefined)
             .map(v => {
-                let title = new Text(v.snippet.title);
-                let description = new Text(v.snippet.description);
-
                 return {
                     id: v.id.videoId ?? v.id,
-                    title: title.text,
-                    description: description.text,
+                    title: v.snippet.title,
+                    description: v.snippet.description,
                     image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
                     views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),

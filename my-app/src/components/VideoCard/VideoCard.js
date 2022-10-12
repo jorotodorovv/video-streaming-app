@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import VideoBox from '../VideoBox/VideoBox'
 
+import Text from '../../helpers/basic/Text'
+
 import styles from './VideoCard.module.css'
 
 const VideoCard = (props) => {
@@ -31,6 +33,8 @@ const VideoCard = (props) => {
     let isPlaying = props.playbackID === props.id;
     let className = loadVideo ? styles.v_card_grid_scale : styles.v_card_grid;
 
+    let title = new Text(props.title);
+
     return (
         <div
             className={className}
@@ -40,7 +44,7 @@ const VideoCard = (props) => {
             <VideoBox
                 id={props.id}
                 token={props.token}
-                title={props.title}
+                title={title.substring(30)}
                 seconds={props.seconds}
                 load={loadVideo}
                 isPlaying={isPlaying}
