@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 const MAX_WIDTH = "100%";
 const MAX_HEIGHT = "100%";
@@ -6,6 +6,8 @@ const MAX_HEIGHT = "100%";
 const REQUEST_SECONDS_DELAY = 0.25;
 
 const YoutubeFrame = (props) => {
+    const [state, setState] = useState();
+
     const getSeconds = (e) => {
         let time = window.player.getCurrentTime() + REQUEST_SECONDS_DELAY;
         let seconds = Math.ceil(time);
@@ -13,12 +15,34 @@ const YoutubeFrame = (props) => {
         return seconds;
     };
 
-    const onCancel = (e) => {
-        if (props.onCancel) {
+    const onReady = (e) => {
+        if (props.onReady) {
+            props.onReady();
+        }
+    }
+
+    const onStateChange = (e) => {
+        setState(state => e.data);
+    };
+
+    const onPreserve = (e) => {
+        if (props.onPreserve && state !== YT.PlayerState.ENDED) {
             let seconds = getSeconds(e);
-            props.onCancel(e, seconds);
+            props.onPreserve(e, seconds);
         }
     };
+
+    const onPlaying = (e) => {
+        if (props.onPlaying) {
+            props.onPlaying();
+        }
+    }
+
+    const onEnd = (e) => {
+        if (props.onEnd) {
+            props.onEnd();
+        }
+    }
 
     const opts = useMemo(() => {
         return {
@@ -34,23 +58,33 @@ const YoutubeFrame = (props) => {
                 fs: 0,
             },
             events: {
-                onReady: props.onReady,
-                onStateChange: props.onStateChange,
-                onEnd: props.onEnd,
+                onReady,
+                onStateChange,
             },
         };
     }, [props.seconds]);
 
     useEffect(() => {
-        if (window.YT) {
-            window.player =
-                new window.YT.Player(opts.videoId, opts);
+        switch (state) {
+            case YT.PlayerState.PLAYING:
+                onPlaying();
+                break;
+            case YT.PlayerState.ENDED:
+                onEnd();
+                break;
         }
 
         return () => {
-            onCancel();
+            onPreserve();
         };
-    }, [window.YT]);
+    }, [state])
+
+    useEffect(() => {
+        if (YT) {
+            window.player =
+                new YT.Player(opts.videoId, opts);
+        }
+    }, [YT]);
 
     return <div id={opts.videoId}></div>;
 };

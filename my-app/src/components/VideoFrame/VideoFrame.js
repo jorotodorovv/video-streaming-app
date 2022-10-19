@@ -1,7 +1,7 @@
 import YoutubeFrame from '../../api/youtube/iframe.js';
 
-const VideoPlayer = (props) => {
-    const cancelHandler = (e, seconds) => {
+const VideoFrame = (props) => {
+    const preserveHandler = (e, seconds) => {
         props.onSaveSeconds(e, seconds);
     };
 
@@ -9,9 +9,9 @@ const VideoPlayer = (props) => {
         props.onResetSeconds(e);
     };
 
-    return <YoutubeFrame {...props} 
-            onCancel={cancelHandler}
-            onEnd={endHandler} />;
+    return <YoutubeFrame {...props}
+        onPreserve={preserveHandler}
+        onEnd={endHandler} />;
 };
 
-export default VideoPlayer;
+export default VideoFrame;
