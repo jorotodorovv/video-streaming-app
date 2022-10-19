@@ -20,7 +20,7 @@ const VideoPlayback = () => {
     let id = videoPlayer.playbackVideoID;
     let player = videoPlayer.videos[id];
 
-    let playback = player ?
+    let playback = player && player.seconds ?
         (
             <div className={styles.v_playback}>
                 <CloseIcon className={styles.v_card_close} fontSize={'large'} onClick={onClose} />;
