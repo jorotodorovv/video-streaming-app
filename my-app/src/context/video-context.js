@@ -1,4 +1,5 @@
 import { useState, createContext } from 'react'
+
 import useVideo, { actions } from '../hooks/useVideo';
 
 const VideoContext = createContext({
@@ -11,7 +12,8 @@ const VideoContext = createContext({
 const INITIAL_VIDEO_STATE = { videos: {} };
 
 const VideoProvider = (props) => {
-    const [videoPlayer, dispatchVideoPlayer] = useVideo(INITIAL_VIDEO_STATE)
+    const [videoPlayer, dispatchVideoPlayer] = useVideo(INITIAL_VIDEO_STATE);
+    const [videoSettings, setVideoSettings] = useState();
     const [gToken, setGToken] = useState();
 
     const renderVideos = (videos, token) => {
@@ -52,8 +54,10 @@ const VideoProvider = (props) => {
 
     const provider = {
         videoPlayer,
+        videoSettings,
         gToken,
 
+        setVideoSettings,
         renderVideos,
         clearVideos,
         changeVideo,

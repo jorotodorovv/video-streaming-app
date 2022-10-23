@@ -12,6 +12,13 @@
         "i": "/playlistItems",
         "subs": "/subscriptions"
     },
+    "playerVars": {
+        "autoplay": 1,
+        "modestbranding": 1,
+        "enablejsapi": 1,
+        "rel": 0,
+        "fs": 0
+    },
     "params": {
         "timeQuery": "t"
     }

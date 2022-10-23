@@ -51,12 +51,8 @@ const YoutubeFrame = (props) => {
             height: props.height ?? MAX_HEIGHT,
             width: props.width ?? MAX_WIDTH,
             playerVars: {
+                ...props.settings.playerVars,
                 start: props.seconds,
-                autoplay: 1,
-                modestbranding: 1,
-                enablejsapi: 1,
-                rel: 0,
-                fs: 0,
             },
             events: {
                 onReady,

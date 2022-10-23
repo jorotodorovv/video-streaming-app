@@ -1,33 +1,42 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+import BaseRouter from './BaseRouter';
 
 import Home from '../pages/Home/Home'
 import Video from '../pages/Video/Video'
 
-import BaseRouter from './BaseRouter';
+import { VideoContext } from '../../context/video-context';
+import useYT from '../../api/youtube/useYT';
 
 const YoutubeRouter = (props) => {
+    const { setVideoSettings } = useContext(VideoContext);
+
     const [paths, setPaths] = useState({});
+    
+    const { api, client, settings } = useYT(props.configPath);
 
     useEffect(() => {
-        if (props.config) {
-            initPaths();
+        if (settings) {
+            init();
         }
-    }, [props.config]);
+    }, [settings]);
 
-    const initPaths = () => {
+    const init = () => {
         setPaths({
-            index: props.config.index,
+            index: settings.index,
             containers: [
-                { Page: Home, path: props.config.index },
-                { Page: Video, path: `${props.config.index}/videos/:token/:id` },
+                { Page: Home, path: settings.index },
+                { Page: Video, path: `${settings.index}/videos/:token/:id` },
             ],
         });
+
+        setVideoSettings(state => settings);
     };
 
     return <BaseRouter
         index={paths.index}
         containers={paths.containers}
-        dependencies={props.dependencies} />
+        dependencies={{ api, client }} />
 };
 
 export default YoutubeRouter;

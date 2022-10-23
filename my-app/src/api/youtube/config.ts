@@ -1,5 +1,12 @@
 import BaseConfigurations from "../../helpers/base/BaseConfigurations";
 
+interface PlayerParams {
+    autoplay: Number,
+    modestbranding: Number,
+    enablejsapi: Number,
+    rel: Number,
+    fs: Number,
+}
 interface ProviderPaths {
     v: string,
     ch: string,
@@ -23,6 +30,7 @@ class ProviderConfigurations extends BaseConfigurations {
 
     public paths: ProviderPaths;
     public params: ProviderParams;
+    public playerVars: PlayerParams;
 
     constructor(configPath: string) {
         super(configPath);
@@ -41,6 +49,7 @@ class ProviderConfigurations extends BaseConfigurations {
 
         this.paths = config.paths;
         this.params = config.params;
+        this.playerVars = config.playerVars;
     }
 }
 
