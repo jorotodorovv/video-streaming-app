@@ -2,10 +2,11 @@ import { useContext, useEffect, useState } from 'react';
 
 import BaseRouter from './BaseRouter';
 
-import Home from '../pages/Home/Home'
-import Video from '../pages/Video/Video'
+import Home from '../pages/youtube/Home'
+import Video from '../pages/youtube/Video'
 
 import { VideoContext } from '../../context/video-context';
+
 import useYT from '../../api/youtube/useYT';
 
 const YoutubeRouter = (props) => {

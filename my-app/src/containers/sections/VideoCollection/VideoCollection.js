@@ -69,6 +69,7 @@ const VideoCollection = (props) => {
         <VideoCard
             id={v.video.id}
             key={"video_card_" + v.video.id}
+            frame={props.frame}
             token={v.video.token}
             title={v.video.title}
             seconds={v.seconds}

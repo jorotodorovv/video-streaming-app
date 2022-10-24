@@ -11,7 +11,12 @@ const VideoBox = (props) => {
 
     if (props.load) {
         return <div className={styles.v_card_content_scale}>
-            <VideoPlayer id={props.id} seconds={props.seconds} width="300px" height="200px" />
+            <VideoPlayer
+                id={props.id}
+                seconds={props.seconds}
+                frame={props.frame}
+                width="300px"
+                height="200px" />
         </div>;
     }
 
