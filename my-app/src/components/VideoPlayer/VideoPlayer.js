@@ -1,17 +1,13 @@
 import { useContext } from 'react';
+import { SettingsContext } from '../../context/settings-context';
 
 import { VideoContext } from '../../context/video-context';
 
-import VideoFrame from '../VideoFrame/VideoFrame'
-
 const VideoPlayer = (props) => {
-    const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
+    const Frame = props.frame;
 
-    const saveSecondsHandler = (e, seconds) => {
-        if (seconds) {
-            changeSeconds(props.id, seconds);
-        }
-    };
+    const { videoSettings } = useContext(SettingsContext);
+    const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
 
     const setSecondsHandler = (e) => {
         // let seconds = setSeconds(e);
@@ -21,17 +17,25 @@ const VideoPlayer = (props) => {
         // }
     };
 
-    const resetSecondsHandler = (e) => {
+    const preserveHandler = (e, seconds) => {
+        if (seconds) {
+            changeSeconds(props.id, seconds);
+        }
+    };
+
+    const endHandler = (e) => {
         resetSeconds(props.id);
         removePlayback();
     };
 
-    return <VideoFrame
-        {...props}
-        onSetSeconds={setSecondsHandler}
-        onResetSeconds={resetSecondsHandler}
-        onSaveSeconds={saveSecondsHandler}
-    />
+    return <Frame
+        id={props.id}
+        width={props.width}
+        height={props.height}
+        seconds={props.seconds}
+        settings={videoSettings}
+        onPreserve={preserveHandler}
+        onEnd={endHandler} />;
 };
 
 export default VideoPlayer;

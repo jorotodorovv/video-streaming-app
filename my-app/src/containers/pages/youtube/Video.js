@@ -7,6 +7,7 @@ import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
 import Cache from '../../../helpers/basic/Cache.ts'
+import YoutubeFrame from '../../../api/youtube/iframe';
 
 
 export default function Video(props) {
@@ -63,6 +64,7 @@ export default function Video(props) {
         <VideoContent
             id={id}
             key={"video_content_" + id}
+            frame={YoutubeFrame}
             player={currentPlayer}
             width="720px"
             timeQueryParam={api.timeQueryParam}

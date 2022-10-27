@@ -5,12 +5,14 @@ import Wrapper from '../../../hoc/Wrapper';
 
 import { VideoContext } from "../../../context/video-context";
 
+import YoutubeFrame from "../../../api/youtube/iframe.js";
+
 import VideoCollection from '../../sections/VideoCollection/VideoCollection';
 import VideoChannels from '../../sections/VideoChannels/VideoChannels';
 
 import VideoPlayback from '../../../components/VideoPlayback/VideoPlayback';
 
-export default function Home(props) {
+const Home = (props) => {
   const { changeGToken } = useContext(VideoContext);
 
   const [currentChannel, setCurrentChannel] = useState();
@@ -36,11 +38,14 @@ export default function Home(props) {
           currentChannel={currentChannel}
           onSetCurrentChannel={setCurrentChannel} />
         <VideoCollection
+          frame={YoutubeFrame}
           api={api}
           googleClient={client}
           currentChannel={currentChannel} />
       </Wrapper>
-      <VideoPlayback />
+      <VideoPlayback frame={YoutubeFrame} />
     </Layout>
   );
-}
+};
+
+export default Home;

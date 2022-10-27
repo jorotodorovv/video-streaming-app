@@ -41,6 +41,7 @@ const VideoCard = (props) => {
                 token={props.token}
                 title={title.substring(30)}
                 seconds={props.seconds}
+                frame={props.frame}
                 load={loadVideo}
                 isPlaying={props.playbackID === props.id}
                 views={props.views}

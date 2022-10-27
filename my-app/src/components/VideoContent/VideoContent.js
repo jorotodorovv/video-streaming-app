@@ -38,6 +38,7 @@ export default function VideoContent(props) {
             <VideoPlayer
                 id={props.id}
                 key={"video_player_" + props.id}
+                frame={props.frame}
                 ref={ref}
                 seconds={props.player.seconds}
                 height={props.width}
