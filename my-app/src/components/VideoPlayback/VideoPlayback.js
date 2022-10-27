@@ -10,7 +10,7 @@ import styles from './VideoPlayback.module.css'
 
 const DEFAULT_LOAD_STATE = true;
 
-const VideoPlayback = () => {
+const VideoPlayback = (props) => {
     const { videoPlayer, removePlayback } = useContext(VideoContext);
 
     const onClose = () => {
@@ -28,6 +28,7 @@ const VideoPlayback = () => {
                     id={player.video.id}
                     title={player.video.title}
                     description={player.video.description}
+                    frame={props.frame}
                     image={player.video.image}
                     seconds={player.seconds}
                     views={player.video.views}

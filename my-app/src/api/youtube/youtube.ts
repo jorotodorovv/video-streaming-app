@@ -1,4 +1,3 @@
-import Text from "../../helpers/basic/Text";
 import VideoConfigurations from "./config";
 
 interface Video {
@@ -108,7 +107,7 @@ class YoutubeApi {
     }
 
     public async getVideo(id: string, pageToken: string): Promise<Video> {
-        let url = this.getUrl(this.config.paths.v);
+        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
 
         url.searchParams.append("id", id);
         url.searchParams.append("part", "snippet, statistics");
@@ -162,7 +161,7 @@ class YoutubeApi {
     }
 
     private getUrl(pathName: string, videosPerRequest: number | null = null): URL {
-        const url = new URL(this.config.url);
+        const url = new URL(this.config.url + "/" + this.config.version);
         url.pathname += pathName;
 
         url.searchParams.append("key", this.config.key);

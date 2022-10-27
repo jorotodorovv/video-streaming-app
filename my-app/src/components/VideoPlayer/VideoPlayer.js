@@ -1,11 +1,13 @@
 import { useContext } from 'react';
+import { SettingsContext } from '../../context/settings-context';
 
 import { VideoContext } from '../../context/video-context';
 
 const VideoPlayer = (props) => {
     const Frame = props.frame;
-    
-    const { changeSeconds, resetSeconds, removePlayback, videoSettings } = useContext(VideoContext);
+
+    const { videoSettings } = useContext(SettingsContext);
+    const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
 
     const setSecondsHandler = (e) => {
         // let seconds = setSeconds(e);

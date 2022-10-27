@@ -43,7 +43,7 @@ const Home = (props) => {
           googleClient={client}
           currentChannel={currentChannel} />
       </Wrapper>
-      <VideoPlayback />
+      <VideoPlayback frame={YoutubeFrame} />
     </Layout>
   );
 };

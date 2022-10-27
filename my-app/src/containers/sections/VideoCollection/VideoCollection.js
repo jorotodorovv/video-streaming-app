@@ -13,12 +13,10 @@ import styles from './VideoCollection.module.css'
 const INITIAL_VIDEO_TOKEN = "default";
 const END_VIDEO_TOKEN = "end";
 
-const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
-
 const VideoCollection = (props) => {
     const { videoPlayer, renderVideos } = useContext(VideoContext);
 
-    let cache = new Cache(VIDEO_COLLECTION_CACHE_KEY);
+    let cache = new Cache(props.collectionCacheKey);
 
     const fetchVideos = useCallback(async () => {
         if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {

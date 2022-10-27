@@ -1,20 +1,8 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback } from 'react';
 
-import ProviderConfigurations from './config.ts';
 import YoutubeApi from './youtube.ts';
 
-const useYT = (configPath) => {
-    const [settings, setSettings] = useState();
-
-    useEffect(() => { init(); }, []);
-
-    const init = async () => {
-        let config = new ProviderConfigurations(configPath);
-        await config.init();
-
-        setSettings(config);
-    };
-
+const useYT = (settings) => {
     const api = useCallback((parameters) => {
         if (settings) {
             return new YoutubeApi(

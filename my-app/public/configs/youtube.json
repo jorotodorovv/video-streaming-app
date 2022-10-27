@@ -21,5 +21,8 @@
     },
     "params": {
         "timeQuery": "t"
+    },
+    "cache": {
+        "collection": "youtube_vids"
     }
 }

@@ -1,5 +1,3 @@
-import BaseConfigurations from "../../helpers/base/BaseConfigurations";
-
 interface PlayerParams {
     autoplay: Number,
     modestbranding: Number,
@@ -19,9 +17,14 @@ interface ProviderParams {
     timeQuery: string,
 }
 
-class ProviderConfigurations extends BaseConfigurations {
+interface ProviderCache {
+    collection: string,
+}
+
+class ProviderConfigurations {
     public url: string;
     public key: string;
+    public version: string;
 
     public clientId: string;
     public scope: string;
@@ -31,26 +34,7 @@ class ProviderConfigurations extends BaseConfigurations {
     public paths: ProviderPaths;
     public params: ProviderParams;
     public playerVars: PlayerParams;
-
-    constructor(configPath: string) {
-        super(configPath);
-    }
-
-    public async init() {
-        let config = await super.init();
-
-        this.url = config.url.concat(`/${config.version}`);
-        this.key = config.key;
-
-        this.index = config.index;
-
-        this.clientId = config.clientId;
-        this.scope = config.scope;
-
-        this.paths = config.paths;
-        this.params = config.params;
-        this.playerVars = config.playerVars;
-    }
+    public cache: ProviderCache;
 }
 
 export default ProviderConfigurations;
