@@ -36,15 +36,4 @@ module.exports = {
       template: './public/index.html'
     }),
   ],
-  devServer: {
-    static: [
-      {
-        directory: path.join(__dirname, 'public'),
-      },
-    ],
-    compress: true,
-    port: 3001,
-    historyApiFallback: true,
-  },
-  devtool: 'inline-source-map',
 }
