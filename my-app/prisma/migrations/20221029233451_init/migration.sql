@@ -1,6 +1,7 @@
 -- CreateTable
-CREATE TABLE "Video" (
-    "id" INTEGER NOT NULL,
+CREATE TABLE "VideoEntity" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "videoId" TEXT,
     "title" TEXT,
     "description" TEXT,
     "image" TEXT,
@@ -8,6 +9,3 @@ CREATE TABLE "Video" (
     "likes" TEXT,
     "token" TEXT
 );
-
--- CreateIndex
-CREATE UNIQUE INDEX "Video_id_key" ON "Video"("id");

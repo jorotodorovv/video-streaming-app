@@ -1,7 +1,7 @@
 import VideoConfigurations from "./config";
 
 interface Video {
-    id: number,
+    videoId: string,
     title: string,
     description: string,
     image: string,
@@ -149,10 +149,10 @@ class YoutubeApi {
             .filter(v => v !== undefined)
             .map(v => {
                 return {
-                    id: v.id.videoId ?? v.id,
+                    videoId: v.id.videoId ?? v.id,
                     title: v.snippet.title,
                     description: v.snippet.description,
-                    image: v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium,
+                    image: (v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium).url,
                     views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     token: pageToken ?? INITIAL_VIDEO_TOKEN,
@@ -173,5 +173,11 @@ class YoutubeApi {
         return url;
     }
 }
+
+export {
+    Video,
+    VideoResponse,
+    VideoParameters,
+};
 
 export default YoutubeApi;

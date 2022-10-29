@@ -7,8 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Video {
-  id          Int    @unique
+model VideoEntity {
+  id          Int    @id
+  videoId     String?
   title       String?
   description String?
   image       String?
