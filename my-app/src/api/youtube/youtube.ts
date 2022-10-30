@@ -117,7 +117,7 @@ class YoutubeApi {
         return response.videos[0];
     }
 
-    public async getVideos(pageToken: string): Promise<VideoResponse> {
+    public async getVideos(pageToken: string | null = null): Promise<VideoResponse> {
         let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
 
         url.searchParams.append("part", "snippet, statistics");
