@@ -6,8 +6,7 @@ interface Video {
     description: string,
     image: string,
     views: string,
-    likes: string,
-    token: string
+    likes: string
 }
 
 interface VideoResponse {
@@ -18,8 +17,6 @@ interface VideoResponse {
 interface VideoParameters {
     videosPerRequest: number;
 }
-
-const INITIAL_VIDEO_TOKEN = "default";
 
 class YoutubeApi {
     private config: VideoConfigurations;
@@ -136,7 +133,7 @@ class YoutubeApi {
         if (response.ok) {
             let result = await response.json();
 
-            let videos = this.map(result.items, token);
+            let videos = this.map(result.items);
 
             return { videos, token: result.nextPageToken };
         }
@@ -144,7 +141,7 @@ class YoutubeApi {
         throw response.statusText;
     }
 
-    private map(items: any[], pageToken: string): Video[] {
+    private map(items: any[]): Video[] {
         return items
             .filter(v => v !== undefined)
             .map(v => {
@@ -155,7 +152,6 @@ class YoutubeApi {
                     image: (v.snippet.thumbnails.maxres ?? v.snippet.thumbnails.medium).url,
                     views: (+v.statistics.viewCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
                     likes: (+v.statistics.likeCount).toLocaleString("en-US", { minimumIntegerDigits: 3 }),
-                    token: pageToken ?? INITIAL_VIDEO_TOKEN,
                 };
             });
     }

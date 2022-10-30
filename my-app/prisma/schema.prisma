@@ -8,12 +8,20 @@ datasource db {
 }
 
 model VideoEntity {
-  id          Int     @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   videoId     String?
   title       String?
   description String?
   image       String?
   views       String?
   likes       String?
-  token       String?
+  token       TokenEntity @relation(fields: [tokenId], references: [id])
+  tokenId     Int
+}
+
+model TokenEntity {
+  id           Int           @id @default(autoincrement())
+  currentToken String?
+  nextToken    String?
+  videos  VideoEntity[]
 }

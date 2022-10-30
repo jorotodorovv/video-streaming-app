@@ -10,6 +10,7 @@ import ProviderConfigurations from '../src/api/youtube/config';
 const prisma = new PrismaClient()
 
 async function main() {
+    //console.log(await prisma.tokenEntity.findMany());
     fs.readFile('./public/configs/youtube.json', 'utf8', (err, data) => {
         const config: ProviderConfigurations = JSON.parse(data);
         seed(config);
@@ -17,14 +18,24 @@ async function main() {
 }
 
 async function seed(config: ProviderConfigurations) {
-    const api = new YoutubeApi(config, { videosPerRequest: 100 });
-    let response: VideoResponse = await api.getVideos();
-    console.log(response)
+    const api = new YoutubeApi(config, { videosPerRequest: 10 });
 
-    for (let video of response.videos) {
-        await prisma.videoEntity.create({
-            data: video,
+    let token = '';
+
+    for (let i = 0; i < 5; i++) {
+        let response: VideoResponse = await api.getVideos(token);
+
+        await prisma.tokenEntity.create({
+            data: {
+                currentToken: token,
+                nextToken: response.token,
+                videos: {
+                    create: response.videos
+                }
+            },
         });
+
+        token = response.token;
     }
 }
 
