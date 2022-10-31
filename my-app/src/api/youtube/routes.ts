@@ -18,7 +18,7 @@ async function getVideos(req, res) {
         }
     });
 
-    res.send(response.videos);
+    res.send(response);
 }
 
 export default router;

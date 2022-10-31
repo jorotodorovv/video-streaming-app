@@ -45,7 +45,7 @@ const VideoCard = (props) => {
                 load={loadVideo}
                 isPlaying={props.playbackID === props.id}
                 views={props.views}
-                image={props.image?.url}
+                image={props.image}
             />
         </div>
     );
