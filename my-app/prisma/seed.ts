@@ -10,7 +10,6 @@ import ProviderConfigurations from '../src/api/youtube/config';
 const prisma = new PrismaClient()
 
 async function main() {
-    //console.log(await prisma.tokenEntity.findMany());
     fs.readFile('./public/configs/youtube.json', 'utf8', (err, data) => {
         const config: ProviderConfigurations = JSON.parse(data);
         seed(config);
