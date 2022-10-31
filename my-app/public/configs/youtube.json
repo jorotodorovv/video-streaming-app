@@ -20,6 +20,7 @@
         "fs": 0
     },
     "params": {
+        "initialToken": "default",
         "timeQuery": "t"
     },
     "cache": {

@@ -3,36 +3,28 @@ import { useCallback, useContext } from "react"
 import { CircularProgress } from "@mui/material";
 
 import Observer from "../../../hoc/Observer";
-import VideoCard from "../../../components/VideoCard/VideoCard";
 
 import { VideoContext } from "../../../context/video-context";
+import { SettingsContext } from "../../../context/settings-context";
+
 import Cache from '../../../helpers/basic/Cache.ts'
 
+import VideoCard from "../../../components/VideoCard/VideoCard";
 import styles from './VideoCollection.module.css'
-
-const INITIAL_VIDEO_TOKEN = "default";
-const END_VIDEO_TOKEN = "end";
 
 const VideoCollection = (props) => {
     const { videoPlayer, renderVideos } = useContext(VideoContext);
+    const { videoSettings } = useContext(SettingsContext);
 
     let cache = new Cache(props.collectionCacheKey);
 
     const fetchVideos = useCallback(async () => {
-        if (props.api && videoPlayer.token != END_VIDEO_TOKEN) {
-            let tokenKey = videoPlayer.token ?? INITIAL_VIDEO_TOKEN;
+        let token = videoPlayer.token ?? videoSettings.params.initialToken;
+        let tokenKey = !props.currentChannel ? token : `${token}_${props.currentChannel}`;
 
-            if (props.currentChannel) {
-                tokenKey += `_${props.currentChannel}`;
-            }
+        let response = await cache.receive(tokenKey, getVideos, token);
 
-            let response = await cache.receive(tokenKey, getVideos.bind(this, tokenKey));
-
-            let token = response.token !== videoPlayer.token ?
-                response.token : END_VIDEO_TOKEN;
-
-            renderVideos(response.videos, token);
-        }
+        renderVideos(response.videos, response.token);
     }, [videoPlayer.token, props.currentChannel, props.api]);
 
     const getVideos = async (token) => {
@@ -79,8 +71,7 @@ const VideoCollection = (props) => {
         </VideoCard>
     );
 
-    let loadingBar = videoPlayer.token && videoPlayer.token !== END_VIDEO_TOKEN ?
-        <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" /> : null;
+    let loadingBar = <CircularProgress key={"loading_bar"} sx={{ mx: "auto", my: 10 }} color="secondary" />;
 
     return <div className={styles.v_collection}>
         {data}

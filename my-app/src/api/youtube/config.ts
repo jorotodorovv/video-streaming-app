@@ -14,6 +14,7 @@ interface ProviderPaths {
 }
 
 interface ProviderParams {
+    initialToken: string,
     timeQuery: string,
 }
 

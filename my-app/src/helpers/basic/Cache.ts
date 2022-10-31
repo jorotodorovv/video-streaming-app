@@ -4,20 +4,20 @@ class Cache {
         this.prefix = prefix;
     }
 
-    public async receive(key: string, action: Function){
+    public async receive(key: string, action: Function, ...args: any[] | null) {
         let value = this.get(key);
 
-        if(value != null){
+        if (value != null) {
             return JSON.parse(value);
         }
-        
-        value = await action();
+        this.receive.bind
+        value = await action.apply(this, args);
 
         this.set(key, JSON.stringify(value));
 
         return value;
     }
-    
+
     private get(key: string) {
         return localStorage.getItem(this.prefix + "_" + key);
     }
