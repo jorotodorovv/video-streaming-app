@@ -44,7 +44,7 @@ export default function Video(props) {
             return await fetch(`http://localhost:3000/api/videos/${id}`)
                 .then((response) => {
                     return response.json();
-                })
+                });
         }
 
         return videoData.video;

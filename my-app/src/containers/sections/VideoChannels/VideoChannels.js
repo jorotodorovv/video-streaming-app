@@ -19,16 +19,20 @@ const VideoChannels = (props) => {
 
     useEffect(() => {
         const renderChannels = async () => {
-            if (props.api && gToken) {
-                await fetchChannels(props.api, gToken);
+            if (gToken) {
+                await fetchChannels(gToken);
             }
         };
 
         renderChannels();
-    }, [props.api, gToken]);
+    }, [gToken]);
 
-    const fetchChannels = async (api, token) => {
-        let channels = await api.getSubscriptions(token);
+    const fetchChannels = async (token) => {
+        let channels = await fetch(`http://localhost:3000/api/subscriptions/${token}`)
+            .then((response) => {
+                return response.json();
+            });
+
         setChannels(channels);
     };
 
