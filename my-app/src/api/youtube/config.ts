@@ -13,13 +13,17 @@ interface ProviderPaths {
     subs: string,
 }
 
-interface ProviderParams {
+interface ProviderQuery {
     initialToken: string,
     timeQuery: string,
 }
 
 interface ProviderCache {
     collection: string,
+}
+
+interface ProviderParams {
+    videosPerRequest: number,
 }
 
 class ProviderConfigurations {
@@ -33,9 +37,14 @@ class ProviderConfigurations {
     public index: string;
 
     public paths: ProviderPaths;
-    public params: ProviderParams;
+    public query: ProviderQuery;
     public playerVars: PlayerParams;
     public cache: ProviderCache;
+    public params: ProviderParams;
 }
+
+export {
+    ProviderParams
+};
 
 export default ProviderConfigurations;

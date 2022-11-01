@@ -1,4 +1,4 @@
-import VideoConfigurations from "../config";
+import VideoConfigurations, { ProviderParams } from "../config";
 
 interface Video {
     videoId: string,
@@ -14,21 +14,18 @@ interface VideoResponse {
     token: string
 }
 
-interface VideoParameters {
-    videosPerRequest: number;
-}
-
 class YoutubeApi {
     private config: VideoConfigurations;
-    private parameters: VideoParameters;
 
-    constructor(config: VideoConfigurations, parameters: VideoParameters) {
+    constructor(config: VideoConfigurations, parameters?: ProviderParams) {
         this.config = config;
-        this.parameters = parameters;
+        this.params = parameters;
     }
 
-    get timeQueryParam() {
-        return this.config.params.timeQuery;
+    private set params(parameters: ProviderParams) {
+        if (parameters) {
+            this.config.params = parameters;
+        }
     }
 
     public async getChannel(channelName: string) {
@@ -83,7 +80,7 @@ class YoutubeApi {
     }
 
     public async getPlaylistVideos(playlistId: string, pageToken: string | null = null) {
-        let url = this.getUrl(this.config.paths.i, this.parameters.videosPerRequest);
+        let url = this.getUrl(this.config.paths.i);
 
         url.searchParams.append("playlistId", playlistId);
         url.searchParams.append("part", "snippet, contentDetails");
@@ -102,7 +99,7 @@ class YoutubeApi {
     }
 
     public async getVideo(id: string, pageToken: string): Promise<Video> {
-        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
+        let url = this.getUrl(this.config.paths.v);
 
         url.searchParams.append("id", id);
         url.searchParams.append("part", "snippet, statistics");
@@ -113,7 +110,7 @@ class YoutubeApi {
     }
 
     public async getVideos(pageToken: string | null = null): Promise<VideoResponse> {
-        let url = this.getUrl(this.config.paths.v, this.parameters.videosPerRequest);
+        let url = this.getUrl(this.config.paths.v);
 
         url.searchParams.append("part", "snippet, statistics");
         url.searchParams.append("chart", "mostPopular");
@@ -152,21 +149,18 @@ class YoutubeApi {
             });
     }
 
-    private getUrl(pathName: string, videosPerRequest: number | null = null): URL {
+    private getUrl(pathName: string): URL {
         const url = new URL(this.config.url + "/" + this.config.version);
         url.pathname += pathName;
 
         url.searchParams.append("key", this.config.key);
-
-        if (videosPerRequest) {
-            url.searchParams.append("maxResults", videosPerRequest.toString());
-        }
+        url.searchParams.append("maxResults", this.config.params.videosPerRequest.toString());
 
         return url;
     }
 
     private setToken(url: URL, pageToken: string) {
-        if (pageToken && pageToken != this.config.params.initialToken) {
+        if (pageToken && pageToken != this.config.query.initialToken) {
             url.searchParams.append("pageToken", pageToken);
         }
     }
@@ -175,7 +169,6 @@ class YoutubeApi {
 export {
     Video,
     VideoResponse,
-    VideoParameters,
 };
 
 export default YoutubeApi;

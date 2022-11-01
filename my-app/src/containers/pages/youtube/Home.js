@@ -18,9 +18,7 @@ const Home = (props) => {
   const [currentChannel, setCurrentChannel] = useState();
 
   const api = useMemo(() => {
-    return props.api({
-      videosPerRequest: 16,
-    })
+    return props.api();
   }, [props.api]);
 
   const client = useMemo(() => {

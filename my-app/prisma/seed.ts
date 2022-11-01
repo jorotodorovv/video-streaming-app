@@ -17,9 +17,9 @@ async function main() {
 }
 
 async function seed(config: ProviderConfigurations) {
-    const api = new YoutubeApi(config, { videosPerRequest: 8 });
+    const api = new YoutubeApi(config);
 
-    let token = config.params.initialToken;
+    let token = config.query.initialToken;
 
     for (let i = 0; i < 20; i++) {
         let response: VideoResponse = await api.getVideos(token);
