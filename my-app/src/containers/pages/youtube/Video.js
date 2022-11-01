@@ -8,6 +8,7 @@ import VideoContent from '../../../components/VideoContent/VideoContent';
 
 import Cache from '../../../helpers/basic/Cache.ts'
 import YoutubeFrame from '../../../api/youtube/external/iframe';
+import { SettingsContext } from '../../../context/settings-context';
 
 
 export default function Video(props) {
@@ -18,47 +19,36 @@ export default function Video(props) {
     const location = useLocation();
 
     const { videoPlayer, changePlayer, changeVideo } = useContext(VideoContext);
-    const [currentPlayer, setCurrentPlayer] = useState();
+    const { videoSettings } = useContext(SettingsContext);
 
-    const api = useMemo(() => {
-        return props.api({
-            videosPerRequest: 1
-        })
-    }, [props.api]);
+    const [currentPlayer, setCurrentPlayer] = useState();
 
     useEffect(() => {
         const fetchVideo = async () => {
-            if (api) {
-                let video = await getVideo();
+            let video = await getVideo();
 
-                const query = new URLSearchParams(location.search);
-                let seconds = +query.get(api.timeQueryParam);
+            const query = new URLSearchParams(location.search);
+            let seconds = +query.get(videoSettings.query.timeQuery);
 
-                changePlayer(id, video, seconds);
-            }
+            changePlayer(id, video, seconds);
+            setCurrentPlayer({ video, seconds });
         }
 
         fetchVideo();
-    }, [api, id]);
+    }, [id]);
 
     let getVideo = async () => {
         let videoData = videoPlayer.videos[id];
 
         if (!videoData) {
-            return await api.getVideo(id);
+            return await fetch(`http://localhost:3000/api/videos/${id}`)
+                .then((response) => {
+                    return response.json();
+                })
         }
 
         return videoData.video;
     }
-
-    useEffect(() => {
-        if (videoPlayer.videos) {
-            let video = videoPlayer.videos[id];
-            if (video) {
-                setCurrentPlayer(video);
-            }
-        }
-    }, [videoPlayer.videos]);
 
     let content = currentPlayer ?
         <VideoContent
@@ -67,7 +57,7 @@ export default function Video(props) {
             frame={YoutubeFrame}
             player={currentPlayer}
             width="720px"
-            timeQueryParam={api.timeQueryParam}
+            timeQueryParam={videoSettings.query.timeQuery}
             onChangeVideo={changeVideo}
         /> : null;
 
