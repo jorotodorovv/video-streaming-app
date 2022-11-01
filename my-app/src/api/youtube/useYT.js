@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import YoutubeApi from './youtube.ts';
+import YoutubeApi from './external/youtube.ts';
 
 const useYT = (settings) => {
     const api = useCallback((parameters) => {

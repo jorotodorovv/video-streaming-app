@@ -1,4 +1,4 @@
-import VideoConfigurations from "./config";
+import VideoConfigurations from "../config";
 
 interface Video {
     videoId: string,
@@ -88,9 +88,7 @@ class YoutubeApi {
         url.searchParams.append("playlistId", playlistId);
         url.searchParams.append("part", "snippet, contentDetails");
 
-        if (pageToken) {
-            url.searchParams.append("pageToken", pageToken);
-        }
+        this.setToken(url, pageToken);
 
         let response = await fetch(url.toString());
 
@@ -120,9 +118,7 @@ class YoutubeApi {
         url.searchParams.append("part", "snippet, statistics");
         url.searchParams.append("chart", "mostPopular");
 
-        if (pageToken) {
-            url.searchParams.append("pageToken", pageToken);
-        }
+        this.setToken(url, pageToken);
 
         return await this.request(url, pageToken);
     }
@@ -167,6 +163,12 @@ class YoutubeApi {
         }
 
         return url;
+    }
+
+    private setToken(url: URL, pageToken: string) {
+        if (pageToken && pageToken != this.config.params.initialToken) {
+            url.searchParams.append("pageToken", pageToken);
+        }
     }
 }
 

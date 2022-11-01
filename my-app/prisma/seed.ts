@@ -4,7 +4,7 @@ import 'cross-fetch/polyfill';
 
 import { PrismaClient } from '@prisma/client'
 
-import YoutubeApi, { VideoResponse, Video } from '../src/api/youtube/youtube';
+import YoutubeApi, { VideoResponse, Video } from '../src/api/youtube/external/youtube';
 import ProviderConfigurations from '../src/api/youtube/config';
 
 const prisma = new PrismaClient()
@@ -17,11 +17,11 @@ async function main() {
 }
 
 async function seed(config: ProviderConfigurations) {
-    const api = new YoutubeApi(config, { videosPerRequest: 10 });
+    const api = new YoutubeApi(config, { videosPerRequest: 8 });
 
     let token = config.params.initialToken;
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 20; i++) {
         let response: VideoResponse = await api.getVideos(token);
 
         await prisma.tokenEntity.create({

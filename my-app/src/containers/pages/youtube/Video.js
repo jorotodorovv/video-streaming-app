@@ -7,7 +7,7 @@ import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
 import Cache from '../../../helpers/basic/Cache.ts'
-import YoutubeFrame from '../../../api/youtube/iframe';
+import YoutubeFrame from '../../../api/youtube/external/iframe';
 
 
 export default function Video(props) {

@@ -5,7 +5,7 @@ import Wrapper from '../../../hoc/Wrapper';
 
 import { VideoContext } from "../../../context/video-context";
 
-import YoutubeFrame from "../../../api/youtube/iframe.js";
+import YoutubeFrame from "../../../api/youtube/external/iframe.js";
 
 import VideoCollection from '../../sections/VideoCollection/VideoCollection';
 import VideoChannels from '../../sections/VideoChannels/VideoChannels';
