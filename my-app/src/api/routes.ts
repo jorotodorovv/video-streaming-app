@@ -1,7 +1,7 @@
 import express from 'express';
 
-import { video, videos } from './actions/db/db.actions';
-import { channelVideos, subscriptions } from './actions/youtube/youtube.actions';
+import { video, videos } from './actions/db.actions';
+import { channelVideos, subscriptions } from './actions/youtube.actions';
 
 import config from './routes.config.json';
 

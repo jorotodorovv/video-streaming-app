@@ -5,16 +5,16 @@ import { CircularProgress } from "@mui/material";
 import Observer from "../../../hoc/Observer";
 
 import { VideoContext } from "../../../context/video-context";
-import { SettingsContext } from "../../../context/settings-context";
 
 import Cache from '../../../helpers/basic/Cache.ts'
 
 import VideoCard from "../../../components/VideoCard/VideoCard";
 import styles from './VideoCollection.module.css'
 
+import videoSettings from '../../../api/youtube.config.json';
+
 const VideoCollection = (props) => {
     const { videoPlayer, renderVideos } = useContext(VideoContext);
-    const { videoSettings } = useContext(SettingsContext);
 
     let cache = new Cache(props.collectionCacheKey);
 
@@ -34,9 +34,9 @@ const VideoCollection = (props) => {
         if (props.currentChannel) {
             response =
                 await fetch(`http://localhost:3000/api/videos/${props.currentChannel}/${token}`)
-                .then((data) => {
-                    return data.json()
-                });
+                    .then((data) => {
+                        return data.json()
+                    });
         }
         else {
             response =

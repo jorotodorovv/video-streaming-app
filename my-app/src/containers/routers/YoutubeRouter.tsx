@@ -6,7 +6,8 @@ import Home from '../pages/youtube/Home'
 import Video from '../pages/youtube/Video'
 
 import useYT from '../../youtube/useYT';
-import useSettings from '../../hooks/useSettings';
+
+import videoSettings from '../../api/youtube.config.json'
 
 interface ProviderPaths {
     index: string,
@@ -16,7 +17,6 @@ interface ProviderPaths {
 const YoutubeRouter = (props) => {
     const [paths, setPaths] = useState<ProviderPaths>();
 
-    const videoSettings = useSettings();
     const { client } = useYT(videoSettings);
 
     useEffect(() => {

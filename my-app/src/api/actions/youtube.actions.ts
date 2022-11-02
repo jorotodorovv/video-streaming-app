@@ -1,6 +1,6 @@
-import YoutubeApi from "../../../youtube/youtube";
+import YoutubeApi from "../../youtube/youtube";
 
-import config from "../../youtube.config.json";
+import config from "../youtube.config.json";
 
 const youtubeApi = new YoutubeApi(config);
 

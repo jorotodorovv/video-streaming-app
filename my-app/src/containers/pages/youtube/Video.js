@@ -8,8 +8,8 @@ import VideoContent from '../../../components/VideoContent/VideoContent';
 
 import Cache from '../../../helpers/basic/Cache.ts';
 import YoutubeFrame from "../../../youtube/iframe";
-import { SettingsContext } from '../../../context/settings-context';
 
+import videoSettings from '../../../api/youtube.config.json';
 
 export default function Video(props) {
     const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
@@ -19,7 +19,6 @@ export default function Video(props) {
     const location = useLocation();
 
     const { videoPlayer, changePlayer, changeVideo } = useContext(VideoContext);
-    const { videoSettings } = useContext(SettingsContext);
 
     const [currentPlayer, setCurrentPlayer] = useState();
 
