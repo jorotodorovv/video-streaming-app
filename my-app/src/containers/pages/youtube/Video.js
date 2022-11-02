@@ -7,7 +7,7 @@ import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
 import Cache from '../../../helpers/basic/Cache.ts'
-import YoutubeFrame from '../../../api/youtube/external/iframe';
+import YoutubeFrame from '../../../api/youtube/iframe';
 import { SettingsContext } from '../../../context/settings-context';
 
 

@@ -15,9 +15,9 @@ interface ProviderPaths {
 
 const YoutubeRouter = ({ configPath }) => {
     const [paths, setPaths] = useState<ProviderPaths>();
-    
+
     const videoSettings = useSettings(configPath);
-    const { api, client } = useYT(videoSettings);
+    const { client } = useYT(videoSettings);
 
     useEffect(() => {
         if (videoSettings) {
@@ -42,7 +42,7 @@ const YoutubeRouter = ({ configPath }) => {
     return <BaseRouter
         index={paths.index}
         containers={paths.containers}
-        dependencies={{ api, client }} />
+        dependencies={{ client }} />
 };
 
 export default YoutubeRouter;

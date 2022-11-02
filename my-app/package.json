@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "start:client": "webpack serve --mode development",
-    "start:server": "npx ts-node src/api/youtube/internal/server"
+    "start:server": "npx ts-node src/api/server"
   },
   "keywords": [],
   "author": "",
@@ -17,7 +17,7 @@
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.5",
     "@prisma/client": "^4.5.0",
-    "cross-fetch": "^3.1.5",
+    "axios": "^1.1.3",
     "express": "^4.18.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

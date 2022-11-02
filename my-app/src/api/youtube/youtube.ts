@@ -1,4 +1,6 @@
-import VideoConfigurations, { ProviderParams } from "../config";
+import VideoConfigurations, { ProviderParams } from "./config";
+
+import { fetch } from '../../helpers/basic/fetch';
 
 interface Video {
     videoId: string,
@@ -36,12 +38,8 @@ class YoutubeApi {
 
         let response = await fetch(url.toString());
 
-        if (response.ok) {
-            let result = await response.json();
-
-            if (result && result.items.length) {
-                return result.items[0];
-            }
+        if (response && response.items.length) {
+            return response.items[0];
         }
     }
 
@@ -54,12 +52,8 @@ class YoutubeApi {
 
         let response = await fetch(url.toString());
 
-        if (response.ok) {
-            let result = await response.json();
-
-            if (result && result.items.length) {
-                return result.items;
-            }
+        if (response && response.items.length) {
+            return response.items;
         }
     }
 
@@ -70,12 +64,8 @@ class YoutubeApi {
 
         let response = await fetch(url.toString());
 
-        if (response.ok) {
-            let result = await response.json();
-
-            if (result && result.items.length) {
-                return result.items;
-            }
+        if (response && response.items.length) {
+            return response.items;
         }
     }
 
@@ -89,12 +79,8 @@ class YoutubeApi {
 
         let response = await fetch(url.toString());
 
-        if (response.ok) {
-            let result = await response.json();
-
-            if (result && result.items.length) {
-                return { items: result.items, token: result.nextPageToken };
-            }
+        if (response && response.items.length) {
+            return { items: response.items, token: response.nextPageToken };
         }
     }
 
@@ -123,15 +109,9 @@ class YoutubeApi {
     private async request(url: URL): Promise<VideoResponse> {
         let response = await fetch(url.toString());
 
-        if (response.ok) {
-            let result = await response.json();
+        let videos = this.map(response.items);
 
-            let videos = this.map(result.items);
-
-            return { videos, token: result.nextPageToken };
-        }
-
-        throw response.statusText;
+        return { videos, token: response.nextPageToken };
     }
 
     private map(items: any[]): Video[] {

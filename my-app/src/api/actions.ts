@@ -1,13 +1,9 @@
-const fs = require('fs');
-
-import 'cross-fetch/polyfill';
-
 import { PrismaClient } from "@prisma/client";
-import YoutubeApi from "../external/youtube";
+import YoutubeApi from "./youtube/youtube";
 
 import endpoints from "./endpoints";
 
-import config from '../../../../public/configs/youtube.json';
+import config from '../../public/configs/youtube.json';
 
 const prisma = new PrismaClient();
 const youtubeApi = new YoutubeApi(config);
