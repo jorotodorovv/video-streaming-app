@@ -1,7 +1,6 @@
 import { useState, createContext } from 'react'
 
 import useVideo, { actions } from '../hooks/useVideo';
-import SettingsProvider from './settings-context';
 
 const VideoContext = createContext({});
 
@@ -64,9 +63,7 @@ const VideoProvider = (props) => {
 
     return (
         <VideoContext.Provider value={provider}>
-            <SettingsProvider>
-                {props.children}
-            </SettingsProvider>
+            {props.children}
         </VideoContext.Provider>
     );
 };

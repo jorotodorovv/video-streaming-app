@@ -8,8 +8,6 @@ import VideoBox from '../../components/VideoBox/VideoBox';
 
 import styles from './VideoPlayback.module.css'
 
-const DEFAULT_LOAD_STATE = true;
-
 const VideoPlayback = (props) => {
     const { videoPlayer, removePlayback } = useContext(VideoContext);
 
@@ -25,14 +23,14 @@ const VideoPlayback = (props) => {
             <div className={styles.v_playback}>
                 <CloseIcon className={styles.v_card_close} fontSize={'large'} onClick={onClose} />;
                 <VideoBox
-                    id={player.video.id}
+                    id={player.video.videoId}
                     title={player.video.title}
                     description={player.video.description}
                     frame={props.frame}
                     image={player.video.image}
                     seconds={player.seconds}
                     views={player.video.views}
-                    load={DEFAULT_LOAD_STATE}
+                    load
                 />
             </div>
         ) : null;

@@ -5,19 +5,19 @@ import BaseRouter from './BaseRouter';
 import Home from '../pages/youtube/Home'
 import Video from '../pages/youtube/Video'
 
-import useYT from '../../api/youtube/useYT';
-import useSettings from '../../hooks/useSettings';
+import useYT from '../../youtube/useYT';
+
+import videoSettings from '../../api/youtube.config.json'
 
 interface ProviderPaths {
     index: string,
     containers: any[]
 }
 
-const YoutubeRouter = ({ configPath }) => {
+const YoutubeRouter = (props) => {
     const [paths, setPaths] = useState<ProviderPaths>();
-    
-    const videoSettings = useSettings(configPath);
-    const { api, client } = useYT(videoSettings);
+
+    const { client } = useYT(videoSettings);
 
     useEffect(() => {
         if (videoSettings) {
@@ -42,7 +42,7 @@ const YoutubeRouter = ({ configPath }) => {
     return <BaseRouter
         index={paths.index}
         containers={paths.containers}
-        dependencies={{ api, client }} />
+        dependencies={{ client }} />
 };
 
 export default YoutubeRouter;
