@@ -1,12 +1,10 @@
 import { useContext, useEffect } from 'react';
 
-import File from '../helpers/basic/File'
-
 import { SettingsContext } from '../context/settings-context';
 
-import ProviderConfigurations from '../api/youtube/config';
+import config from '../api/youtube.config.json';
 
-const useSettings = (configPath) => {
+const useSettings = () => {
     const { videoSettings, changeSettings } = useContext(SettingsContext);
 
     useEffect(() => {
@@ -14,9 +12,6 @@ const useSettings = (configPath) => {
     }, []);
 
     const init = async () => {
-        let file = new File<ProviderConfigurations>(configPath);
-        let config = await file.export();
-
         changeSettings(state => config);
     };
 

@@ -44,6 +44,6 @@
     "webpack-dev-server": "^4.11.1"
   },
   "prisma": {
-    "seed": "ts-node prisma/seed.ts"
+    "seed": "ts-node src/prisma/seed.ts"
   }
 }

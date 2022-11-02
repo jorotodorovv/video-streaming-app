@@ -6,8 +6,8 @@ import Layout from '../../layout/Layout';
 import { VideoContext } from '../../../context/video-context';
 import VideoContent from '../../../components/VideoContent/VideoContent';
 
-import Cache from '../../../helpers/basic/Cache.ts'
-import YoutubeFrame from '../../../api/youtube/iframe';
+import Cache from '../../../helpers/basic/Cache.ts';
+import YoutubeFrame from "../../../youtube/iframe";
 import { SettingsContext } from '../../../context/settings-context';
 
 

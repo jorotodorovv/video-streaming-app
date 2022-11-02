@@ -1,33 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-import YoutubeApi from "./youtube/youtube";
+import YoutubeApi from "../../../youtube/youtube";
 
-import config from '../../public/configs/youtube.json';
+import config from "../../youtube.config.json";
 
-const prisma = new PrismaClient();
 const youtubeApi = new YoutubeApi(config);
-
-async function video(req, res): Promise<void> {
-    const response = await prisma.videoEntity.findFirst({
-        where: {
-            videoId: req.params.id,
-        }
-    });
-
-    res.send(response);
-}
-
-async function videos(req, res): Promise<void> {
-    const response = await prisma.tokenEntity.findFirst({
-        where: {
-            currentToken: req.params.token,
-        },
-        include: {
-            videos: true
-        }
-    });
-
-    res.send(response);
-}
 
 async function subscriptions(req, res): Promise<void> {
     const response = await youtubeApi.getSubscriptions(req.params.token);
@@ -56,9 +31,7 @@ async function channelVideos(req, res): Promise<void> {
     }
 }
 
-export default {
-    video,
-    videos,
-    channelVideos,
+export {
     subscriptions,
+    channelVideos,
 };

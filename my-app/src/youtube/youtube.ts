@@ -1,6 +1,6 @@
 import VideoConfigurations, { ProviderParams } from "./config";
 
-import { fetch } from '../../helpers/basic/fetch';
+import { fetch } from '../helpers/basic/fetch';
 
 interface Video {
     videoId: string,

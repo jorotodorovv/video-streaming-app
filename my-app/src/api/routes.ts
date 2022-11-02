@@ -1,13 +1,15 @@
 import express from 'express';
-import actions from './actions';
+
+import { video, videos } from './actions/db/db.actions';
+import { channelVideos, subscriptions } from './actions/youtube/youtube.actions';
 
 import config from './routes.config.json';
 
 const routes = express.Router();
 
-routes.get(config.video, actions.video);
-routes.get(config.videos, actions.videos);
-routes.get(config.subscriptions, actions.subscriptions);
-routes.get(config.channelVideos, actions.channelVideos);
+routes.get(config.video, video);
+routes.get(config.videos, videos);
+routes.get(config.subscriptions, subscriptions);
+routes.get(config.channelVideos, channelVideos);
 
 export default routes;

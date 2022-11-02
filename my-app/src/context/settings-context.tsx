@@ -1,5 +1,5 @@
 import { useState, createContext } from 'react'
-import ProviderConfigurations from '../api/youtube/config';
+import ProviderConfigurations from '../youtube/config';
 
 const SettingsContext = createContext({
     videoSettings: new ProviderConfigurations(),

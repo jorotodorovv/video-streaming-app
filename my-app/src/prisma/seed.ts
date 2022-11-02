@@ -1,9 +1,9 @@
 import { PrismaClient } from '@prisma/client'
 
-import YoutubeApi, { VideoResponse } from '../src/api/youtube/youtube';
-import ProviderConfigurations from '../src/api/youtube/config';
+import YoutubeApi, { VideoResponse } from '../youtube/youtube';
+import ProviderConfigurations from '../youtube/config';
 
-import config from '../public/configs/youtube.json';
+import config from '../api/youtube.config.json';
 
 const MAX_REQUESTS_COUNT = 20;
 
