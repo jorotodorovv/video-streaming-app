@@ -5,6 +5,7 @@ import { VideoContext } from "../../../context/video-context";
 import VideoChannel from "../../../components/VideoChannel/VideoChannel";
 
 import styles from './VideoChannels.module.css';
+import { config, getEndpoint } from "../../../api/endpoints";
 
 const VideoChannels = (props) => {
     const [channels, setChannels] = useState([]);
@@ -28,7 +29,9 @@ const VideoChannels = (props) => {
     }, [gToken]);
 
     const fetchChannels = async (token) => {
-        let channels = await fetch(`http://localhost:3000/api/subscriptions/${token}`)
+        let endpoint = getEndpoint(config.subscriptions, token);
+
+        let channels = await fetch(endpoint)
             .then((response) => {
                 return response.json();
             });

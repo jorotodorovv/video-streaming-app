@@ -10,6 +10,7 @@ import Cache from '../../../helpers/basic/Cache.ts';
 import YoutubeFrame from "../../../youtube/iframe";
 
 import videoSettings from '../../../api/youtube.config.json';
+import { getEndpoint, config } from '../../../api/endpoints';
 
 export default function Video(props) {
     const VIDEO_COLLECTION_CACHE_KEY = "youtube_vids";
@@ -40,7 +41,9 @@ export default function Video(props) {
         let videoData = videoPlayer.videos[id];
 
         if (!videoData) {
-            return await fetch(`http://localhost:3000/api/videos/${id}`)
+            let endpoint = getEndpoint(config.video, id);
+            
+            return await fetch(endpoint)
                 .then((response) => {
                     return response.json();
                 });

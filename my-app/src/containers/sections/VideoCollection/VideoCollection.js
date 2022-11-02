@@ -12,6 +12,7 @@ import VideoCard from "../../../components/VideoCard/VideoCard";
 import styles from './VideoCollection.module.css'
 
 import videoSettings from '../../../api/youtube.config.json';
+import { config, getEndpoint } from "../../../api/endpoints";
 
 const VideoCollection = (props) => {
     const { videoPlayer, renderVideos } = useContext(VideoContext);
@@ -32,15 +33,19 @@ const VideoCollection = (props) => {
         let response;
 
         if (props.currentChannel) {
+            let endpoint = getEndpoint(config.channelVideos, props.currentChannel, token);
+
             response =
-                await fetch(`http://localhost:3000/api/videos/${props.currentChannel}/${token}`)
+                await fetch(endpoint)
                     .then((data) => {
                         return data.json()
                     });
         }
         else {
+            let endpoint = getEndpoint(config.videos, token);
+
             response =
-                await fetch(`http://localhost:3000/api/videos/${token}`)
+                await fetch(endpoint)
                     .then((data) => {
                         return data.json()
                     });
