@@ -9,7 +9,7 @@ const collectionReducer = (state, { videos, token }) => {
 
     if (videos) {
         for (let video of videos) {
-            player.videos[video.id] = { video };
+            player.videos[video.videoId] = { video };
         }
     }
 

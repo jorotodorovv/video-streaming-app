@@ -11,6 +11,10 @@ package-lock.json
 
 # production
 /build
+*.db
+*.db-journal
+*.toml
+.vscode
 
 # misc
 .DS_Store

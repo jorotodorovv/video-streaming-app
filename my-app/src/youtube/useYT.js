@@ -1,16 +1,6 @@
 import { useCallback } from 'react';
 
-import YoutubeApi from './youtube.ts';
-
 const useYT = (settings) => {
-    const api = useCallback((parameters) => {
-        if (settings) {
-            return new YoutubeApi(
-                settings,
-                parameters);
-        }
-    }, [settings]);
-
     const client = useCallback((callback) => {
         if (settings && window.google) {
             return window.google.accounts.oauth2.initTokenClient({
@@ -22,7 +12,6 @@ const useYT = (settings) => {
     }, [settings, window.google]);
 
     return {
-        api,
         client,
         settings,
     }

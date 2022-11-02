@@ -19,10 +19,14 @@
         "rel": 0,
         "fs": 0
     },
-    "params": {
+    "query": {
+        "initialToken": "default",
         "timeQuery": "t"
     },
     "cache": {
         "collection": "youtube_vids"
+    },
+    "params": {
+        "videosPerRequest" : 8
     }
 }

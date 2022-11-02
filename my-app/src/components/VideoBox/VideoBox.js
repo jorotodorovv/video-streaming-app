@@ -9,6 +9,10 @@ import styles from './VideoBox.module.css'
 const VideoBox = (props) => {
     let link = `/youtube/videos/${props.token}/${props.id}`;
 
+    if (props.seconds > 0) {
+        link += `?t=${props.seconds}`;
+    }
+
     if (props.load) {
         return <div className={styles.v_card_content_scale}>
             <VideoPlayer
