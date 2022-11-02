@@ -1,14 +1,12 @@
 import express from 'express';
 
-import endpoints from './endpoints';
 import routes from './routes';
+import config from './routes.config.json';
 
 const app = express();
 
-app.use(endpoints.api, routes);
+app.use(config.api, routes);
 
-const port = process.env.PORT || "3000";
-
-app.listen(port, () => {
-  console.log(`Server Running at ${port} 🚀`);
+app.listen(config.port, () => {
+  console.log(`Server Running at ${config.port} 🚀`);
 });

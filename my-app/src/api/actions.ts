@@ -1,8 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import YoutubeApi from "./youtube/youtube";
 
-import endpoints from "./endpoints";
-
 import config from '../../public/configs/youtube.json';
 
 const prisma = new PrismaClient();
@@ -37,7 +35,7 @@ async function subscriptions(req, res): Promise<void> {
     res.send(response);
 }
 
-async function channelVideos(req, res) : Promise<void> {
+async function channelVideos(req, res): Promise<void> {
     let playlists = await youtubeApi.getPlaylists(req.params.channel);
 
     if (playlists) {
@@ -58,11 +56,9 @@ async function channelVideos(req, res) : Promise<void> {
     }
 }
 
-const actions = {};
-
-actions[endpoints.video] = video;
-actions[endpoints.videos] = videos;
-actions[endpoints.channelVideos] = channelVideos;
-actions[endpoints.subscriptions] = subscriptions;
-
-export default actions;
+export default {
+    video,
+    videos,
+    channelVideos,
+    subscriptions,
+};
