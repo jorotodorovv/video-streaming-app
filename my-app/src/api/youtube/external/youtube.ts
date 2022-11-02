@@ -98,13 +98,13 @@ class YoutubeApi {
         }
     }
 
-    public async getVideo(id: string, pageToken: string): Promise<Video> {
+    public async getVideo(id: string): Promise<Video> {
         let url = this.getUrl(this.config.paths.v);
 
         url.searchParams.append("id", id);
         url.searchParams.append("part", "snippet, statistics");
 
-        let response = await this.request(url, pageToken);
+        let response = await this.request(url);
 
         return response.videos[0];
     }
@@ -117,10 +117,10 @@ class YoutubeApi {
 
         this.setToken(url, pageToken);
 
-        return await this.request(url, pageToken);
+        return await this.request(url);
     }
 
-    private async request(url: URL, token: string): Promise<VideoResponse> {
+    private async request(url: URL): Promise<VideoResponse> {
         let response = await fetch(url.toString());
 
         if (response.ok) {

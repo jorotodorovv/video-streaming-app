@@ -1,6 +1,7 @@
 export default {
     api: '/api',
-    video: '/videos/:id',
+    video: '/video/:id',
     videos: '/videos/:token',
+    channelVideos: '/videos/:channel/:token',
     subscriptions: '/subscriptions/:token',
 }

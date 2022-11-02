@@ -26,16 +26,25 @@ const VideoCollection = (props) => {
         let response = await cache.receive(tokenKey, getVideos, token);
 
         renderVideos(response.videos, response.token);
-    }, [videoPlayer.token, props.currentChannel, props.api]);
+    }, [videoPlayer.token, props.currentChannel]);
 
     const getVideos = async (token) => {
-        if (props.currentChannel) {
-            return getChannelVideos(props.api, props.currentChannel);
-        }
+        let response;
 
-        let response =
-            await fetch(`http://localhost:3000/api/videos/${token}`)
-                .then((data) => data.json());
+        if (props.currentChannel) {
+            response =
+                await fetch(`http://localhost:3000/api/videos/${props.currentChannel}/${token}`)
+                .then((data) => {
+                    return data.json()
+                });
+        }
+        else {
+            response =
+                await fetch(`http://localhost:3000/api/videos/${token}`)
+                    .then((data) => {
+                        return data.json()
+                    });
+        }
 
         let videos = response.videos.map(v => {
             return { ...v, token }
@@ -43,26 +52,6 @@ const VideoCollection = (props) => {
 
         return { videos, token: response?.nextToken };
     };
-
-    const getChannelVideos = async (api, channel) => {
-        let playlists = await api.getPlaylists(channel);
-        let videos = [];
-
-        if (playlists) {
-            let playlistVideos = await api.getPlaylistVideos(playlists[0].id);
-
-            for (let playlistVideo of playlistVideos.items) {
-                let videoId = playlistVideo.contentDetails.videoId;
-                let video = await api.getVideo(videoId, token);
-
-                if (video) {
-                    videos.push(video);
-                }
-            }
-        }
-
-        return { videos, token };
-    }
 
     let data = Object.values(videoPlayer.videos).map(v =>
         <VideoCard

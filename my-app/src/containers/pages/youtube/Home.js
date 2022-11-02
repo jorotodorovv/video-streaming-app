@@ -17,10 +17,6 @@ const Home = (props) => {
 
   const [currentChannel, setCurrentChannel] = useState();
 
-  const api = useMemo(() => {
-    return props.api();
-  }, [props.api]);
-
   const client = useMemo(() => {
     return props.client((response) => {
       changeGToken(response.access_token);
@@ -31,13 +27,11 @@ const Home = (props) => {
     <Layout>
       <Wrapper>
         <VideoChannels
-          api={api}
           googleClient={client}
           currentChannel={currentChannel}
           onSetCurrentChannel={setCurrentChannel} />
         <VideoCollection
           frame={YoutubeFrame}
-          api={api}
           googleClient={client}
           currentChannel={currentChannel} />
       </Wrapper>
