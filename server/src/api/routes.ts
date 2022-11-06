@@ -3,7 +3,7 @@ import express from 'express';
 import { video, videos } from './actions/db.actions';
 import { channelVideos, subscriptions } from './actions/youtube.actions';
 
-import config from './routes.config.json';
+import config from '../../configs/routes.config.json';
 
 const routes = express.Router();
 
