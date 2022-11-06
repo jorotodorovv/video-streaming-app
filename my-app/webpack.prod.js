@@ -7,12 +7,12 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'production',
-  context: path.join(__dirname, 'public'),
-  plugins: [
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'configs', to: 'configs' },
-      ]
-    })
-  ]
+  // context: path.join(__dirname, 'public'),
+  // plugins: [
+  //   new CopyWebpackPlugin({
+  //     patterns: [
+  //       { from: 'configs', to: 'configs' },
+  //     ]
+  //   })
+  // ]
 });
