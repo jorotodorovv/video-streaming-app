@@ -4,8 +4,7 @@ const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: "./src/index.js",
-  mode: "development",
+  entry: path.join(__dirname, 'src/index.js'),
   output: {
     filename: "bundle.js",
     path: path.resolve("dist"),
@@ -33,18 +32,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: path.join(__dirname, 'public/index.html'),
     }),
   ],
-  devServer: {
-    static: [
-      {
-        directory: path.join(__dirname, 'public'),
-      },
-    ],
-    compress: true,
-    port: 3001,
-    historyApiFallback: true,
-  },
-  devtool: 'inline-source-map',
 }
