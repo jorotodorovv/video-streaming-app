@@ -26,21 +26,25 @@ interface ProviderParams {
     videosPerRequest: number,
 }
 
+interface ProviderClient {
+    query: ProviderQuery;
+    playerVars: PlayerParams;
+    cache: ProviderCache;
+    params: ProviderParams;
+}
+
 class ProviderConfigurations {
     public url: string;
     public key: string;
     public version: string;
-
+    
     public clientId: string;
     public scope: string;
-
+    
     public index: string;
-
     public paths: ProviderPaths;
-    public query: ProviderQuery;
-    public playerVars: PlayerParams;
-    public cache: ProviderCache;
-    public params: ProviderParams;
+
+    public client: ProviderClient;
 }
 
 export {

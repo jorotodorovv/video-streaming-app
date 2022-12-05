@@ -4,6 +4,10 @@ import config from "../../../configs/youtube.config.json"
 
 const youtubeApi = new YoutubeApi(config);
 
+async function settings(req, res): Promise<void> {
+    res.send(config.client);
+}
+
 async function subscriptions(req, res): Promise<void> {
     const response = await youtubeApi.getSubscriptions(req.params.token);
 
@@ -32,6 +36,7 @@ async function channelVideos(req, res): Promise<void> {
 }
 
 export {
+    settings,
     subscriptions,
     channelVideos,
 };

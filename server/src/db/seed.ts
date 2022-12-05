@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import YoutubeApi, { VideoResponse } from '../youtube/youtube';
 import ProviderConfigurations from '../youtube/config';
 
-import config from '../api/youtube.config.json';
+import config from "../../configs/youtube.config.json";
 
 const MAX_REQUESTS_COUNT = 20;
 
@@ -16,7 +16,7 @@ async function main() {
 async function seed(config: ProviderConfigurations) {
     const api = new YoutubeApi(config);
 
-    let token = config.query.initialToken;
+    let token = config.client.query.initialToken;
 
     for (let i = 0; i < MAX_REQUESTS_COUNT; i++) {
         let response: VideoResponse = await api.getVideos(token);

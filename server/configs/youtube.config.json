@@ -12,21 +12,23 @@
         "i": "/playlistItems",
         "subs": "/subscriptions"
     },
-    "playerVars": {
-        "autoplay": 1,
-        "modestbranding": 1,
-        "enablejsapi": 1,
-        "rel": 0,
-        "fs": 0
-    },
-    "query": {
-        "initialToken": "default",
-        "timeQuery": "t"
-    },
-    "cache": {
-        "collection": "youtube_vids"
-    },
-    "params": {
-        "videosPerRequest" : 8
+    "client": {
+        "playerVars": {
+            "autoplay": 1,
+            "modestbranding": 1,
+            "enablejsapi": 1,
+            "rel": 0,
+            "fs": 0
+        },
+        "query": {
+            "initialToken": "default",
+            "timeQuery": "t"
+        },
+        "cache": {
+            "collection": "youtube_vids"
+        },
+        "params": {
+            "videosPerRequest": 8
+        }
     }
 }

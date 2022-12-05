@@ -1,4 +1,4 @@
-import config from './routes.config.json';
+import config from '../../../../common/configs/routes.config.json';
 
 let url = new URL(config.url);
 url.port = config.port.toString();

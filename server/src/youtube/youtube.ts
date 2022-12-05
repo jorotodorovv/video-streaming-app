@@ -26,7 +26,7 @@ class YoutubeApi {
 
     private set params(parameters: ProviderParams) {
         if (parameters) {
-            this.config.params = parameters;
+            this.config.client.params = parameters;
         }
     }
 
@@ -134,13 +134,13 @@ class YoutubeApi {
         url.pathname += pathName;
 
         url.searchParams.append("key", this.config.key);
-        url.searchParams.append("maxResults", this.config.params.videosPerRequest.toString());
+        url.searchParams.append("maxResults", this.config.client.params.videosPerRequest.toString());
 
         return url;
     }
 
     private setToken(url: URL, pageToken: string) {
-        if (pageToken && pageToken != this.config.query.initialToken) {
+        if (pageToken && pageToken != this.config.client.query.initialToken) {
             url.searchParams.append("pageToken", pageToken);
         }
     }
