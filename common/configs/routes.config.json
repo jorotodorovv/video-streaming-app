@@ -1,0 +1,10 @@
+{
+    "url": "http://localhost",
+    "port": 3000,
+    "api": "api",
+    "settings": "/settings",
+    "video": "/video/:id",
+    "videos": "/videos/:token",
+    "channelVideos": "/videos/:channel/:token",
+    "subscriptions": "/subscriptions/:token"
+}

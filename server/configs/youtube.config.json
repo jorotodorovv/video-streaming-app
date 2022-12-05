@@ -1,0 +1,34 @@
+{
+    "url": "https://www.googleapis.com",
+    "key": "AIzaSyCoGsVezkfJWSiWjVWODCkgXxH67x26Ztg",
+    "clientId": "545284710817-3cba0dmurvn7l65ih5iphb3u0ladu22j.apps.googleusercontent.com",
+    "scope": "https://www.googleapis.com/auth/youtube.readonly",
+    "version": "youtube/v3",
+    "paths": {
+        "v": "/videos",
+        "ch": "/channels",
+        "p": "/playlists",
+        "i": "/playlistItems",
+        "subs": "/subscriptions"
+    },
+    "client": {
+        "index": "/youtube",
+        "playerVars": {
+            "autoplay": 1,
+            "modestbranding": 1,
+            "enablejsapi": 1,
+            "rel": 0,
+            "fs": 0
+        },
+        "query": {
+            "initialToken": "default",
+            "timeQuery": "t"
+        },
+        "cache": {
+            "collection": "youtube_vids"
+        },
+        "params": {
+            "videosPerRequest": 8
+        }
+    }
+}
