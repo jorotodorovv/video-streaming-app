@@ -16,6 +16,7 @@ package-lock.json
 *.db-journal
 *.toml
 .vscode
+*.sql
 
 # misc
 .DS_Store
