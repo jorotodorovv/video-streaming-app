@@ -1,12 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { VideoContext } from '../../context/video-context';
-
-import videoSettings from '../../api/youtube.config.json';
 
 const VideoPlayer = (props) => {
     const Frame = props.frame;
 
-    const { changeSeconds, resetSeconds, removePlayback } = useContext(VideoContext);
+    const { changeSeconds, resetSeconds, removePlayback, videoSettings } = useContext(VideoContext);
 
     const setSecondsHandler = (e) => {
         // let seconds = setSeconds(e);

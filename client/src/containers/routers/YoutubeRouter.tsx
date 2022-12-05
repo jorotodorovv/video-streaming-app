@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import BaseRouter from './BaseRouter';
+import { VideoContext } from '../../context/video-context';
 
 import Home from '../pages/youtube/Home'
 import Video from '../pages/youtube/Video'
 
 import useYT from '../../youtube/useYT';
 
-import videoSettings from '../../api/youtube.config.json'
+import { config, getEndpoint } from '../../../src/helpers/routes/endpoints';
 
 interface ProviderPaths {
     index: string,
@@ -16,14 +17,30 @@ interface ProviderPaths {
 
 const YoutubeRouter = (props) => {
     const [paths, setPaths] = useState<ProviderPaths>();
-
-    const { client } = useYT(videoSettings);
-
+    const { videoSettings, setSettings } = useContext<any>(VideoContext)
+  
+    useEffect(() => {
+        getSettings();
+    }, []);
+    
     useEffect(() => {
         if (videoSettings) {
             initPaths();
         }
     }, [videoSettings]);
+
+    const getSettings = async () => {
+        let endpoint = getEndpoint(config.settings);
+
+        let settings = await fetch(endpoint)
+            .then((response) => {
+                return response.json();
+            });
+
+        setSettings(settings);
+    };
+
+    const { client } = useYT(videoSettings);
 
     const initPaths = () => {
         setPaths({

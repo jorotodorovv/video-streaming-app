@@ -11,11 +11,10 @@ import Cache from '../../../helpers/basic/Cache.ts'
 import VideoCard from "../../../components/VideoCard/VideoCard";
 import styles from './VideoCollection.module.css'
 
-import videoSettings from '../../../api/youtube.config.json';
-import { config, getEndpoint } from "../../../api/endpoints";
+import { config, getEndpoint } from "../../../helpers/routes/endpoints";
 
 const VideoCollection = (props) => {
-    const { videoPlayer, renderVideos } = useContext(VideoContext);
+    const { videoPlayer, renderVideos, videoSettings } = useContext(VideoContext);
 
     let cache = new Cache(props.collectionCacheKey);
 

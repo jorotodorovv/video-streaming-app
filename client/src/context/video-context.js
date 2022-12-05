@@ -8,6 +8,7 @@ const INITIAL_VIDEO_STATE = { videos: {} };
 
 const VideoProvider = (props) => {
     const [videoPlayer, dispatchVideoPlayer] = useVideo(INITIAL_VIDEO_STATE);
+    const [videoSettings, setSettings] = useState();
     const [gToken, setGToken] = useState();
 
     const renderVideos = (videos, token) => {
@@ -48,6 +49,7 @@ const VideoProvider = (props) => {
 
     const provider = {
         videoPlayer,
+        videoSettings,
         gToken,
 
         renderVideos,
@@ -59,6 +61,7 @@ const VideoProvider = (props) => {
         removePlayback,
         changePlayer,
         changeGToken,
+        setSettings,
     };
 
     return (

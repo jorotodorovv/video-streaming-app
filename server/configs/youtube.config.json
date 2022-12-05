@@ -4,7 +4,6 @@
     "clientId": "545284710817-3cba0dmurvn7l65ih5iphb3u0ladu22j.apps.googleusercontent.com",
     "scope": "https://www.googleapis.com/auth/youtube.readonly",
     "version": "youtube/v3",
-    "index": "/youtube",
     "paths": {
         "v": "/videos",
         "ch": "/channels",
@@ -13,6 +12,7 @@
         "subs": "/subscriptions"
     },
     "client": {
+        "index": "/youtube",
         "playerVars": {
             "autoplay": 1,
             "modestbranding": 1,

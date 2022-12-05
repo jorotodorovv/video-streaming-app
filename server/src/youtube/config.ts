@@ -27,6 +27,7 @@ interface ProviderParams {
 }
 
 interface ProviderClient {
+    index: string;
     query: ProviderQuery;
     playerVars: PlayerParams;
     cache: ProviderCache;
@@ -41,7 +42,6 @@ class ProviderConfigurations {
     public clientId: string;
     public scope: string;
     
-    public index: string;
     public paths: ProviderPaths;
 
     public client: ProviderClient;

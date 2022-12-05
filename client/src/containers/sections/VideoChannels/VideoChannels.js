@@ -5,7 +5,7 @@ import { VideoContext } from "../../../context/video-context";
 import VideoChannel from "../../../components/VideoChannel/VideoChannel";
 
 import styles from './VideoChannels.module.css';
-import { config, getEndpoint } from "../../../api/endpoints";
+import { config, getEndpoint } from "../../../helpers/routes/endpoints";
 
 const VideoChannels = (props) => {
     const [channels, setChannels] = useState([]);
