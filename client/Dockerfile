@@ -4,7 +4,7 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY ./common /app/common
+COPY ./routes.config.json /app/routes.config.json
 COPY ./client /app/client
 
 WORKDIR /app/client
