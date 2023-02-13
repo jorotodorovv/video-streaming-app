@@ -19,6 +19,6 @@
     "ts-node": "^10.9.1"
   },
   "prisma": {
-    "seed": "ts-node ./src/db/seed.ts"
+    "seed": "ts-node ./db/seed.ts"
   }
 }

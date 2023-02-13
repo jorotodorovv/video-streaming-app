@@ -4,21 +4,21 @@ WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY ./package.json /app
+COPY ./common /app/common
+COPY ./client /app/client
+
+WORKDIR /app/client
 
 RUN npm install
-
-COPY . /app
-
-RUN npm run build:client
+RUN npm run build
 
 FROM nginx:alpine
 
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY --from=build /app/client/dist /usr/share/nginx/html
 
 # needed this to make React Router work properly
 RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx/nginx.conf /etc/nginx/conf.d
+COPY --from=build /app/client/nginx/nginx.conf /etc/nginx/conf.d
 
 EXPOSE 80
 
