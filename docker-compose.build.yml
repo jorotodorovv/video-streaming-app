@@ -1,0 +1,12 @@
+version: '3'
+services:
+  client:
+    image: jorotodorov/video-streaming-app-client:latest
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+  server:
+    image: jorotodorov/video-streaming-app-server:latest
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
