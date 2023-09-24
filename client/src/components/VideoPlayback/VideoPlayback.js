@@ -18,24 +18,26 @@ const VideoPlayback = (props) => {
     let id = videoPlayer.playbackVideoID;
     let player = videoPlayer.videos[id];
 
-    let playback = player && player.seconds ?
-        (
-            <div className={styles.v_playback}>
-                <CloseIcon className={styles.v_card_close} fontSize={'large'} onClick={onClose} />;
-                <VideoBox
-                    id={player.video.videoId}
-                    title={player.video.title}
-                    description={player.video.description}
-                    frame={props.frame}
-                    image={player.video.image}
-                    seconds={player.seconds}
-                    views={player.video.views}
-                    load
-                />
-            </div>
-        ) : null;
+    if (!player || !player.seconds) return null;
 
-    return <Wrapper>{playback}</Wrapper>;
+    return <Wrapper>
+        <div className={styles.v_playback}>
+            <VideoBox
+                id={player.video.videoId}
+                title={player.video.title}
+                description={player.video.description}
+                frame={props.frame}
+                image={player.video.image}
+                seconds={player.seconds}
+                views={player.video.views}
+                load>
+                <CloseIcon
+                    className={styles.v_card_close}
+                    fontSize={'large'}
+                    onClick={onClose} />
+            </VideoBox>
+        </div>
+    </Wrapper>;
 
 }
 

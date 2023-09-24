@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import Renderer from '../../hoc/Renderer';
-import Wrapper from '../../hoc/Wrapper';
 
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
@@ -15,6 +14,7 @@ const VideoBox = (props) => {
 
     if (props.load) {
         return <div className={styles.v_card_content_scale}>
+            {props.children}
             <VideoPlayer
                 id={props.id}
                 seconds={props.seconds}

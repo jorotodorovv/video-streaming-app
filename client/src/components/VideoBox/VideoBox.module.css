@@ -23,6 +23,7 @@
 
 .v_card_content_scale {
   z-index: 1;
+  width: 18rem;
 	-webkit-animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 	        animation: scale-up-center 1s cubic-bezier(0.390, 0.575, 0.565, 1.000) both;
 }

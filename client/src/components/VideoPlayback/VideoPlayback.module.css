@@ -6,12 +6,10 @@
     margin: 0;
     z-index: 2;
 }
-
 .v_card_close {
-    right: -20%;
-    position: absolute;
-    z-index: 3;
-    top: -10%;
+    position: relative;
     cursor: pointer;
-  }
-  
+    z-index: 3;
+    float: right;
+    top: 2.5rem;
+}
