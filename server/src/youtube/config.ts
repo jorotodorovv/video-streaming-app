@@ -36,14 +36,10 @@ interface ProviderClient {
 
 class ProviderConfigurations {
     public url: string;
-    public key: string;
-    public version: string;
-    
-    public clientId: string;
+    public version: string;  
     public scope: string;
     
     public paths: ProviderPaths;
-
     public client: ProviderClient;
 }
 
