@@ -25,7 +25,7 @@ const YoutubeRouter = (props) => {
     
     useEffect(() => {
         if (videoSettings) {
-            initPaths();
+            initPaths(videoSettings);
         }
     }, [videoSettings]);
 
@@ -40,21 +40,22 @@ const YoutubeRouter = (props) => {
         setSettings(settings);
     };
 
-    const { client } = useYT(videoSettings);
-
-    const initPaths = () => {
+    
+    const initPaths = (settings) => {
         setPaths({
-            index: videoSettings.index,
+            index: settings.index,
             containers: [
-                { Page: Home, path: videoSettings.index },
-                { Page: Video, path: `${videoSettings.index}/videos/:token/:id` },
+                { Page: Home, path: settings.index },
+                { Page: Video, path: `${settings.index}/videos/:token/:id` },
             ],
         });
     };
-
+    
+    const { client } = useYT(videoSettings);
     if (!paths) {
         return null;
     }
+    
 
     return <BaseRouter
         index={paths.index}

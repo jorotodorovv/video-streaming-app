@@ -133,7 +133,7 @@ class YoutubeApi {
         const url = new URL(this.config.url + "/" + this.config.version);
         url.pathname += pathName;
 
-        url.searchParams.append("key", this.config.key);
+        url.searchParams.append("key", process.env.GOOGLE_KEY);
         url.searchParams.append("maxResults", this.config.client.params.videosPerRequest.toString());
 
         return url;

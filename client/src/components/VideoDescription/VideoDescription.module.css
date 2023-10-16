@@ -1,6 +1,6 @@
 .v_description_button {
     background-color: inherit;
-    color: #444;
+    color: inherit;
     cursor: pointer;
     padding: 18px;
     width: 100%;
@@ -17,6 +17,10 @@
     visibility: hidden;
     overflow: hidden;
     transition: 0.2s ease;
+  }
+
+  .v_description_panel a {
+    color: darkred;
   }
 
   .active {
