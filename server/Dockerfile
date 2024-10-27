@@ -11,7 +11,7 @@ WORKDIR /app/server
 
 RUN npm install
 RUN npx prisma generate --schema=./db/schema.prisma
-RUN npx prisma migrate dev --schema=./db/schema.prisma
+RUN npx prisma migrate deploy --schema=./db/schema.prisma
 RUN npx prisma db seed
 
 EXPOSE 3000
