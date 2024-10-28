@@ -1,6 +1,6 @@
 import config from '../../../../routes.config.json';
 
-let url = new URL(config.url);
+let url = new URL(window.location.origin);
 url.port = config.port.toString();
 url.pathname += config.api;
 

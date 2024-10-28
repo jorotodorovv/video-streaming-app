@@ -7,7 +7,7 @@ const Accordion = (props) => {
     let panelClass = toggled ?
         [props.panelClass, props.activeClass] : [props.panelClass];
 
-    return <Wrapper>
+    return <>
         <button
             onClick={() => setToggle(!toggled)}
             className={props.buttonClass}>
@@ -16,7 +16,7 @@ const Accordion = (props) => {
         <div class={panelClass.join(' ')}>
             {props.children}
         </div>
-    </Wrapper>;
+    </>;
 };
 
 export default Accordion;

@@ -1,29 +1,52 @@
 .v_description_button {
-    background-color: inherit;
-    color: inherit;
-    cursor: pointer;
-    padding: 18px;
-    width: 100%;
-    text-align: left;
-    border: none;
-    outline: none;
-  }
-  
+  background-color: inherit;
+  color: inherit;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  font-size: 2rem;
+}
 
-  .v_description_panel {
-    padding: 0 18px;
-    background-color: inherit;
-    display: none;
-    visibility: hidden;
-    overflow: hidden;
-    transition: 0.2s ease;
-  }
+.v_description_panel {
+  padding: 0 18px;
+  background-color: inherit;
+  display: none;
+  visibility: hidden;
+  overflow: hidden;
+  transition: 0.2s ease;
+}
 
-  .v_description_panel a {
-    color: darkred;
-  }
+.v_description_panel a {
+  color: var(--color-blue-400);
+}
 
-  .active {
-    display: block;
-    visibility: visible;
-  }
+.active {
+  display: block;
+  visibility: visible;
+}
+
+.v_actionButton_panel {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.v_actionButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  background-color: var(--color-gray-800);
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.v_actionButton:hover {
+  background-color: var(--color-gray-700);
+}
